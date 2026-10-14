@@ -41,7 +41,11 @@ Norm: "Positive interactions between nations will also need to exist, primarily 
 - [OPEN] Alliances, threats and treaties as puppet decisions, or left implicit? Keep it minimal unless it earns
   its place under "simple controls".
 
-## Rival rivers
+## Rival rivers (D-0022)
 
-- [OPEN] Q-009: are rival nations steered by other hidden societies (AI opponents with agendas), by nobody, or
-  both? "A rival river tries to run into you" suggests at least one rival hand.
+- Rival shadow organizations steer other nations. They can take the player's nations by military or cultural
+  conquest, and the player can take theirs the same ways; a conquered nation joins the conqueror's reach.
+- Cultural conquest is a defeat (D-0019): "your population becomes controlled by some other shadow organization".
+  What it means in the simulation is Q-021.
+- [PROPOSED] Rival hands run on the same levers as the player, with personalities (a warmonger, a decadent,
+  a schoolmaster), so their nations read as distinct rivers.

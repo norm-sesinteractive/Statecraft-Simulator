@@ -8,6 +8,16 @@
 | Hidden hand | The player's secret society (working name; Norm names it) | (the player) |
 | Nation | A country: institutions, society, later land and people | `Nation` |
 | Puppet government | A nation's rulers, who act on their own; never commanded | [PLANNED] |
+| Government type | The political system the player chooses: Democracy, Monarchy, Communism, Military junta, Theocracy | [PLANNED] |
+| Shield | The government's role: absorbs the people's anger and takes the fall for the hidden hand | [PLANNED] |
+| Government suspicion | The people's sense that their rulers do not serve them | [PLANNED] |
+| Shadow suspicion | The people's sense that someone behind the rulers pulls the strings | [PLANNED] |
+| Revolution | A violent change of government type, fomented by the player or breaking out on its own | [PLANNED] |
+| False revolution | A revolution the player foments to replace the shield and vent suspicion | [PLANNED] |
+| Vote | A democracy's peaceful change of government type, started by the player or the people | [PLANNED] |
+| Home nation | The nation the player starts with; losing it ends the game (provisional, Q-017) | [PLANNED] |
+| Rival hand | Another shadow organization steering other nations | [PLANNED] |
+| Cultural conquest | A nation's people falling under a rival hand through culture rather than war | [PLANNED] |
 | Institution | A social machine the player steers: media, education, law and order, politics | `InstitutionSet` |
 | Lever | A control the player sets on an institution | `MediaMix`, `Curriculum`, `LawPolicy` |
 | Vice | One of seven drives: Wrath, Sloth, Greed, Lust, Pride, Envy, Gluttony | `Vice` |

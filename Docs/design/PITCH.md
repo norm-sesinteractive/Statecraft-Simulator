@@ -41,3 +41,18 @@ I'm happy to make Blender content or icons as needed.
 - Binary assets: exports in git, .blend sources outside it, no LFS. (D-0004)
 - Game text: "I write it, Claude uses placeholders." (D-0005)
 - Platform: mobile first. (D-0002)
+
+## 2026-10-14: goals, defeat, suspicion and politics (session 2)
+
+The shadow organization has no game goals, it's simply driven by the desire of the player to manipulate the population(s) of the game.
+Nothing limits the levers persay, but the available countries should be able to be defeated via at least two means. 1. Conquered by another country via military means. 2. Culturally conquered by another country (effectively your population becomes controlled by some other shadow organization). The population can run out of resources and starve/die. Or they can revolt and end up overthrowing the selected government type and possibly overthrow the shadow government itself. Things like extremely high science and frustrations with infrastructure would increase the likelihood of a country figuring out something is wrong. There could be many other situations in which one or more of the 7 vices and or education are out of whack that lead to suspicion of the government and eventually suspicion of you. Perhaps you foment a false revolution to change government types and try to reduce suspicions.
+
+More specifically about how politics works, the political system chosen by the player is the government system of the people. If the player wants, they should be able to change the government type, but not without instigating a revolution of some kind. Democracies can vote to change to another type, but they can also experience revolts/revolutions. The government is just a shield for the shadow organization of the player. They are another tool to absorb or stoke the whims of the people and there to take the fall if the people become unruly.
+
+### Follow-up answers (same session)
+
+- Losing a nation: "Single nation, loss ends game."
+- Reach: "Start with one, expand."
+- Democratic votes: both the player and the people can start one.
+- Government types for the first politics version: Theocracy (unspecified religion), Democracy, Monarchy,
+  Communism, Military junta; "Possibly Meritocracy but that might be over-powered."

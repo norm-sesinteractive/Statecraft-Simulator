@@ -48,6 +48,7 @@ Current state, loose ends and next steps (always loaded):
 | [Docs/OPEN_QUESTIONS.md](Docs/OPEN_QUESTIONS.md) | Questions for Norm, with recommendations | Before designing; in `/design-review` |
 | [Docs/design/PITCH.md](Docs/design/PITCH.md) | Norm's original pitch, verbatim | Checking an idea against the original intent |
 | [Docs/design/VISION.md](Docs/design/VISION.md) | Fantasy, pillars, core loop, what it is not | Any design call |
+| [Docs/design/HIDDEN_HAND.md](Docs/design/HIDDEN_HAND.md) | The player's organization: defeat, suspicion, reach | Defeat, suspicion, revolutions, expansion |
 | [Docs/design/VICES.md](Docs/design/VICES.md) | The seven vices, outlets, contentment | Vices, outlets, wellbeing, crime, unrest |
 | [Docs/design/INSTITUTIONS.md](Docs/design/INSTITUTIONS.md) | The levers: media, education, law, politics | Anything the player controls |
 | [Docs/design/NATIONS.md](Docs/design/NATIONS.md) | Nations, land, resources, people, puppet rulers | Map, geography, demographics, AI |

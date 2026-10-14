@@ -19,10 +19,8 @@
 
 ## Not yet verified (needs Norm)
 
-- [ ] Open the project in the Unity editor once; accept any first-open migrations; commit what they change.
-- [ ] Press Play in `Main.unity`: months should tick, sliders should move outcomes, nation chips should switch view.
-- [ ] Start a fresh Claude Code session here: the SessionStart brief should appear (accept the trust prompt if asked).
-- [ ] First git commit (commands in the session 1 summary; Norm runs them).
+- [x] Editor open and Play in `Main.unity`: "The initial build runs" (Norm, 2026-10-14).
+- [x] First git commit on `main` (Norm); the SessionStart brief fired in session 2.
 - [ ] No Android build or device check has been attempted.
 
 ## Provisional, for Norm to confirm
@@ -31,12 +29,18 @@
 - Dev tooling may use plain English while game text is Norm's (D-0015).
 - Everything marked [PROPOSED] in Docs/design and the model in Docs/simulation/MODEL.md.
 
+## Design settled in session 2 (2026-10-14)
+
+No goals (D-0018); four defeats and free levers (D-0019); two-tier suspicion (D-0020); the player picks the
+government type, changed only by revolution or vote, and it shields the hidden hand (D-0021); start with one
+nation, expand by conquest, rival hands exist (D-0022). Owner doc: Docs/design/HIDDEN_HAND.md.
+
 ## Next up (suggested order)
 
-1. Design session with `/design-review`: Q-001 goals, Q-002 player constraints, Q-003 setting, Q-006 media
-   control shape, Q-007 institution roles, Q-013 politics.
-2. Turn the answers into model v1 scope: the politics lever, puppet government decisions, first events.
-3. Work through M1 in ROADMAP.md.
+1. Norm confirms Q-017 (what ends the game) and glances at the [PROPOSED] type traits and suspicion drivers.
+2. Build M1 model v1: politics (five types, revolutions, votes, emergent revolts) and suspicion, with tests and
+   runner scripts (for example "false-revolution"), then the dev HUD controls for them.
+3. Defeat v1: the hidden hand overthrown; game over for the home nation.
 
 ## Notes for the design session
 

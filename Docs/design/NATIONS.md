@@ -43,6 +43,13 @@ Wrath (Norm's example) adds elder suffering.
 
 Norm: "The illuminati do not directly control the actions of their puppets."
 
+The player chooses the government type, and it changes only through revolution or, in a democracy, a vote (D-0021).
+Norm: "The government is just a shield for the shadow organization of the player. They are another tool to absorb
+or stoke the whims of the people and there to take the fall if the people become unruly." Types and suspicion:
+[INSTITUTIONS.md](INSTITUTIONS.md) and [HIDDEN_HAND.md](HIDDEN_HAND.md).
+
+Starvation is one of the four ways to lose a nation (D-0019), so food and resources must be modeled (M2).
+
 [PROPOSED] Each nation's rulers act on their own every month, reading their society. They crack down when unrest
 rises (if their political form allows it), reform when pressure builds (if it allows that), declare war when
 aggression, opportunity and appetite line up, and sue for peace when war weariness wins. The player shapes

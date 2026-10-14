@@ -50,22 +50,41 @@ offenders may make a society suffer less, but the reduction in fear of punishmen
   [PLANNED] which severities a political form tolerates, and what crackdowns cost in legitimacy.
 - [PLANNED] Where the courts look (which crimes they pursue) as a second simple control.
 
-## Politics [OPEN, not built]
+## Politics (D-0021, not built yet)
 
-Norm: "semblances of political systems."
-- [PROPOSED] Forms: democracy, oligarchy, monarchy, communism, theocracy, military junta, and more. They
-  differ in responsiveness, in how grievance is voiced (elections as a spillway, or suppression), in appetite
-  for war, in tolerance for harsh courts, in corruption and in stability.
-- [PROPOSED] The form is not set directly. It shifts through ideology taught in schools, through unrest
-  (revolution) and through reform, with the player nudging factions. Q-013.
+Norm: "the political system chosen by the player is the government system of the people. If the player wants,
+they should be able to change the government type, but not without instigating a revolution of some kind.
+Democracies can vote to change to another type, but they can also experience revolts/revolutions."
+
+- **Control:** the government type. The player chooses it, but a change only happens through a revolution the
+  player foments, or, in a democracy, a vote (started by the player or by the people). Revolts also break out on
+  their own when the people become unruly.
+- **Role:** the government is the shield: it absorbs or stokes the people's whims and takes the fall, venting
+  government suspicion when it is replaced ([HIDDEN_HAND.md](HIDDEN_HAND.md)).
+- **First types** (Norm): Democracy, Monarchy, Communism, Military junta, Theocracy (unspecified religion).
+  Meritocracy is a candidate, held back as possibly overpowered (Q-019).
+
+[PROPOSED] What each type changes:
+
+| Type | How grievance vents | Courts | War | Vices it channels or frustrates | Suspicion |
+|---|---|---|---|---|---|
+| Democracy | elections vent unrest; can vote itself into another type | harsh courts cost legitimacy | slow to declare | gives Pride and Envy a voice | free press: abrupt lever swings are noticed sooner |
+| Monarchy | revolts topple the crown | moderate | at the crown's pride | Pride in the crown | suspicion fixes on the ruler; stable while revered |
+| Communism | suppressed, then explosive | harsh courts tolerated | moderate | equality channels Envy; Greed frustrated (no markets) | an educated population turns on the planners |
+| Military junta | suppressed by fear; coups are common | harsh courts are cheap | eager | channels Wrath and Pride | fear holds suspicion down until it breaks |
+| Theocracy | absorbed by faith (Sloth as acceptance) | harsh on vice crimes | holy wars possible | condemns Lust and Gluttony | high Science raises suspicion sharply |
+| Meritocracy (candidate) | advancement vents ambition | moderate | moderate | channels Pride and Envy through advancement | Science raises little suspicion: maybe too strong |
+
+[PROPOSED] Revolutions: the player picks a target type and foments; it needs some unrest to work with, takes months,
+costs lives and stability, and can fail. Emergent revolts pick a type from the people's mood (Wrath and Pride lean to
+a junta, Envy to communism, Sloth and Pride to monarchy, Pride and Envy with high schooling to democracy).
 
 ## Faith [OPEN]
 
-The seven deadly sins come from a religious tradition. A church that condemns or blesses each vice would be a
-natural fifth institution. Q-008.
+Theocracy is now a government type with an unspecified religion. Whether faith also becomes a lever of its own (a
+church that condemns or blesses each vice) stays open: Q-008.
 
-## The player's constraints [OPEN]
+## The player's constraints (D-0019)
 
-Today every lever is free and takes effect next month. Candidates (Q-002): an influence budget; exposure
-(suspicion) that grows with abrupt or extreme changes; reach limits (only nations where the society has a
-foothold).
+None: Norm: "Nothing limits the levers persay." Every lever is free and takes effect next month. The check on the
+player is risk: extreme settings raise suspicion and invite the four defeats in [HIDDEN_HAND.md](HIDDEN_HAND.md).

@@ -75,7 +75,13 @@ Details: [INSTITUTIONS.md](INSTITUTIONS.md).
   InsignificAnts).
 - **Frostpunk**: a society's discontent as a gauge to manage, not control.
 
+## Stakes (D-0018 to D-0022)
+
+No goals and no score: the player plays for their own designs. Nothing limits the levers; the risk is defeat.
+A nation is lost to military conquest, to cultural conquest by a rival shadow organization, to starvation, or to a
+revolt that topples the hidden hand itself. The government is the shield that takes the fall first. Details:
+[HIDDEN_HAND.md](HIDDEN_HAND.md).
+
 ## Open
 
-Goals, player constraints, setting and the player's reach are undecided: Q-001 to Q-005 and Q-009 in
-[../OPEN_QUESTIONS.md](../OPEN_QUESTIONS.md).
+Setting, map and pacing are undecided: Q-003, Q-004, Q-011 in [../OPEN_QUESTIONS.md](../OPEN_QUESTIONS.md).
