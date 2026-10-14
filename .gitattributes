@@ -1,0 +1,37 @@
+# Normalize line endings of text files; git detects binary files on its own.
+* text=auto
+
+# Unity YAML: lets Unity's Smart Merge resolve scene and prefab conflicts once configured
+# (Docs/architecture/TOOLING.md, "Git"). Harmless when it is not configured.
+*.unity       merge=unityyamlmerge
+*.prefab      merge=unityyamlmerge
+*.asset       merge=unityyamlmerge
+*.mat         merge=unityyamlmerge
+*.anim        merge=unityyamlmerge
+*.controller  merge=unityyamlmerge
+*.meta        merge=unityyamlmerge
+
+# Scripts whose interpreters care about line endings
+*.py   text eol=lf
+*.sh   text eol=lf
+*.ps1  text eol=crlf
+*.cs   text diff=csharp
+
+# Binary exports (the .blend sources are not tracked: D-0004). No Git LFS.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.tga   binary
+*.psd   binary
+*.exr   binary
+*.hdr   binary
+*.fbx   binary
+*.wav   binary
+*.mp3   binary
+*.ogg   binary
+*.ttf   binary
+*.otf   binary
+*.dll   binary
+*.so    binary
+*.aar   binary
+*.jar   binary

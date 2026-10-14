@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Sim/Statecraft.Sim.Headless.csproj" />
+  <Project Path="Sim.Tests/Statecraft.Sim.Tests.Headless.csproj" />
+  <Project Path="Runner/Statecraft.SimRunner.csproj" />
+</Solution>

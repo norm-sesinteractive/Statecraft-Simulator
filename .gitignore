@@ -1,0 +1,79 @@
+# ---- Unity: generated folders (never commit) ----
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Unity-generated IDE project files (root only; Tools/Headless keeps its own, which ARE committed)
+/*.csproj
+/*.sln
+/*.slnx
+/*.unityproj
+.vsconfig
+.vs/
+.idea/
+.vscode/
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Crash reports and stray test output
+sysinfo.txt
+crashlytics-build.properties
+/TestResults*.xml
+
+# Builds and signing keys (keystores live outside the repo)
+*.apk
+*.aab
+*.ipa
+*.app
+*.unitypackage
+*.keystore
+*.jks
+
+# Addressables build output
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# ---- Headless .NET harness build output ----
+/Tools/Headless/**/bin/
+/Tools/Headless/**/obj/
+/Tools/Headless/**/TestResults/
+
+# ---- Art sources stay out of git (decision D-0004) ----
+*.blend
+*.blend1
+*.blend2
+/ArtSource/*
+!/ArtSource/README.md
+
+# ---- Claude Code local state ----
+/.claude/settings.local.json
+/.claude/state/
+/.claude/worktrees/
+
+# ---- Python ----
+__pycache__/
+*.pyc
+
+# ---- OS cruft ----
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,25 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="DevHud.uss" />
+    <ui:VisualElement name="hud-root" class="hud-root" picking-mode="Ignore">
+        <ui:VisualElement name="top-bar" class="bar">
+            <ui:Label name="date-label" class="date" text="Year 1, Month 1" />
+            <ui:VisualElement name="speed-buttons" class="row" />
+            <ui:VisualElement class="spacer" picking-mode="Ignore" />
+            <ui:Button name="prev-nation" class="nav-button" text="&lt;" />
+            <ui:Label name="nation-label" class="nation-name" text="-" />
+            <ui:Button name="next-nation" class="nav-button" text="&gt;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="body" class="body" picking-mode="Ignore">
+            <ui:VisualElement name="levers-panel" class="panel">
+                <ui:VisualElement name="lever-tabs" class="row" />
+                <ui:Label name="levers-locked" class="note" text="Levers locked: this nation is not under your influence." />
+                <ui:ScrollView name="levers-scroll" class="scroll" />
+            </ui:VisualElement>
+            <ui:VisualElement class="spacer" picking-mode="Ignore" />
+            <ui:VisualElement name="readouts-panel" class="panel">
+                <ui:ScrollView name="readouts-scroll" class="scroll" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="nations-bar" class="bar" />
+    </ui:VisualElement>
+</ui:UXML>

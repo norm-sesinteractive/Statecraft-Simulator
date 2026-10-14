@@ -1,0 +1,17 @@
+{
+    "name": "Statecraft.UI",
+    "rootNamespace": "Statecraft.UI",
+    "references": [
+        "Statecraft.Sim",
+        "Statecraft.Game"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

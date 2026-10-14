@@ -1,0 +1,18 @@
+<Project>
+  <!--
+    Shared by every headless project. Keeps the compiler as strict as Unity's: C# 9, no implicit
+    usings, no nullable context. The sim and test sources live under Assets/ and are compiled
+    in place, so these projects never hold their own copies.
+  -->
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <StatecraftRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\'))</StatecraftRoot>
+    <StatecraftAssets>$(StatecraftRoot)Assets\</StatecraftAssets>
+  </PropertyGroup>
+</Project>

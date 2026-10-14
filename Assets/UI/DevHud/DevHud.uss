@@ -1,0 +1,189 @@
+/* Developer HUD. Sizes are in panel pixels at the 1920x1080 reference (PanelSettings matches height),
+   so touch targets scale with the screen. Colors: panels #101317, text #E6E1D6, accent #3A6EA5, warning #D94436. */
+
+.hud-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 12px;
+}
+
+.bar {
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    min-height: 88px;
+    padding: 6px 12px;
+    border-radius: 12px;
+    background-color: rgba(16, 19, 23, 0.88);
+}
+
+.body {
+    flex-grow: 1;
+    flex-direction: row;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.panel {
+    width: 36%;
+    padding: 12px;
+    border-radius: 12px;
+    background-color: rgba(16, 19, 23, 0.88);
+}
+
+.scroll {
+    flex-grow: 1;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+.row {
+    flex-direction: row;
+    align-items: center;
+}
+
+Label {
+    color: #E6E1D6;
+    font-size: 26px;
+}
+
+Button {
+    font-size: 26px;
+    min-width: 88px;
+    min-height: 72px;
+    margin: 4px;
+    color: #E6E1D6;
+    background-color: #2B3036;
+    border-radius: 10px;
+    border-width: 0;
+}
+
+.date {
+    font-size: 32px;
+    -unity-font-style: bold;
+    min-width: 320px;
+}
+
+.nation-name {
+    font-size: 30px;
+    min-width: 300px;
+    -unity-text-align: middle-center;
+}
+
+.speed-button--active,
+.tab-button--active {
+    background-color: #3A6EA5;
+}
+
+.section-title {
+    font-size: 28px;
+    -unity-font-style: bold;
+    color: #C9A227;
+    margin-top: 16px;
+    margin-bottom: 4px;
+}
+
+.note {
+    font-size: 22px;
+    color: #9AA3AD;
+    white-space: normal;
+    margin-bottom: 6px;
+}
+
+.small {
+    font-size: 22px;
+}
+
+.lever-row {
+    flex-direction: row;
+    align-items: center;
+    min-height: 64px;
+}
+
+.lever-name {
+    width: 190px;
+}
+
+.lever-slider {
+    flex-grow: 1;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.lever-slider .unity-base-slider__dragger {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+}
+
+.lever-value {
+    width: 80px;
+    -unity-text-align: middle-right;
+}
+
+.table-row {
+    flex-direction: row;
+    min-height: 36px;
+}
+
+.cell-name {
+    width: 34%;
+}
+
+.cell {
+    width: 22%;
+    -unity-text-align: middle-right;
+}
+
+.cell-header {
+    color: #9AA3AD;
+    font-size: 22px;
+}
+
+.cell--hot {
+    color: #D94436;
+    -unity-font-style: bold;
+}
+
+.meter-row {
+    flex-direction: row;
+    align-items: center;
+    min-height: 44px;
+}
+
+.meter-name {
+    width: 190px;
+}
+
+.meter-track {
+    flex-grow: 1;
+    height: 18px;
+    border-radius: 9px;
+    background-color: #2B3036;
+    overflow: hidden;
+}
+
+.meter-fill {
+    height: 100%;
+    width: 0;
+    background-color: #3A6EA5;
+}
+
+.meter-value {
+    width: 96px;
+    -unity-text-align: middle-right;
+}
+
+.nation-chip {
+    font-size: 22px;
+    flex-grow: 1;
+}
+
+.nation-chip--selected {
+    background-color: #3A6EA5;
+}

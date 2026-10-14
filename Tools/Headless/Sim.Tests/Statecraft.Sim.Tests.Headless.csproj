@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    The Unity edit-mode sim tests (Assets/Tests/Sim), run under dotnet test with real NUnit.
+    Same files Unity's Test Runner runs; keep them to NUnit 3.5 APIs (Unity's bundled version).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>Statecraft.Sim.Tests</AssemblyName>
+    <RootNamespace>Statecraft.Sim.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(StatecraftAssets)Tests\Sim\**\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sim\Statecraft.Sim.Headless.csproj" />
+  </ItemGroup>
+</Project>
