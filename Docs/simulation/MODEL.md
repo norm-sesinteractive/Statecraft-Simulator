@@ -89,7 +89,8 @@ behaviors; if a change breaks one, the design changed and this doc must say so.
   `min(e_v, outlet_v)`.
 - Fear: `FearPerSeverity * severity`.
 - Contentment target, clamped to -1..1:
-  `ContentmentBase + SatisfactionGain * mean(satisfied) - FrustrationGain * mean(f) * (1 - SlothAcceptance * e_Sloth) - FearSuffering * fear - CrimeSuffering * crime`
+  `ContentmentBase + SatisfactionGain * mean(satisfied) - FrustrationGain * sum(f) * (1 - SlothAcceptance * e_Sloth) - FearSuffering * fear - CrimeSuffering * crime`
+  (frustration is summed over vices, not averaged: D-0034)
 - Crime target, clamped to 0..1:
   `CrimeBase + sum_v CrimeFromFrustration_v * f_v - Deterrence * severity - ContentmentCrimeRelief * max(0, contentment)`
 - Unrest target, clamped to 0..1, with suffering `s = max(0, -contentment)`:
@@ -192,6 +193,12 @@ drift against tradition (new), `SuspicionTauMonths` 18 to 12, `LeakThreshold` 0.
 `UnrestFromSuspicion` 0.2 to 0.5, `UnrestFromShadowSuspicion` 0.4 (new). Runner results: extremist alarm in year 2,
 rumors year 6, overthrow year 13; whiplash overthrow year 10; one-vice propaganda overthrow around year 20; a
 one-focus monoculture holds at the alarm without leaking; the AI nations stay calm for 100 years.
+
+Balance pass 2 (2026-10-15, D-0034): frustration summed in contentment (gain 0.5), `MoodGain` 0.25 to 0.5,
+`ChannelGain` 0.6 to 0.8, `SlothDampening` 0.15 to 0.10, Democracy `UnrestVenting` 0.08 to 0.04. Sweep (3:1 tilts,
+deltas against untouched): Wrath tilt in a year contentment -0.04, crime +0.03, aggression +0.05; all-Wrath airtime
+-0.21, +0.14, +0.24; courts 0 versus 1: contentment 0.18 apart, crime 0.08. Extreme play topples the hand in years 11
+to 14 (pass 1 pace kept); slow-burn sours contentment from +0.18 to +0.06 over 80 years without revolts.
 
 ## Known simplifications (v1)
 

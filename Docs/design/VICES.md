@@ -89,7 +89,8 @@ Norm: "Weaved with all of these is the contentment/suffering of the average citi
 - One axis in v0: -1 is suffering, +1 is content. Q-010 asks whether two gauges would play better.
 - Per generation (model v1, D-0032): youth, adults and elders each have their own contentment (their expressed vices
   against the nation's outlets) and their own unrest; the national value is the population-weighted average.
-- Raised by satisfaction. Lowered by frustration (softened by Sloth), by fear of the courts, and by crime.
+- Raised by satisfaction. Lowered by frustration of each vice, counted separately so one starved drive hurts on its
+  own (D-0034), softened by Sloth; by fear of the courts; and by crime.
 - Suffering feeds unrest, amplified by Pride and Envy. Contentment starves crime: a content enough people can
   reach zero crime (pinned by `ASufficientlyContentPeopleNeedsNoCourts`).
 

@@ -129,8 +129,10 @@ namespace Statecraft.Sim.Tests
         public void SlothSoftensSufferingIntoAcceptance()
         {
             var frustrated = new ViceVector(0.8, 0.2, 0.8, 0.35, 0.35, 0.8, 0.35);
-            var restless = TestWorlds.Single(s => s.Disposition = frustrated);
-            var accepting = TestWorlds.Single(s => { var d = frustrated; d.Sloth = 0.9; s.Disposition = d; });
+            // No revolts: they would reset unrest at random and blur the comparison this test makes.
+            Action<SimTuning> noRevolts = t => t.Politics.RevoltThreshold = 2;
+            var restless = TestWorlds.Single(s => s.Disposition = frustrated, noRevolts);
+            var accepting = TestWorlds.Single(s => { var d = frustrated; d.Sloth = 0.9; s.Disposition = d; }, noRevolts);
             restless.Advance(TestWorlds.Years(2));
             accepting.Advance(TestWorlds.Years(2));
             Assert.That(TestWorlds.Society(accepting).Unrest, Is.LessThanOrEqualTo(TestWorlds.Society(restless).Unrest));

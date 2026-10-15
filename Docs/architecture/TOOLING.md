@@ -25,9 +25,11 @@ From the repo root:
   revolution or vote is under way), `--why suspicion|shadow|unrest|contentment` (the ledger terms behind that
   value at each printed row). Scripts: baseline, wrath-media, military-school, iron-fist, velvet-glove,
   bread-and-circuses, stoke-then-channel, scholars, false-revolution, people-vote, tyranny, propaganda,
-  monoculture, extremist, whiplash.
+  monoculture, extremist, whiplash, slow-burn.
 - Do not pair `--no-build` with runner changes: `dotnet test` does not refresh the runner's output (LESSONS).
 - `dotnet run --project Tools/Headless/Runner -- docs`: regenerate PARAMETERS.md and SOCIETY_GRAPH.md.
+- `dotnet run --project Tools/Headless/Runner -- sweep`: every home lever pushed to an extreme and to a 3:1 tilt, one
+  at a time, with effects at that lever's horizon (media and courts 1 year, schools 25) against an untouched run.
 
 ## Compile-checking Unity-side code with the editor open
 

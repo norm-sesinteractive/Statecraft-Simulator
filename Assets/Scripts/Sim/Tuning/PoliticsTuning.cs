@@ -14,7 +14,7 @@ namespace Statecraft.Sim.Tuning
                 AlignmentBase = 0.10,
                 AlignmentFromVices = new ViceVector(-0.1, 0, 0, 0, 0.3, 0.3, 0),
                 AlignmentFromSchooling = new[] { 0, 0, 0, 0.2, 0.3, 0.3, 0 },
-                UnrestVenting = 0.08, FearSufferingScale = 1.3, FearDampeningScale = 0.7, SeveritySuspicion = 0.15,
+                UnrestVenting = 0.04, FearSufferingScale = 1.3, FearDampeningScale = 0.7, SeveritySuspicion = 0.15,
                 ScienceSuspicionScale = 0.5, LeverSwingSuspicionScale = 1.5, RevoltChanceScale = 0.7,
                 AggressionBonus = -0.05, CanVote = true,
             },

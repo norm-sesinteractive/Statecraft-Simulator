@@ -155,7 +155,6 @@ namespace Statecraft.Sim.Systems
                 satisfiedSum += Math.Min(expressed, outlet);
             }
             double meanSatisfied = satisfiedSum / ViceVector.Count;
-            double meanFrustration = frustrationSum / ViceVector.Count;
 
             // Contentment: satisfaction lifts it; frustration (softened by Sloth's acceptance), fear and crime weigh on it.
             double contentment =
@@ -165,11 +164,11 @@ namespace Statecraft.Sim.Systems
             {
                 if (cohort.frustration[v] > 0)
                     contentment += ledger.Add(n, Quantity.Contentment, -1, c, LedgerNames.Frustration[v],
-                        -tuning.FrustrationGain * cohort.frustration[v] / ViceVector.Count);
+                        -tuning.FrustrationGain * cohort.frustration[v]);
             }
-            if (meanFrustration > 0)
+            if (frustrationSum > 0)
                 contentment += ledger.Add(n, Quantity.Contentment, -1, c, LedgerNames.Expressed[(int)Vice.Sloth],
-                    tuning.FrustrationGain * meanFrustration * tuning.SlothAcceptance * cohort.expressed.Sloth);
+                    tuning.FrustrationGain * frustrationSum * tuning.SlothAcceptance * cohort.expressed.Sloth);
             contentment += ledger.Add(n, Quantity.Contentment, -1, c, LedgerNames.Fear,
                 -tuning.FearSuffering * traits.FearSufferingScale * society.fear);
             contentment += ledger.Add(n, Quantity.Contentment, -1, c, LedgerNames.Crime, -tuning.CrimeSuffering * society.crime);

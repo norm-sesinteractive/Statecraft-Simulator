@@ -4,7 +4,7 @@
 > `python Tools/docs/doctool.py rotate-worklog`. Format: [DOCS_GUIDE.md](DOCS_GUIDE.md), "Worklog entry".
 > Narrative only: decisions go to `decisions/`, open work to STATUS.md and ROADMAP.md.
 
-## 2026-10-15: session 3, balance pass 1 (suspicion overload)
+## 2026-10-15: session 3, balance passes 1 and 2
 
 - Norm: the Politics tab works, but suspicion is "nearly impossible to overload". Measured first: new runner option
   `--why` (ledger terms behind a value) and scripts propaganda, monoculture, extremist, whiplash.
@@ -13,8 +13,12 @@
 - Changes (D-0033, Proposed): stronger concentration, cultural drift against each nation's tradition, faster
   suspicion and leak, suspicion and shadow suspicion feed unrest, shadow resets when the hand falls.
 - Six balance-target tests with default tuning (63 tests total, all pass). Dev HUD: "Only" and "Even" buttons.
+- Norm approved the pace ("The pace feels right"); D-0033 accepted. Then balance pass 2: runner `sweep` (each lever
+  extreme and 3:1, at its horizon) and a slow-burn script showed moderate play did nothing. Contentment now sums
+  frustration per vice; stronger media and schooling; smaller unrest cushion (D-0034, Proposed). Three more
+  balance tests (66 total). Two older tests now switch revolts off where revolts blur what they measure.
 - Placeholders added for Norm: none.
-- Pick up at: STATUS.md, "Next up" (Norm's feel check first).
+- Pick up at: STATUS.md, "Next up" (Norm's feel check of pass 2 first).
 
 ## 2026-10-14: session 2, design rounds and politics model v1
 

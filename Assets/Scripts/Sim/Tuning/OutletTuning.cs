@@ -9,6 +9,6 @@ namespace Statecraft.Sim.Tuning
         public ViceVector BaseOutlet = ViceVector.Uniform(0.25);
 
         /// <summary>Outlet capacity added per unit of the adult cohort's trained channels.</summary>
-        public double ChannelGain = 0.6;
+        public double ChannelGain = 0.8;
     }
 }

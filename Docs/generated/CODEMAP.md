@@ -114,6 +114,9 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 - `Options.cs`: `Options` (class): Minimal "--key value" argument parser; a bare "--flag" reads as "true".
 - `Program.cs`: `Program` (class): Command-line entry for headless runs of the pure C# simulation (balancing experiments) and for the docs generated from the live model (parameters table, causal graph).
 - `RunCommand.cs`: `RunCommand` (class): The "run" command: one scripted game, printed as a yearly table, optionally as CSV.
+- `SweepCommand.cs`
+  - `SweepCommand` (class): The "sweep" command: pushes one lever of the home nation to an extreme at a time and reports how far each outcome moved at that lever's own horizon (media 1 year, courts 1 year, schools 25 years), ...
+  - `Probe` (nested class): (no summary)
 - `XmlDocs.cs`: `XmlDocs` (class): Reads Statecraft.Sim.xml (the compiler's XML documentation output) so generated docs quote the code's own summaries instead of restating them.
 
 ## Tooling scripts

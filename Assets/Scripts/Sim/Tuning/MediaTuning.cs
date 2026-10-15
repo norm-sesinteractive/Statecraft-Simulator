@@ -4,7 +4,7 @@ namespace Statecraft.Sim.Tuning
     public sealed class MediaTuning
     {
         /// <summary>Mood shift (on the 0-1 vice scale) when one vice gets all the airtime.</summary>
-        public double MoodGain = 0.25;
+        public double MoodGain = 0.5;
 
         /// <summary>Time constant in months for mood to follow the airtime mix. Short: media works fast.</summary>
         public double MoodTauMonths = 4;

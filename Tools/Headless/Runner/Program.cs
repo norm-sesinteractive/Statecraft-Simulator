@@ -15,6 +15,8 @@ Commands:
   run      [--script NAME] [--years N] [--seed N] [--every N] [--csv PATH]
            Runs the three-nation scenario under a lever script and prints a table every N years.
   scripts  Lists the built-in lever scripts.
+  sweep    [--seed N]
+           Pushes each home lever to an extreme, one at a time, and reports effects at that lever's horizon.
   docs     [--out DIR]
            Writes PARAMETERS.md and SOCIETY_GRAPH.md (default: Docs/generated under the repo root).
 
@@ -41,6 +43,7 @@ Examples (from the repo root):
                     case "run": return RunCommand.Execute(options);
                     case "scripts": LeverScripts.PrintList(); return 0;
                     case "docs": return DocsCommand.Execute(options);
+                    case "sweep": return SweepCommand.Execute(options);
                     default:
                         Console.Error.WriteLine($"Unknown command '{args[0]}'.");
                         Console.Error.WriteLine(Usage);

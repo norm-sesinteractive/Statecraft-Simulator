@@ -11,7 +11,7 @@ Coefficients for how airtime stirs mood now and shapes culture over decades.
 
 | Parameter | Value | Meaning |
 |---|---|---|
-| MoodGain | 0.25 | Mood shift (on the 0-1 vice scale) when one vice gets all the airtime. |
+| MoodGain | 0.5 | Mood shift (on the 0-1 vice scale) when one vice gets all the airtime. |
 | MoodTauMonths | 4 | Time constant in months for mood to follow the airtime mix. Short: media works fast. |
 | MoodNoise | 0.01 | Standard deviation of the monthly news-cycle noise added to each mood value. 0 disables it. |
 | CultivationYouth | 0.004 | Monthly disposition drift of youth per unit of airtime push (youth are the most susceptible). |
@@ -57,7 +57,7 @@ Coefficients for how much of each vice a society can channel productively.
 | Parameter | Value | Meaning |
 |---|---|---|
 | BaseOutlet | Wrath 0.25, Sloth 0.25, Greed 0.25, Lust 0.25, Pride 0.25, Envy 0.25, Gluttony 0.25 | Outlet capacity every society has before any training (family life, ordinary work, feasts), per vice. |
-| ChannelGain | 0.6 | Outlet capacity added per unit of the adult cohort's trained channels. |
+| ChannelGain | 0.8 | Outlet capacity added per unit of the adult cohort's trained channels. |
 
 ## Wellbeing (`WellbeingTuning`)
 
@@ -67,7 +67,7 @@ Coefficients for contentment, fear, crime, unrest, aggression and their alarm th
 |---|---|---|
 | ContentmentBase | 0.15 | Contentment of a society with no satisfaction, frustration, fear or crime. |
 | SatisfactionGain | 0.5 | Contentment per unit of mean satisfied vice (expressed and channeled). |
-| FrustrationGain | 1.2 | Suffering per unit of mean frustration (expressed vice with no outlet). |
+| FrustrationGain | 0.5 | Suffering per unit of frustration, summed over vices (not averaged): one badly frustrated drive hurts on its own rather than being diluted by six satisfied ones. |
 | SlothAcceptance | 0.5 | How much expressed Sloth softens frustration into acceptance (0 = none, 1 = Sloth 1.0 cancels it). |
 | FearPerSeverity | 0.6 | Fear created per unit of court severity. |
 | FearSuffering | 0.3 | Suffering per unit of fear. |
@@ -82,7 +82,7 @@ Coefficients for contentment, fear, crime, unrest, aggression and their alarm th
 | PrideAmplifier | 0.5 | Extra unrest from suffering per unit of expressed Pride (proud people defy). |
 | EnvyAmplifier | 0.5 | Extra unrest from suffering per unit of expressed Envy (relative deprivation). |
 | UnrestFromWrath | 0.3 | Unrest per unit of Wrath frustration. |
-| SlothDampening | 0.15 | Unrest removed per unit of expressed Sloth (complacency, acceptance). |
+| SlothDampening | 0.1 | Unrest removed per unit of expressed Sloth (complacency, acceptance). |
 | FearDampening | 0.2 | Unrest removed per unit of fear (suppression, short-term). |
 | UnrestTauMonths | 12 | Time constant in months for unrest to follow its target. |
 | AggressionWeights | Wrath 0.45, Sloth -0.15, Greed 0.2, Lust 0, Pride 0.15, Envy 0.1, Gluttony 0.05 | Aggression per unit of expressed vice. Negative weights calm (Sloth). |
@@ -173,7 +173,7 @@ Coefficients for government types, alignment, two-tier suspicion, revolutions, v
 | AlignmentBase | 0.1 | 0.1 | 0.05 | 0.05 | 0.05 |
 | AlignmentFromVices | Wrath -0.1, Pride 0.3, Envy 0.3 | Sloth 0.4, Pride 0.4 | Greed -0.3, Envy 0.7 | Wrath 0.6, Pride 0.4 | Sloth 0.5, Lust -0.2, Gluttony -0.2 |
 | AlignmentFromSchooling | Infrastructure 0.2, Science 0.3, Commerce 0.3 | Agriculture 0.2, Military 0.1 | Agriculture 0.2, Infrastructure 0.2 | Military 0.5 | Science -0.4, Arts 0.1 |
-| UnrestVenting | 0.08 | 0 | 0 | 0 | 0.04 |
+| UnrestVenting | 0.04 | 0 | 0 | 0 | 0.04 |
 | FearSufferingScale | 1.3 | 1 | 0.75 | 0.5 | 0.8 |
 | FearDampeningScale | 0.7 | 1 | 1.2 | 1.5 | 1 |
 | SeveritySuspicion | 0.15 | 0.05 | 0.02 | 0 | 0.05 |

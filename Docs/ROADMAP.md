@@ -24,7 +24,7 @@ Goal: steering one nation is interesting for 30 minutes, with real danger of los
 - [ ] Events v1: politics events exist in the sim (revolutions, votes, revolts, suspicion alarms); player-facing
       event text keys for Norm still to come
 - [x] Balance pass 1 (2026-10-15): suspicion overload and the hand's fall on a playable time scale (D-0033)
-- [ ] Balance pass 2: each lever matters within its own time horizon; revolts in hard times without suspicion
+- [x] Balance pass 2 (2026-10-15): moderate levers felt within their horizon; misery revolts at the shield (D-0034)
 - [ ] Explanation ("why?") in the real UI, not only the dev HUD
 - [ ] Text catalog: a key for every player-facing string, values from Norm
 - [ ] Verify RESEARCH.md citations before any reach game text

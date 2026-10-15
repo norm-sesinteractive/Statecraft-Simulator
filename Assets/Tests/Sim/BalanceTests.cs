@@ -59,9 +59,15 @@ namespace Statecraft.Sim.Tests
         [Test]
         public void EveryLeverAtAnExtremeOverloadsSuspicionWithinFiveYears()
         {
+            // Peak, not the value on one date: revolts may already be venting it by year five.
             var simulation = Home(Extremist);
-            simulation.Advance(TestWorlds.Years(5));
-            Assert.That(Home(simulation).Suspicion, Is.GreaterThan(0.85));
+            double peak = 0;
+            for (int month = 0; month < TestWorlds.Years(5); month++)
+            {
+                simulation.Advance();
+                peak = System.Math.Max(peak, Home(simulation).Suspicion);
+            }
+            Assert.That(peak, Is.GreaterThan(0.85));
         }
 
         [Test]
@@ -83,6 +89,72 @@ namespace Statecraft.Sim.Tests
             }
             Assert.That(toppled, Is.GreaterThanOrEqualTo(2), "the hand should fall within 30 years in most games");
         }
+
+        [Test]
+        public void ModerateLeversAreFeltWithinTheirHorizon()
+        {
+            // Pass 2 (D-0034): a 3:1 media tilt is felt within a year; the courts within a year.
+            var control = Home(sim => { });
+            var tilted = Home(sim => sim.Enqueue(new SetMediaMix(0, new[] { 3.0, 1, 1, 1, 1, 1, 1, 1 })));
+            var lenient = Home(sim => sim.Enqueue(new SetLawSeverity(0, 0)));
+            var harsh = Home(sim => sim.Enqueue(new SetLawSeverity(0, 1)));
+            foreach (var simulation in new[] { control, tilted, lenient, harsh }) simulation.Advance(TestWorlds.Years(1));
+
+            Assert.That(Society(tilted).Aggression - Society(control).Aggression, Is.GreaterThan(0.03));
+            Assert.That(Society(control).Contentment - Society(tilted).Contentment, Is.GreaterThan(0.02));
+            Assert.That(Society(lenient).Crime - Society(harsh).Crime, Is.GreaterThan(0.05));
+            Assert.That(Society(lenient).Contentment - Society(harsh).Contentment, Is.GreaterThan(0.1));
+        }
+
+        [Test]
+        public void SchoolingThatFitsTheCultureEasesItWithinAGeneration()
+        {
+            Simulation Warriors(double[] curriculum) => new Simulation(new[]
+            {
+                new Nations.NationSetup
+                {
+                    NameKey = "[TEST]", PlayerControlled = true, CurriculumWeights = curriculum,
+                    Disposition = new ViceVector(0.7, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35),
+                },
+            }, SimTuning.CreateDefault(), 1);
+            var even = Warriors(Curriculum.EvenWeights());
+            var fitted = Warriors(Curriculum.EvenWeights());
+            fitted.Enqueue(new SetCurriculum(0, new[] { 1.0, 3, 1, 1, 1, 1, 1 }));
+            even.Advance(TestWorlds.Years(25));
+            fitted.Advance(TestWorlds.Years(25));
+
+            Assert.That(Society(even).Frustration.Wrath - Society(fitted).Frustration.Wrath, Is.GreaterThan(0.05));
+            Assert.That(Society(fitted).Contentment - Society(even).Contentment, Is.GreaterThan(0.02));
+        }
+
+        [Test]
+        public void MiseryRevoltsAgainstTheGovernmentBeforeAnyoneSuspectsTheHand()
+        {
+            // A people whose drives have nowhere to go suffers and revolts within a few years, at the shield.
+            var simulation = new Simulation(new[]
+            {
+                new Nations.NationSetup
+                {
+                    NameKey = "[TEST]", PlayerControlled = true,
+                    Disposition = new ViceVector(0.9, 0.35, 0.9, 0.35, 0.35, 0.9, 0.35),
+                },
+            }, SimTuning.CreateDefault(), 1);
+            bool revolted = false;
+            for (int month = 0; month < TestWorlds.Years(5) && !revolted; month++)
+            {
+                simulation.Advance();
+                for (int i = 0; i < simulation.Events.Count; i++)
+                {
+                    var kind = simulation.Events.GetRecent(i).Kind;
+                    if (kind == SimEventKind.RevoltSucceeded || kind == SimEventKind.RevoltCrushed) revolted = true;
+                }
+            }
+            Assert.That(Society(simulation).Contentment, Is.LessThan(0));
+            Assert.That(revolted, Is.True, "misery should bring a revolt within five years");
+            Assert.That(simulation.IsGameOver, Is.False, "hardship alone topples the government, not the hand");
+        }
+
+        static SocietyState Society(Simulation simulation) => simulation.World.Nations[0].Society;
 
         static void Extremist(Simulation sim)
         {

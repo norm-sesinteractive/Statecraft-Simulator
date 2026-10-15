@@ -109,6 +109,12 @@ namespace Statecraft.SimRunner
             {
                 if (year >= 2) sim.Enqueue(new SetMediaMix(home, Airtime(year % 2 == 0 ? Vice.Wrath : Vice.Sloth)));
             }),
+            new Script("slow-burn", "From year 2 moderate tilts only: media leans Wrath, Greed, Envy; schools lean Arts, Medicine, Agriculture (no outlets for them).", (sim, year, home) =>
+            {
+                if (year != 2) return;
+                sim.Enqueue(new SetMediaMix(home, new[] { 2.0, 1, 2, 1, 1, 2, 1, 1 }));
+                sim.Enqueue(new SetCurriculum(home, new[] { 2.0, 1, 2, 0.5, 1, 0.5, 2 }));
+            }),
             new Script("tyranny", "From year 2 ruthless courts, nothing but Wrath on the air, and Arts schools: frustrated youth and revolts.", (sim, year, home) =>
             {
                 if (year != 2) return;

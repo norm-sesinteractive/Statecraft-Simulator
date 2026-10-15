@@ -1,6 +1,6 @@
 # D-0033: Balance targets for suspicion and the hand's survival; drift measured against tradition
 
-**Status:** Proposed | **Date:** 2026-10-15 | **Area:** Simulation
+**Status:** Accepted (Norm, 2026-10-15: "The pace feels right") | **Date:** 2026-10-15 | **Area:** Simulation
 
 ## Context
 Norm, after playing model v1: the Politics tab works, "but is nearly impossible to overload government or shadow org

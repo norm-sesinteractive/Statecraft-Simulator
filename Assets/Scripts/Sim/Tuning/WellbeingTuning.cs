@@ -11,8 +11,11 @@ namespace Statecraft.Sim.Tuning
         /// <summary>Contentment per unit of mean satisfied vice (expressed and channeled).</summary>
         public double SatisfactionGain = 0.5;
 
-        /// <summary>Suffering per unit of mean frustration (expressed vice with no outlet).</summary>
-        public double FrustrationGain = 1.2;
+        /// <summary>
+        /// Suffering per unit of frustration, summed over vices (not averaged): one badly frustrated drive hurts on its
+        /// own rather than being diluted by six satisfied ones.
+        /// </summary>
+        public double FrustrationGain = 0.5;
 
         /// <summary>How much expressed Sloth softens frustration into acceptance (0 = none, 1 = Sloth 1.0 cancels it).</summary>
         public double SlothAcceptance = 0.5;
@@ -60,7 +63,7 @@ namespace Statecraft.Sim.Tuning
         public double UnrestFromWrath = 0.3;
 
         /// <summary>Unrest removed per unit of expressed Sloth (complacency, acceptance).</summary>
-        public double SlothDampening = 0.15;
+        public double SlothDampening = 0.10;
 
         /// <summary>Unrest removed per unit of fear (suppression, short-term).</summary>
         public double FearDampening = 0.2;
