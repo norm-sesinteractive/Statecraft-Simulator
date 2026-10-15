@@ -11,6 +11,7 @@ namespace Statecraft.Sim.Tuning
         public GenerationTuning Generations = new GenerationTuning();
         public OutletTuning Outlets = new OutletTuning();
         public WellbeingTuning Wellbeing = new WellbeingTuning();
+        public PoliticsTuning Politics = new PoliticsTuning();
 
         public static SimTuning CreateDefault() => new SimTuning();
     }

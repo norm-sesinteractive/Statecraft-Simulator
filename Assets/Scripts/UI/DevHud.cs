@@ -6,6 +6,7 @@ using Statecraft.Sim.Core;
 using Statecraft.Sim.Diagnostics;
 using Statecraft.Sim.Institutions;
 using Statecraft.Sim.Nations;
+using Statecraft.Sim.Politics;
 using Statecraft.Sim.Society;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -26,6 +27,7 @@ namespace Statecraft.UI
             Media,
             Education,
             Law,
+            Politics,
         }
 
         const int WhyRows = 6;
@@ -46,6 +48,12 @@ namespace Statecraft.UI
         readonly Label[,] viceCells = new Label[ViceVector.Count, 3];
         readonly Label[] whyLabels = new Label[WhyRows];
         readonly Label[] eventLabels = new Label[EventRows];
+        readonly Label[,] generationCells = new Label[3, 2];
+        readonly Button[] fomentButtons = new Button[GovernmentState.TypeCount];
+        readonly Button[] voteButtons = new Button[GovernmentState.TypeCount];
+        Label politicsStatus;
+        Meter suspicionMeter;
+        Meter shadowMeter;
 
         VisualElement hudRoot;
         VisualElement nationsBar;
@@ -161,7 +169,7 @@ namespace Statecraft.UI
             tabButtons.Clear();
             scroll.Clear();
 
-            var tabs = new[] { LeverTab.Media, LeverTab.Education, LeverTab.Law };
+            var tabs = new[] { LeverTab.Media, LeverTab.Education, LeverTab.Law, LeverTab.Politics };
             leverGroups = new VisualElement[tabs.Length];
             foreach (var t in tabs)
             {
@@ -189,6 +197,26 @@ namespace Statecraft.UI
             var law = leverGroups[(int)LeverTab.Law];
             law.Add(Note("0 pardons all but the most guilty; 1 cracks down ruthlessly."));
             lawSlider = AddSlider(law, "Severity", out lawValue, OnLawChanged);
+
+            var politics = leverGroups[(int)LeverTab.Politics];
+            politics.Add(Note("Foment a revolution (months, can fail) or, in a democracy, call a vote. Offered only when possible."));
+            politicsStatus = new Label("-");
+            politicsStatus.AddToClassList("small");
+            politics.Add(politicsStatus);
+            for (int k = 0; k < GovernmentState.TypeCount; k++)
+            {
+                var type = (GovernmentType)k;
+                var row = new VisualElement();
+                row.AddToClassList("lever-row");
+                var label = new Label(type.ToString());
+                label.AddToClassList("lever-name");
+                fomentButtons[k] = new Button(() => OnFoment(type)) { text = "Foment" };
+                voteButtons[k] = new Button(() => OnVote(type)) { text = "Vote" };
+                row.Add(label);
+                row.Add(fomentButtons[k]);
+                row.Add(voteButtons[k]);
+                politics.Add(row);
+            }
         }
 
         void BuildReadouts(ScrollView scroll)
@@ -204,14 +232,25 @@ namespace Statecraft.UI
                 scroll.Add(row);
             }
 
+            scroll.Add(SectionTitle("Generations"));
+            scroll.Add(TableRow("", "Content", "Unrest", "", header: true));
+            for (int c = 0; c < 3; c++)
+            {
+                var row = TableRow(((Cohort)c).ToString(), "-", "-", "", header: false);
+                for (int k = 0; k < 2; k++) generationCells[c, k] = (Label)row[k + 1];
+                scroll.Add(row);
+            }
+
             scroll.Add(SectionTitle("Outcomes"));
             contentmentMeter = AddMeter(scroll, "Contentment", -1, 1);
             crimeMeter = AddMeter(scroll, "Crime", 0, 1);
             unrestMeter = AddMeter(scroll, "Unrest", 0, 1);
             fearMeter = AddMeter(scroll, "Fear", 0, 1);
             aggressionMeter = AddMeter(scroll, "Aggression", 0, 1);
+            suspicionMeter = AddMeter(scroll, "Gov suspicion", 0, 1);
+            shadowMeter = AddMeter(scroll, "Shadow susp.", 0, 1);
 
-            scroll.Add(SectionTitle("Why contentment? (largest terms)"));
+            scroll.Add(SectionTitle("Why adult contentment? (largest terms)"));
             for (int i = 0; i < WhyRows; i++)
             {
                 whyLabels[i] = new Label(" ");
@@ -331,7 +370,12 @@ namespace Statecraft.UI
 
             lawSlider.SetValueWithoutNotify((float)nation.Institutions.Law.Severity);
 
-            bool editable = nation.PlayerControlled;
+            ApplyEditable(nation.PlayerControlled);
+        }
+
+        // Levers lock when the hand does not hold the nation, including after it is overthrown mid-game.
+        void ApplyEditable(bool editable)
+        {
             foreach (var slider in mediaSliders) slider.SetEnabled(editable);
             foreach (var slider in curriculumSliders) slider.SetEnabled(editable);
             lawSlider.SetEnabled(editable);
@@ -362,6 +406,16 @@ namespace Statecraft.UI
             host.Enqueue(new SetLawSeverity(selectedNation, change.newValue));
         }
 
+        void OnFoment(GovernmentType target)
+        {
+            if (CanCommand() && host.Simulation.CanFoment(selectedNation, target)) host.Enqueue(new FomentRevolution(selectedNation, target));
+        }
+
+        void OnVote(GovernmentType target)
+        {
+            if (CanCommand() && host.Simulation.CanCallVote(selectedNation, target)) host.Enqueue(new CallVote(selectedNation, target));
+        }
+
         bool CanCommand() => built && host != null && host.Simulation != null && selectedNation >= 0;
 
         // ---- refresh ------------------------------------------------------------------------
@@ -386,8 +440,19 @@ namespace Statecraft.UI
 
             var nation = nations[selectedNation];
             var society = nation.Society;
-            dateLabel.text = "Year " + simulation.Date.Year + ", Month " + simulation.Date.Month;
-            nationLabel.text = nation.NameKey + (nation.PlayerControlled ? " (yours)" : "");
+            dateLabel.text = (simulation.IsGameOver ? "GAME OVER: hand overthrown. " : "") +
+                "Year " + simulation.Date.Year + ", Month " + simulation.Date.Month;
+            nationLabel.text = nation.NameKey + (nation.PlayerControlled ? " (yours)" : "") + ", " + nation.Government.Type;
+            ApplyEditable(nation.PlayerControlled);
+
+            for (int c = 0; c < 3; c++)
+            {
+                var cohort = society.GetCohort((Cohort)c);
+                generationCells[c, 0].text = Signed(cohort.Contentment);
+                generationCells[c, 1].text = F(cohort.Unrest);
+                generationCells[c, 1].EnableInClassList("cell--hot", cohort.Unrest >= simulation.Tuning.Politics.RevoltThreshold);
+            }
+            RefreshPolitics(simulation, nation);
 
             for (int v = 0; v < ViceVector.Count; v++)
             {
@@ -402,6 +467,8 @@ namespace Statecraft.UI
             SetMeter(unrestMeter, society.Unrest);
             SetMeter(fearMeter, society.Fear);
             SetMeter(aggressionMeter, society.Aggression);
+            SetMeter(suspicionMeter, nation.Government.Suspicion);
+            SetMeter(shadowMeter, nation.Government.ShadowSuspicion);
 
             var institutions = nation.Institutions;
             for (int i = 0; i < MediaMix.CategoryCount; i++)
@@ -410,7 +477,7 @@ namespace Statecraft.UI
                 curriculumShares[i].text = Percent(institutions.Curriculum.Share((CurriculumFocus)i));
             lawValue.text = F(institutions.Law.Severity);
 
-            simulation.Ledger.Collect(selectedNation, Quantity.Contentment, -1, terms);
+            simulation.Ledger.Collect(selectedNation, Quantity.Contentment, -1, (int)Cohort.Adult, terms);
             for (int i = 0; i < WhyRows; i++)
                 whyLabels[i].text = i < terms.Count ? Signed(terms[i].Amount) + "  " + terms[i].Source : " ";
 
@@ -430,7 +497,41 @@ namespace Statecraft.UI
                     continue;
                 }
                 var e = simulation.Events.GetRecent(i);
-                eventLabels[i].text = e.Date + " " + simulation.World.Nations[e.NationIndex].NameKey + " " + e.Kind + " (" + F(e.Value) + ")";
+                eventLabels[i].text = e.Date + " " + simulation.World.Nations[e.NationIndex].NameKey + " " + e.Kind + Detail(e) + " (" + F(e.Value) + ")";
+            }
+        }
+
+        static string Detail(SimEvent e)
+        {
+            if (e.Detail < 0) return "";
+            switch (e.Kind)
+            {
+                case SimEventKind.RevoltSucceeded: return " by " + (Cohort)e.Detail + " to " + (GovernmentType)(int)e.Value;
+                case SimEventKind.RevoltCrushed:
+                case SimEventKind.HiddenHandOverthrown: return " by " + (Cohort)e.Detail;
+                default: return " " + (GovernmentType)e.Detail;
+            }
+        }
+
+        // Buttons are shown enabled only when the sim would accept the command (never offer an input it would ignore).
+        void RefreshPolitics(Simulation simulation, Nation nation)
+        {
+            var government = nation.Government;
+            string status = government.Type + " for " + (government.MonthsInPower / 12) + " y";
+            if (government.Pending != PendingChange.None)
+                status += "; " + government.Pending + " toward " + government.PendingTarget + ", " + government.PendingMonths + " month(s) left";
+            else if (government.Cooldown > 0)
+                status += "; next change possible in " + government.Cooldown + " month(s)";
+            if (government.HiddenHandOverthrown) status += "; the hand was overthrown here";
+            politicsStatus.text = status;
+
+            bool canVoteHere = simulation.Tuning.Politics.Types[(int)government.Type].CanVote;
+            for (int k = 0; k < GovernmentState.TypeCount; k++)
+            {
+                var type = (GovernmentType)k;
+                fomentButtons[k].SetEnabled(simulation.CanFoment(nation.Index, type));
+                voteButtons[k].SetEnabled(simulation.CanCallVote(nation.Index, type));
+                voteButtons[k].style.display = canVoteHere ? DisplayStyle.Flex : DisplayStyle.None;
             }
         }
 

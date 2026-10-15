@@ -1,4 +1,5 @@
 using Statecraft.Sim.Institutions;
+using Statecraft.Sim.Politics;
 using Statecraft.Sim.Society;
 
 namespace Statecraft.Sim.Nations
@@ -26,6 +27,9 @@ namespace Statecraft.Sim.Nations
 
         /// <summary>Court severity, 0 (pardon all but the most guilty) to 1 (ruthless crackdown).</summary>
         public double LawSeverity = 0.5;
+
+        /// <summary>The government type in power at game start.</summary>
+        public GovernmentType Government = GovernmentType.Democracy;
 
         public double YouthShare = 0.30;
         public double AdultShare = 0.55;

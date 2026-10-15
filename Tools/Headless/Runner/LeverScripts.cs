@@ -2,6 +2,7 @@ using System;
 using Statecraft.Sim.Commands;
 using Statecraft.Sim.Core;
 using Statecraft.Sim.Institutions;
+using Statecraft.Sim.Politics;
 using Statecraft.Sim.Society;
 
 namespace Statecraft.SimRunner
@@ -70,7 +71,44 @@ namespace Statecraft.SimRunner
                 }
                 if (year == 30) sim.Enqueue(new SetCurriculum(home, Focus(CurriculumFocus.Military)));
             }),
+            new Script("scholars", "From year 2 every school hour at home goes to Science: an educated people grows suspicious.", (sim, year, home) =>
+            {
+                if (year == 2) sim.Enqueue(new SetCurriculum(home, Focus(CurriculumFocus.Science)));
+            }),
+            new Script("false-revolution", "Scholars from year 2; whenever government suspicion passes 0.4, foment a revolution to whichever type the people like best.", (sim, year, home) =>
+            {
+                if (year == 2) sim.Enqueue(new SetCurriculum(home, Focus(CurriculumFocus.Science)));
+                var government = sim.World.Nations[home].Government;
+                if (government.Suspicion < 0.4) return;
+                var target = BestAlternative(government);
+                if (sim.CanFoment(home, target)) sim.Enqueue(new FomentRevolution(home, target));
+            }),
+            new Script("people-vote", "In year 3 the hand calls a vote for Monarchy; in year 20, for whatever the people like best.", (sim, year, home) =>
+            {
+                var government = sim.World.Nations[home].Government;
+                if (year == 3 && sim.CanCallVote(home, GovernmentType.Monarchy)) sim.Enqueue(new CallVote(home, GovernmentType.Monarchy));
+                var best = BestAlternative(government);
+                if (year == 20 && sim.CanCallVote(home, best)) sim.Enqueue(new CallVote(home, best));
+            }),
+            new Script("tyranny", "From year 2 ruthless courts, nothing but Wrath on the air, and Arts schools: frustrated youth and revolts.", (sim, year, home) =>
+            {
+                if (year != 2) return;
+                sim.Enqueue(new SetLawSeverity(home, 1));
+                sim.Enqueue(new SetMediaMix(home, Airtime(Vice.Wrath)));
+                sim.Enqueue(new SetCurriculum(home, Focus(CurriculumFocus.Arts)));
+            }),
         };
+
+        static GovernmentType BestAlternative(GovernmentState government)
+        {
+            var best = government.Type == GovernmentType.Democracy ? GovernmentType.Monarchy : GovernmentType.Democracy;
+            for (int k = 0; k < GovernmentState.TypeCount; k++)
+            {
+                var type = (GovernmentType)k;
+                if (type != government.Type && government.Alignment(type) > government.Alignment(best)) best = type;
+            }
+            return best;
+        }
 
         public static bool TryGet(string name, out Action<Simulation, int, int> onYearStart, out string description)
         {

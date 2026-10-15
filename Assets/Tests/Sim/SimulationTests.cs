@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Statecraft.Sim.Commands;
 using Statecraft.Sim.Core;
 using Statecraft.Sim.Institutions;
+using Statecraft.Sim.Politics;
 using Statecraft.Sim.Scenarios;
 using Statecraft.Sim.Society;
 using Statecraft.Sim.Tuning;
@@ -34,7 +35,13 @@ namespace Statecraft.Sim.Tests
                 {
                     Assert.That(sa.GetCohort((Cohort)c).Disposition, Is.EqualTo(sb.GetCohort((Cohort)c).Disposition));
                     Assert.That(sa.GetCohort((Cohort)c).Channeling, Is.EqualTo(sb.GetCohort((Cohort)c).Channeling));
+                    Assert.That(sa.GetCohort((Cohort)c).Unrest, Is.EqualTo(sb.GetCohort((Cohort)c).Unrest));
                 }
+                var ga = a.World.Nations[n].Government;
+                var gb = b.World.Nations[n].Government;
+                Assert.That(ga.Type, Is.EqualTo(gb.Type));
+                Assert.That(ga.Suspicion, Is.EqualTo(gb.Suspicion));
+                Assert.That(ga.ShadowSuspicion, Is.EqualTo(gb.ShadowSuspicion));
             }
             Assert.That(a.Events.TotalRaised, Is.EqualTo(b.Events.TotalRaised));
         }
@@ -64,6 +71,9 @@ namespace Statecraft.Sim.Tests
                         simulation.Enqueue(new SetMediaMix(n, RandomWeights(chaos, 8)));
                         simulation.Enqueue(new SetCurriculum(n, RandomWeights(chaos, 7)));
                         simulation.Enqueue(new SetLawSeverity(n, chaos.NextDouble()));
+                        var target = (GovernmentType)(chaos.NextUInt() % GovernmentState.TypeCount);
+                        if (chaos.NextDouble() < 0.2) simulation.Enqueue(new FomentRevolution(n, target));
+                        else if (chaos.NextDouble() < 0.2) simulation.Enqueue(new CallVote(n, target));
                     }
                 }
                 simulation.Advance();
@@ -152,7 +162,17 @@ namespace Statecraft.Sim.Tests
                     var cohort = s.GetCohort((Cohort)c);
                     if (!InRange(cohort.Disposition, 0, 1)) return $"{where} {cohort.Cohort} disposition {cohort.Disposition}";
                     if (!InRange(cohort.Channeling, 0, 1)) return $"{where} {cohort.Cohort} channeling {cohort.Channeling}";
+                    if (!InRange(cohort.Contentment, -1, 1)) return $"{where} {cohort.Cohort} contentment {cohort.Contentment}";
+                    if (!InRange(cohort.Unrest, 0, 1)) return $"{where} {cohort.Cohort} unrest {cohort.Unrest}";
+                    double schooling = 0;
+                    for (int f = 0; f < Curriculum.FocusCount; f++) schooling += cohort.Schooling((CurriculumFocus)f);
+                    if (!InRange(schooling, 0.999, 1.001)) return $"{where} {cohort.Cohort} schooling sums to {schooling}";
                 }
+                var g = nation.Government;
+                if (!InRange(g.Suspicion, 0, 1)) return $"{where} suspicion {g.Suspicion}";
+                if (!InRange(g.ShadowSuspicion, 0, 1)) return $"{where} shadow suspicion {g.ShadowSuspicion}";
+                for (int k = 0; k < GovernmentState.TypeCount; k++)
+                    if (!InRange(g.Alignment((GovernmentType)k), -10, 10)) return $"{where} alignment {(GovernmentType)k}";
                 if (!InRange(s.Contentment, -1, 1)) return $"{where} contentment {s.Contentment}";
                 if (!InRange(s.Crime, 0, 1)) return $"{where} crime {s.Crime}";
                 if (!InRange(s.Unrest, 0, 1)) return $"{where} unrest {s.Unrest}";

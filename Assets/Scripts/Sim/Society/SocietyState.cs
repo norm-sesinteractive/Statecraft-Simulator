@@ -64,10 +64,10 @@ namespace Statecraft.Sim.Society
         /// <summary>Expressed vice with nowhere to go (expressed beyond outlet), 0 to 1.</summary>
         public ViceVector Frustration => frustration;
 
-        /// <summary>Contentment of the average citizen, -1 (suffering) to +1 (content).</summary>
+        /// <summary>Contentment of the average citizen, -1 (suffering) to +1: the population-weighted average of the generations.</summary>
         public double Contentment => contentment;
 
-        /// <summary>Where contentment is heading this tick (it follows with a lag).</summary>
+        /// <summary>Population-weighted average of the generations' contentment targets.</summary>
         public double ContentmentTarget => contentmentTarget;
 
         /// <summary>Crime level, 0 to 1.</summary>
@@ -75,7 +75,7 @@ namespace Statecraft.Sim.Society
 
         public double CrimeTarget => crimeTarget;
 
-        /// <summary>Organized discontent that can become revolt, 0 to 1.</summary>
+        /// <summary>Organized discontent, 0 to 1: the population-weighted average of the generations' unrest.</summary>
         public double Unrest => unrest;
 
         public double UnrestTarget => unrestTarget;

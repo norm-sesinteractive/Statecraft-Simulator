@@ -78,7 +78,7 @@ Coefficients for contentment, fear, crime, unrest, aggression and their alarm th
 | Deterrence | 0.12 | Crime prevented per unit of court severity (deterrence). |
 | ContentmentCrimeRelief | 0.15 | Crime prevented per unit of positive contentment. Larger than CrimeBase on purpose, so a sufficiently content people can reach zero crime ("so happy that crime no longer takes place"). |
 | CrimeTauMonths | 6 | Time constant in months for crime to follow its target. |
-| UnrestFromSuffering | 0.8 | Unrest per unit of suffering (negative contentment). |
+| UnrestFromSuffering | 1.2 | Unrest per unit of suffering (negative contentment). |
 | PrideAmplifier | 0.5 | Extra unrest from suffering per unit of expressed Pride (proud people defy). |
 | EnvyAmplifier | 0.5 | Extra unrest from suffering per unit of expressed Envy (relative deprivation). |
 | UnrestFromWrath | 0.3 | Unrest per unit of Wrath frustration. |
@@ -93,3 +93,106 @@ Coefficients for contentment, fear, crime, unrest, aggression and their alarm th
 | SufferingCalm | -0.4 | Contentment above which severe suffering is considered eased. |
 | CrimeAlarm | 0.5 | Crime above which a CrimeWave event fires. |
 | CrimeCalm | 0.4 | Crime below which a crime wave is considered over. |
+
+## Politics (`PoliticsTuning`)
+
+Coefficients for government types, alignment, two-tier suspicion, revolutions, votes and revolts.
+
+| Parameter | Value | Meaning |
+|---|---|---|
+| Types | table below | Traits per government type, in GovernmentType order: Democracy, Monarchy, Communism, MilitaryJunta, Theocracy. |
+| ChanceFloor | 0.05 | Lowest chance any revolution, vote or revolt can have: nothing in politics is certain. |
+| ChanceCeiling | 0.95 | Highest chance any revolution, vote or revolt can have. |
+| InertiaBonus | 0.05 | Alignment bonus for the type already in power (habit), applied when people choose. |
+| ScienceSuspicion | 0.6 | Government suspicion per unit of the adult generation's Science schooling share. |
+| PrideSuspicion | 0.15 | Government suspicion per unit of expressed Pride (people who question authority). |
+| BlockedAmbitionSuspicion | 0.5 | Government suspicion per unit of frustrated Envy or Greed (the system visibly blocking ambition). |
+| ImbalanceSuspicion | 1 | Government suspicion per unit of mean disposition distance from human nature beyond the tolerance. |
+| ImbalanceTolerance | 0.05 | Mean distance from human nature that raises no suspicion. |
+| ConcentrationSuspicion | 0.3 | Government suspicion per unit of the largest curriculum or vice airtime share beyond its start point. |
+| CurriculumConcentrationStart | 0.5 | Largest curriculum share that raises no suspicion. |
+| AirtimeConcentrationStart | 0.4 | Largest single-vice airtime share that raises no suspicion. |
+| LeverShockSuspicion | 0.5 | Government suspicion per unit of recent lever shock. |
+| LeverShockTauMonths | 12 | Time constant in months for lever shocks to fade. |
+| SufferingSuspicion | 0.4 | Government suspicion per unit of suffering (negative contentment). |
+| SlothDamping | 0.15 | Suspicion removed per unit of expressed Sloth (acceptance). |
+| GluttonyDamping | 0.2 | Suspicion removed per unit of satisfied Gluttony (bread and circuses). |
+| NeutralAirtimeDamping | 0.2 | Suspicion removed per unit of neutral airtime share. |
+| SuspicionTauMonths | 18 | Time constant in months for government suspicion to follow its target. |
+| LeakThreshold | 0.4 | Government suspicion above which it leaks into shadow suspicion. |
+| LeakRate | 0.01 | Monthly shadow suspicion per unit of government suspicion above the threshold. |
+| ShadowDecayTauMonths | 600 | Time constant in months for shadow suspicion to fade with nothing feeding it. Long: people remember. |
+| ChangeLeak | 0.03 | Shadow suspicion added per recent government change when another happens ("new masters, same strings"). |
+| ShadowBreakingPoint | 0.7 | Shadow suspicion at which revolts aim at the hidden hand itself instead of the government. |
+| UnrestFromSuspicion | 0.2 | Unrest per unit of government suspicion. |
+| SuspicionAlarm | 0.5 | Government suspicion above which a SuspicionRising event fires. |
+| SuspicionCalm | 0.4 | Government suspicion below which the alarm clears. |
+| ShadowAlarm | 0.3 | Shadow suspicion above which a ShadowRumors event fires. |
+| ShadowCalm | 0.2 | Shadow suspicion below which the rumors fade. |
+| RevolutionVent | 0.7 | Share of government suspicion a successful revolution vents (before diminishing). |
+| VoteVent | 0.4 | Share of government suspicion a passed vote vents (before diminishing). |
+| VentDiminishing | 0.6 | Venting multiplier per recent change: each change vents this fraction of the one before. |
+| RecentChangeTauMonths | 120 | Time constant in months for recent changes to be forgotten. |
+| ChangeCooldownMonths | 12 | Months after any revolution, vote or revolt before another can start. |
+| FomentMonths | 6 | Months a fomented revolution takes. |
+| FomentUnrest | 0.5 | Unrest added to every generation's target while a revolution is fomented. |
+| FomentBaseSuccess | 0.35 | Success chance of a fomented revolution with no unrest and equal alignment. |
+| FomentUnrestSuccess | 1.5 | Success chance added per unit of national unrest ("needs some unrest to work with"). |
+| FomentAlignmentSuccess | 1 | Success chance added per unit of alignment the target has over the current type. |
+| FomentFearPenalty | 0.3 | Success chance removed per unit of fear. |
+| FailedPlotSuspicion | 0.08 | Government suspicion added by a failed plot. |
+| FailedPlotShadow | 0.02 | Shadow suspicion added by a failed plot (it leaves traces). |
+| FomentViolence | 0.6 | Violence of a fomented revolution, on the same scale as RevoltViolence. |
+| VoteMonths | 3 | Months a vote takes. |
+| VoteSensitivity | 4 | Pass chance added per unit of alignment the target has over the current type (from 50%). |
+| PeopleVoteUnrest | 0.25 | National unrest at which the people may call a vote on their own. |
+| PeopleVoteMargin | 0.05 | Alignment lead another type needs before the people call a vote for it. |
+| PeopleVoteChance | 0.03 | Monthly chance the people call a vote once the conditions hold. |
+| RevoltThreshold | 0.3 | A generation's unrest at which it can revolt. |
+| RevoltChancePerUnrest | 0.15 | Monthly revolt chance per unit of a generation's unrest above the threshold. |
+| RevoltFrequency | Youth 1.5, Adult 1, Elder 0.4 | Revolt frequency multiplier by generation: youth, adults, elders (D-0032). |
+| RevoltSuccess | Youth 0.45, Adult 0.7, Elder 0.35 | Base revolt success chance by generation: youth, adults, elders. |
+| RevoltViolence | Youth 1, Adult 0.6, Elder 0.2 | Revolt violence by generation: youth, adults, elders (elder revolts are mostly bloodless). |
+| RevoltUnrestSuccess | 0.5 | Success chance added per unit of the revolting generation's unrest above the threshold. |
+| RevoltFearPenalty | 0.4 | Success chance removed per unit of fear. |
+| RevoltingCohortWeight | 2 | Weight of the revolting generation's alignment when the new type is chosen (others weigh 1). |
+| ElderRestorationBonus | 0.1 | Alignment bonus that elder revolts give the previous type, Monarchy and Theocracy (restoration). |
+| ViolenceContentmentShock | 0.2 | Contentment lost by every generation per unit of violence. |
+| ViolenceCrimeShock | 0.1 | Crime added per unit of violence. |
+| RevoltUnrestRelief | 0.7 | Share of the revolting generation's unrest released by a successful revolt. |
+| CrushedContentmentShock | 0.1 | Contentment lost by a generation whose revolt is crushed. |
+| CrushedSuspicion | 0.05 | Government suspicion added when a revolt is crushed. |
+
+**Types** (one column per GovernmentType; meanings in the GovernmentTraits table below)
+
+| Trait | Democracy | Monarchy | Communism | MilitaryJunta | Theocracy |
+|---|---|---|---|---|---|
+| OutletBonus | Pride 0.05, Envy 0.05 | Pride 0.08 | Greed -0.1, Envy 0.12 | Wrath 0.1, Pride 0.05 | Sloth 0.08, Lust -0.08, Gluttony -0.08 |
+| AlignmentBase | 0.1 | 0.1 | 0.05 | 0.05 | 0.05 |
+| AlignmentFromVices | Wrath -0.1, Pride 0.3, Envy 0.3 | Sloth 0.4, Pride 0.4 | Greed -0.3, Envy 0.7 | Wrath 0.6, Pride 0.4 | Sloth 0.5, Lust -0.2, Gluttony -0.2 |
+| AlignmentFromSchooling | Infrastructure 0.2, Science 0.3, Commerce 0.3 | Agriculture 0.2, Military 0.1 | Agriculture 0.2, Infrastructure 0.2 | Military 0.5 | Science -0.4, Arts 0.1 |
+| UnrestVenting | 0.08 | 0 | 0 | 0 | 0.04 |
+| FearSufferingScale | 1.3 | 1 | 0.75 | 0.5 | 0.8 |
+| FearDampeningScale | 0.7 | 1 | 1.2 | 1.5 | 1 |
+| SeveritySuspicion | 0.15 | 0.05 | 0.02 | 0 | 0.05 |
+| ScienceSuspicionScale | 0.5 | 1 | 1.5 | 1 | 2 |
+| LeverSwingSuspicionScale | 1.5 | 1 | 1 | 0.7 | 1 |
+| RevoltChanceScale | 0.7 | 0.9 | 1.2 | 1.5 | 0.9 |
+| AggressionBonus | -0.05 | 0 | 0 | 0.1 | 0.03 |
+| CanVote | yes | no | no | no | no |
+
+| GovernmentTraits field | Meaning |
+|---|---|
+| OutletBonus | Outlet capacity this type adds or removes per vice (Communism channels Envy and starves Greed, and so on). |
+| AlignmentBase | Appeal of this type before the population's culture is considered. |
+| AlignmentFromVices | Alignment per unit of expressed vice above human nature. |
+| AlignmentFromSchooling | Alignment per unit of schooling share above an even curriculum, in CurriculumFocus order. |
+| UnrestVenting | Unrest removed from every generation (elections, faith). |
+| FearSufferingScale | Multiplier on the suffering that fear of the courts causes. |
+| FearDampeningScale | Multiplier on how much fear holds unrest down. |
+| SeveritySuspicion | Government suspicion per unit of court severity. |
+| ScienceSuspicionScale | Multiplier on the suspicion an educated (Science-schooled) population brings. |
+| LeverSwingSuspicionScale | Multiplier on the suspicion abrupt lever swings bring (a free press notices sooner). |
+| RevoltChanceScale | Multiplier on how often revolts break out (coups under a junta). |
+| AggressionBonus | Aggression added by this type. |
+| CanVote | Whether the people can vote to change the government type. |

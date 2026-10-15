@@ -48,7 +48,7 @@ namespace Statecraft.Sim.Tuning
         public double CrimeTauMonths = 6;
 
         /// <summary>Unrest per unit of suffering (negative contentment).</summary>
-        public double UnrestFromSuffering = 0.8;
+        public double UnrestFromSuffering = 1.2;
 
         /// <summary>Extra unrest from suffering per unit of expressed Pride (proud people defy).</summary>
         public double PrideAmplifier = 0.5;

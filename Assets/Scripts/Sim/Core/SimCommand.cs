@@ -10,13 +10,21 @@ namespace Statecraft.Sim.Core
     /// </summary>
     public abstract class SimCommand
     {
-        internal abstract void Apply(World world);
+        internal abstract void Apply(SimContext context);
 
         internal static Nation ResolveNation(World world, int nationIndex)
         {
             if (nationIndex < 0 || nationIndex >= world.Nations.Count)
                 throw new InvalidOperationException($"No nation with index {nationIndex}.");
             return world.Nations[nationIndex];
+        }
+
+        /// <summary>Records how abruptly a lever moved (0 to 1); abrupt swings raise suspicion (D-0020).</summary>
+        internal static void RecordShock(Nation nation, double[] before, double[] after)
+        {
+            double change = 0;
+            for (int i = 0; i < before.Length; i++) change += Math.Abs(after[i] - before[i]);
+            nation.Government.leverShock += change / 2;
         }
     }
 }

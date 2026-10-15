@@ -5,7 +5,8 @@
 > **Read when:** designing anything about defeat, suspicion, the government as a shield, or expansion.
 
 Norm's words are in [PITCH.md](PITCH.md) (session 2 sections). Decisions: D-0018 to D-0024. Everything here is the
-accepted starting design (D-0023), not built yet, and open to tuning.
+accepted starting design (D-0023), open to tuning. Built in model v1 (2026-10-14): suspicion, the shield,
+revolutions, votes, generational revolts and the overthrow of the hand; conquest, starvation and rivals come later.
 
 ## What drives it (D-0018)
 
@@ -20,7 +21,7 @@ banks while bending it to your designs.
 | Military conquest | another country takes the nation by force | M3 |
 | Cultural conquest | the population falls under another shadow organization, through trade-borne culture (D-0025) | M3 |
 | Starvation | the people run out of resources and die | M2 |
-| Overthrow of the hidden hand | a revolt goes past the government and topples the shadow organization | M1 |
+| Overthrow of the hidden hand | a revolt goes past the government and topples the shadow organization | built (model v1) |
 
 A revolt that topples only the government is survivable: that is what the government is for (D-0021). Losing the
 home nation ends the game; nations gained later can be lost as setbacks (D-0023).
@@ -65,7 +66,7 @@ Norm: "Perhaps you foment a false revolution to change government types and try 
 - **Revolts the people start:** the new government is "whatever government type the current population would be
   most aligned with, even if it's the same one they just revolted from" (D-0024).
 - **Any generation can revolt** (D-0032): "Any given generation could power a revolt, potentially with different
-  consequences." [PROPOSED] Youth revolts are the most frequent and violent and lean to a break with the past;
+  consequences." Accepted starting values: youth revolts are the most frequent and violent and lean to a break with the past;
   adult revolts are organized and likeliest to succeed; elder revolts are rare, mostly bloodless and lean to
   restoring a traditional type. The revolting generation's alignment weighs double in choosing the new type.
 

@@ -25,6 +25,12 @@ namespace Statecraft.Sim.Commands
 
         public IReadOnlyList<double> Weights => weights;
 
-        internal override void Apply(World world) => ResolveNation(world, NationIndex).Institutions.Media.SetFromWeights(weights);
+        internal override void Apply(SimContext context)
+        {
+            var nation = ResolveNation(context.World, NationIndex);
+            var before = nation.Institutions.Media.ToArray();
+            nation.Institutions.Media.SetFromWeights(weights);
+            RecordShock(nation, before, nation.Institutions.Media.ToArray());
+        }
     }
 }

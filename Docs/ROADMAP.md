@@ -6,30 +6,24 @@
 
 ## Done
 
-(none yet)
-
-## M0 Foundations (2026-10-14)
-
-- [x] Unity 6.3 URP project, mobile-first settings, trimmed packages
-- [x] Assemblies: Sim (pure C#), Game, UI, Editor, Sim.Tests
-- [x] Sim core model v0 with 43 tests; headless harness and runner
-- [x] Generated scene (MainSceneBuilder), dev HUD, placeholder map
-- [x] Self-updating docs: CLAUDE.md, Docs/, decisions, doctool, hooks, skills, rules
-- [ ] Norm: first editor open, Play check, first commit (STATUS.md)
+- M0 Foundations (2026-10-14): Unity project, pure C# sim v0, headless harness, generated scene and dev HUD,
+  self-updating docs; verified in the editor by Norm.
 
 ## M1 Core loop prototype: one nation, deep [PROPOSED]
 
 Goal: steering one nation is interesting for 30 minutes, with real danger of losing it from within.
 - [x] Design session: no goals, defeats, suspicion, politics, reach (D-0018 to D-0022, 2026-10-14)
-- [ ] Politics v1 (D-0021): government type lever; Democracy, Monarchy, Communism, Military junta, Theocracy with traits;
+- [x] Politics v1 (D-0021, 2026-10-14): government type lever; Democracy, Monarchy, Communism, Military junta, Theocracy with traits;
       fomented revolutions; democratic votes started by the player or the people; emergent revolts that install
       the type the people are most aligned with (D-0024)
-- [ ] Contentment and unrest per generation (D-0032); any generation can revolt, with its own consequences
-- [ ] Suspicion v1 (D-0020): government and shadow tiers, drivers and dampers, leak between tiers, venting by revolution
-- [ ] Defeat v1 (D-0019): a revolt that topples the hidden hand; game over when the home nation is lost (Q-017)
+- [x] Contentment and unrest per generation (D-0032); any generation can revolt, with its own consequences
+- [x] Suspicion v1 (D-0020): government and shadow tiers, drivers and dampers, leak between tiers, venting by revolution
+- [x] Defeat v1 (D-0019): a revolt that topples the hidden hand; game over when the home nation is lost (sim and dev HUD)
+- [ ] Dev HUD politics controls verified in the editor (Norm)
 - [ ] Puppet government v1: decisions it makes on its own (crackdowns, reforms), driven by society state
-- [ ] Events v1 with consequences (revolt, revolution, crime wave, whistleblowers), as text keys for Norm
-- [ ] Balance pass with the runner: unrest reachable; each lever matters within its own time horizon
+- [ ] Events v1: politics events exist in the sim (revolutions, votes, revolts, suspicion alarms); player-facing
+      event text keys for Norm still to come
+- [ ] Balance pass with the runner: generational revolts are still rare; each lever matters within its own time horizon
 - [ ] Explanation ("why?") in the real UI, not only the dev HUD
 - [ ] Text catalog: a key for every player-facing string, values from Norm
 - [ ] Verify RESEARCH.md citations before any reach game text

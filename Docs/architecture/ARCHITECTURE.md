@@ -20,7 +20,7 @@ fails to compile. Unity renders the simulation and feeds it commands; it never i
 
 | Assembly | Folder | References | Contents |
 |---|---|---|---|
-| Statecraft.Sim | Assets/Scripts/Sim | none (pure C#) | world, nations, society, institutions, systems, commands, tuning, ledger, scenarios |
+| Statecraft.Sim | Assets/Scripts/Sim | none (pure C#) | world, nations, society, institutions, politics, systems, commands, tuning, ledger, scenarios |
 | Statecraft.Game | Assets/Scripts/Game | Sim | MonoBehaviours: GameRoot (composition), SimulationHost (time), WorldView |
 | Statecraft.UI | Assets/Scripts/UI | Sim, Game | UI Toolkit controllers: DevHud now, the player UI later |
 | Statecraft.Editor | Assets/Scripts/Editor | Sim, Game, UI, Unity.InputSystem, UnityEngine.UI | MainSceneBuilder, ProjectSetup |
@@ -51,7 +51,9 @@ Create folders as code appears; no empty placeholders.
 - **Systems in a fixed order.** Each internal `ISimSystem` runs once per tick in the order `Simulation` sets.
   The order is part of the model ([../simulation/MODEL.md](../simulation/MODEL.md)).
 - **Commands in.** `SimCommand` subclasses are the only public way to mutate state. They queue and apply at the
-  start of the next tick. Only the sim assembly can define them (the abstract `Apply` is internal).
+  start of the next tick with the tick's context (world and tuning). Only the sim assembly can define them (the
+  abstract `Apply` is internal). A command the rules do not allow is ignored, so the UI must offer it only when
+  the matching query (`Simulation.CanFoment`, `CanCallVote`) says yes: never accept an input the sim would ignore.
 - **Events out.** `EventLog` keeps recent `SimEvent`s plus a running total; views poll it after ticks rather than
   subscribing mid-tick. Events carry data, never text.
 - **Read-only outside.** State exposes public getters over internal fields, so Game and UI cannot write sim
@@ -70,7 +72,8 @@ Create folders as code appears; no empty placeholders.
 - Randomness only from `SimRandom` (PCG32, seeded, state exposed for saves). Never `System.Random`, whose
   algorithm differs between runtimes, and never `UnityEngine.Random`.
 - No wall-clock time, no dependence on `Dictionary` iteration order, no parallel systems.
-- Same runtime, seed and commands give bit-identical results (tested). Mono (Unity) and .NET (headless) may
+- Same runtime, seed and commands give bit-identical results (tested). Random draws in politics happen only when
+  their preconditions hold, in a fixed order, so the sequence stays reproducible. Mono (Unity) and .NET (headless) may
   differ in the last bits of `Math.Exp`, so across the two runtimes results agree statistically, not bitwise.
 
 ## C# constraints (Unity 6 compiles C# 9 against .NET Standard 2.1)
@@ -112,7 +115,7 @@ scenario plus the command log for replays.
 
 ## Conventions
 
-- Namespaces mirror folders: `Statecraft.Sim.Core`, `.Society`, `.Institutions`, `.Nations`, `.Systems`,
+- Namespaces mirror folders: `Statecraft.Sim.Core`, `.Society`, `.Institutions`, `.Nations`, `.Politics`, `.Systems`,
   `.Commands`, `.Tuning`, `.Diagnostics`, `.Scenarios`; then `Statecraft.Game`, `Statecraft.UI`, `Statecraft.Editor`.
 - One public type per file, named after the type. An XML `<summary>` on every public type (feeds CODEMAP.md)
   and every tuning field (feeds PARAMETERS.md).

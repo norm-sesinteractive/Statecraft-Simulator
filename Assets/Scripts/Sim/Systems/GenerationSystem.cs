@@ -50,6 +50,14 @@ namespace Statecraft.Sim.Systems
                 elder.disposition = ViceVector.Lerp(elderD, adultD, intoElders);
                 elder.channeling = ViceVector.Lerp(elderC, adultC, intoElders);
 
+                // Schooling profiles graduate the same way. Elders first, so each flow reads last month's
+                // values. Newborns do not dilute it: it describes what the schooled were taught.
+                for (int f = 0; f < elder.schooling.Length; f++)
+                {
+                    elder.schooling[f] += (adult.schooling[f] - elder.schooling[f]) * intoElders;
+                    adult.schooling[f] += (youth.schooling[f] - adult.schooling[f]) * intoAdults;
+                }
+
                 for (int c = 0; c < society.cohorts.Length; c++)
                 {
                     var cohort = society.cohorts[c];

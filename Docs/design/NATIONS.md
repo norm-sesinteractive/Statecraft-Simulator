@@ -14,7 +14,8 @@
 | Population numbers | [PLANNED M2] | v0 has fixed cohort shares only |
 | Economy | [PLANNED M2] | production, consumption, wealth |
 | Military | [PLANNED M3] | strength from people, wealth, Wrath and training |
-| Puppet government | [PLANNED M1] | below |
+| Government | yes: type, alignment, suspicion, revolutions, votes, revolts | [INSTITUTIONS.md](INSTITUTIONS.md), [HIDDEN_HAND.md](HIDDEN_HAND.md) |
+| Puppet decisions | [PLANNED M1] | below |
 
 ## Generations (built, model v0)
 

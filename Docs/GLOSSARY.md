@@ -8,17 +8,19 @@
 | Hidden hand | The player's secret society (working name; Norm names it) | (the player) |
 | Nation | A country: institutions, society, later land and people | `Nation` |
 | Puppet government | A nation's rulers, who act on their own; never commanded | [PLANNED] |
-| Government type | The political system the player chooses: Democracy, Monarchy, Communism, Military junta, Theocracy | [PLANNED] |
-| Shield | The government's role: absorbs the people's anger and takes the fall for the hidden hand | [PLANNED] |
-| Government suspicion | The people's sense that their rulers do not serve them | [PLANNED] |
-| Shadow suspicion | The people's sense that someone behind the rulers pulls the strings | [PLANNED] |
-| Revolution | A violent change of government type, fomented by the player or breaking out on its own | [PLANNED] |
-| False revolution | A revolution the player foments to replace the shield and vent suspicion | [PLANNED] |
-| Vote | A democracy's peaceful change of government type, started by the player or the people | [PLANNED] |
-| Home nation | The nation the player starts with; losing it ends the game (D-0023) | [PLANNED] |
-| Alignment | How strongly a population favors each government type; picks the type after a revolt | [PLANNED] |
+| Government type | The political system the player chooses: Democracy, Monarchy, Communism, Military junta, Theocracy | `GovernmentType`, `GovernmentState` |
+| Shield | The government's role: absorbs the people's anger and takes the fall for the hidden hand | `PoliticsSystem.ChangeGovernment` |
+| Government suspicion | The people's sense that their rulers do not serve them | `GovernmentState.Suspicion` |
+| Shadow suspicion | The people's sense that someone behind the rulers pulls the strings | `GovernmentState.ShadowSuspicion` |
+| Revolution | A change of government type the player foments (months, can fail) | `FomentRevolution` |
+| False revolution | A revolution the player foments to replace the shield and vent suspicion | `FomentRevolution` |
+| Revolt | A generation rising on its own when its unrest passes the threshold | `PoliticsSystem` (RevoltSucceeded, RevoltCrushed) |
+| Vote | A democracy's peaceful change of government type, started by the player or the people | `CallVote` |
+| Home nation | The nation the player starts with; losing it ends the game (D-0023) | `World.PlayerHomeIndex`, `Simulation.IsGameOver` |
+| Alignment | How strongly a population favors each government type; picks the type after a revolt | `GovernmentState.Alignment` |
+| Lever shock | Recent abrupt lever changes, decaying; raises suspicion | `GovernmentState.LeverShock` |
 | Culture | A cohort's vices (disposition); carried to importers by trade | [PLANNED] |
-| Schooling profile | A cohort's education share per curriculum focus | [PLANNED] |
+| Schooling profile | A cohort's education share per curriculum focus | `CohortState.Schooling` |
 | Educational overlap | Sum over focuses of the smaller share between two cohorts; gates trade influence and goodwill | [PLANNED] |
 | Commerce floor | Half a cohort's Commerce share: the minimum trade influence and goodwill rate (D-0028) | [PLANNED] |
 | Infrastructure efficiency | 50% at 0 infrastructure to 100% at 100; sets transit loss on trade and military efficiency (D-0030) | [PLANNED] |

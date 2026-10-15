@@ -8,6 +8,7 @@ using System.Text;
 using Statecraft.Sim.Core;
 using Statecraft.Sim.Diagnostics;
 using Statecraft.Sim.Institutions;
+using Statecraft.Sim.Politics;
 using Statecraft.Sim.Scenarios;
 using Statecraft.Sim.Society;
 using Statecraft.Sim.Tuning;
@@ -26,7 +27,7 @@ namespace Statecraft.SimRunner
 
         static readonly HashSet<string> PerVicePrefixes = new HashSet<string>
         {
-            "Media", "Mood", "Disposition", "Expressed", "Channels", "Outlet", "Frustration",
+            "Media", "Mood", "Disposition", "Expressed", "Channels", "Outlet", "Frustration", "Alignment", "Schooling",
         };
 
         public static int Execute(Options options)
@@ -69,6 +70,7 @@ namespace Statecraft.SimRunner
                 doc.AppendLine("|---|---|---|");
 
                 var matrices = new List<(FieldInfo Field, ViceVector[] Rows)>();
+                var traitTables = new List<(FieldInfo Field, GovernmentTraits[] Types)>();
                 foreach (var field in PublicFields(sectionType))
                 {
                     object value = field.GetValue(sectionValue);
@@ -77,6 +79,11 @@ namespace Statecraft.SimRunner
                     {
                         doc.AppendLine($"| {field.Name} | table below | {meaning} |");
                         matrices.Add((field, rows));
+                    }
+                    else if (value is GovernmentTraits[] types)
+                    {
+                        doc.AppendLine($"| {field.Name} | table below | {meaning} |");
+                        traitTables.Add((field, types));
                     }
                     else
                     {
@@ -103,8 +110,52 @@ namespace Statecraft.SimRunner
                         doc.AppendLine();
                     }
                 }
+
+                foreach (var (field, types) in traitTables)
+                {
+                    doc.AppendLine();
+                    doc.AppendLine($"**{field.Name}** (one column per GovernmentType; meanings in the GovernmentTraits table below)");
+                    doc.AppendLine();
+                    doc.Append("| Trait |");
+                    for (int k = 0; k < types.Length; k++) doc.Append(' ').Append((GovernmentType)k).Append(" |");
+                    doc.AppendLine();
+                    doc.Append("|---|");
+                    for (int k = 0; k < types.Length; k++) doc.Append("---|");
+                    doc.AppendLine();
+                    foreach (var trait in PublicFields(typeof(GovernmentTraits)))
+                    {
+                        doc.Append("| ").Append(trait.Name).Append(" |");
+                        foreach (var type in types) doc.Append(' ').Append(Cell(Compact(trait.GetValue(type)))).Append(" |");
+                        doc.AppendLine();
+                    }
+                    doc.AppendLine();
+                    doc.AppendLine("| GovernmentTraits field | Meaning |");
+                    doc.AppendLine("|---|---|");
+                    foreach (var trait in PublicFields(typeof(GovernmentTraits)))
+                        doc.AppendLine($"| {trait.Name} | {Cell(docs.Summary(trait))} |");
+                }
             }
             return doc.ToString();
+        }
+
+        // Nonzero entries only, so a five-column table stays readable.
+        static string Compact(object value)
+        {
+            switch (value)
+            {
+                case ViceVector v:
+                    var vices = new List<string>();
+                    for (int i = 0; i < ViceVector.Count; i++)
+                        if (v[i] != 0) vices.Add($"{(Vice)i} {Number(v[i])}");
+                    return vices.Count == 0 ? "-" : string.Join(", ", vices);
+                case double[] focuses when focuses.Length == Curriculum.FocusCount:
+                    var parts = new List<string>();
+                    for (int i = 0; i < focuses.Length; i++)
+                        if (focuses[i] != 0) parts.Add($"{(CurriculumFocus)i} {Number(focuses[i])}");
+                    return parts.Count == 0 ? "-" : string.Join(", ", parts);
+                default:
+                    return Format(value);
+            }
         }
 
         static IEnumerable<FieldInfo> PublicFields(Type type) =>
@@ -120,6 +171,14 @@ namespace Statecraft.SimRunner
                     var parts = new string[ViceVector.Count];
                     for (int i = 0; i < ViceVector.Count; i++) parts[i] = $"{(Vice)i} {Number(v[i])}";
                     return string.Join(", ", parts);
+                case double[] values:
+                    var labels = values.Length == 3 ? new[] { "Youth", "Adult", "Elder" } : null;
+                    var items = new string[values.Length];
+                    for (int i = 0; i < values.Length; i++)
+                        items[i] = labels != null ? $"{labels[i]} {Number(values[i])}" : Number(values[i]);
+                    return string.Join(", ", items);
+                case bool flag:
+                    return flag ? "yes" : "no";
                 default:
                     return value == null ? "null" : value.ToString();
             }

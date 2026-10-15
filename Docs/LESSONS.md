@@ -32,6 +32,12 @@
 
 ## C# and the headless harness
 
+- 2026-10-14: `dotnet test` on the solution did not refresh the runner used by `dotnet run --no-build`; an
+  experiment silently ran old tuning and looked like a balance bug. A `--trace` run exposed it. Build the runner
+  (or drop `--no-build`) after changing sim or runner code.
+- 2026-10-14: with the editor open, Unity-generated csproj files miss new .cs files until the editor recompiles.
+  For a compile check, add throwaway `<Compile Include>` lines to the root `Statecraft.Sim.csproj` (git-ignored;
+  Unity overwrites it) and run `dotnet build Statecraft.Editor.csproj`.
 - 2026-10-14: a class named like its namespace (`Scenarios.Scenarios`) breaks name lookup inside
   `Statecraft.Sim.*`. It became `ScenarioLibrary`.
 - 2026-10-14: Unity compiles C# 9 against .NET Standard 2.1. Records and `init` need `IsExternalInit`, which

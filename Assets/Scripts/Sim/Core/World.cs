@@ -20,19 +20,22 @@ namespace Statecraft.Sim.Core
                 if (setups[i] == null) throw new ArgumentException($"Nation setup {i} is null.", nameof(setups));
                 nations.Add(new Nation(i, setups[i]));
             }
+
+            PlayerHomeIndex = -1;
+            for (int i = 0; i < nations.Count; i++)
+            {
+                if (!nations[i].PlayerControlled) continue;
+                PlayerHomeIndex = i;
+                break;
+            }
         }
 
         public IReadOnlyList<Nation> Nations => nations;
 
-        /// <summary>Index of the first player-controlled nation, or -1 when the player controls none.</summary>
-        public int PlayerHomeIndex
-        {
-            get
-            {
-                for (int i = 0; i < nations.Count; i++)
-                    if (nations[i].PlayerControlled) return i;
-                return -1;
-            }
-        }
+        /// <summary>
+        /// The player's home nation at game start (the first player-controlled one), or -1. Fixed for the whole
+        /// game: losing it ends the game (D-0019, D-0023).
+        /// </summary>
+        public int PlayerHomeIndex { get; }
     }
 }

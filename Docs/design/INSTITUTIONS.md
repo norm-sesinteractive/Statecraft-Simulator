@@ -52,7 +52,7 @@ offenders may make a society suffer less, but the reduction in fear of punishmen
   [PLANNED] which severities a political form tolerates, and what crackdowns cost in legitimacy.
 - [PLANNED] Where the courts look (which crimes they pursue) as a second simple control.
 
-## Politics (D-0021, not built yet)
+## Politics (D-0021, built in model v1)
 
 Norm: "the political system chosen by the player is the government system of the people. If the player wants,
 they should be able to change the government type, but not without instigating a revolution of some kind.

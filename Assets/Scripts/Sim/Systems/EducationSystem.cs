@@ -7,8 +7,9 @@ using Statecraft.Sim.Tuning;
 namespace Statecraft.Sim.Systems
 {
     /// <summary>
-    /// Education digs the channels. Schools train the youth cohort's channeling toward the
-    /// curriculum; those habits reach the adult workforce only as the young grow up.
+    /// Education digs the channels. Schools train the youth cohort's channeling toward the curriculum and
+    /// give it a schooling profile (what it was taught); both reach the adult workforce only as the young
+    /// grow up.
     /// </summary>
     internal sealed class EducationSystem : ISimSystem
     {
@@ -31,8 +32,10 @@ namespace Statecraft.Sim.Systems
             for (int n = 0; n < nations.Count; n++)
             {
                 var youth = nations[n].Society.cohorts[(int)Cohort.Youth];
-                var target = CurriculumTarget(nations[n].Institutions.Curriculum, tuning);
-                youth.channeling = ViceVector.Lerp(youth.channeling, target, alpha);
+                var curriculum = nations[n].Institutions.Curriculum;
+                youth.channeling = ViceVector.Lerp(youth.channeling, CurriculumTarget(curriculum, tuning), alpha);
+                for (int f = 0; f < Curriculum.FocusCount; f++)
+                    youth.schooling[f] += (curriculum.Share((CurriculumFocus)f) - youth.schooling[f]) * alpha;
             }
         }
     }

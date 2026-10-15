@@ -6,12 +6,13 @@ namespace Statecraft.Sim.Core
     /// </summary>
     public readonly struct SimEvent
     {
-        public SimEvent(SimDate date, int nationIndex, SimEventKind kind, double value)
+        public SimEvent(SimDate date, int nationIndex, SimEventKind kind, double value, int detail = -1)
         {
             Date = date;
             NationIndex = nationIndex;
             Kind = kind;
             Value = value;
+            Detail = detail;
         }
 
         public SimDate Date { get; }
@@ -20,7 +21,10 @@ namespace Statecraft.Sim.Core
 
         public SimEventKind Kind { get; }
 
-        /// <summary>The value of the watched quantity when the event fired.</summary>
+        /// <summary>The value of the watched quantity, or a kind-specific number (see SimEventKind).</summary>
         public double Value { get; }
+
+        /// <summary>Kind-specific index (a GovernmentType or a Cohort), or -1.</summary>
+        public int Detail { get; }
     }
 }

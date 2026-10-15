@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Statecraft.Sim.Nations;
+using Statecraft.Sim.Politics;
 using Statecraft.Sim.Society;
 
 namespace Statecraft.Sim.Scenarios
@@ -26,6 +27,7 @@ namespace Statecraft.Sim.Scenarios
                 //                    Agri Mil  Med  Infra Sci  Comm Arts
                 CurriculumWeights = new[] { 0.2, 0.5, 0.0, 0.2, 0.1, 0.0, 0.0 },
                 LawSeverity = 0.8,
+                Government = GovernmentType.MilitaryJunta,
             },
             new NationSetup
             {
@@ -34,6 +36,7 @@ namespace Statecraft.Sim.Scenarios
                 MediaWeights = new[] { 0.5, 2.0, 1.0, 2.0, 0.5, 0.5, 3.0, 1.0 },
                 CurriculumWeights = new[] { 0.4, 0.0, 0.3, 0.0, 0.0, 0.0, 0.3 },
                 LawSeverity = 0.2,
+                Government = GovernmentType.Monarchy,
             },
         };
 

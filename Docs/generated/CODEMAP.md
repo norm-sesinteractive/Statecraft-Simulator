@@ -24,6 +24,8 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 `Assets/Scripts/Sim`, pure C# (noEngineReferences). References: none.
 
 - `AssemblyInfo.cs`: (no types)
+- `Commands/CallVote.cs`: `CallVote` (class): The hidden hand calls a vote on the government type; only types that can vote (Democracy) allow it.
+- `Commands/FomentRevolution.cs`: `FomentRevolution` (class): The hidden hand foments a revolution toward a government type (D-0021): months of stoked unrest, then success or failure.
 - `Commands/SetCurriculum.cs`: `SetCurriculum` (class): Sets a nation's curriculum from one weight per CurriculumFocus, in order.
 - `Commands/SetLawSeverity.cs`: `SetLawSeverity` (class): Sets how hard a nation's courts strike, 0 (pardon all but the most guilty) to 1 (ruthless).
 - `Commands/SetMediaMix.cs`: `SetMediaMix` (class): Sets a nation's airtime mix from eight weights: the seven vices in order, then neutral programming.
@@ -37,7 +39,7 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 - `Core/SimRandom.cs`: `SimRandom` (class): Deterministic PCG32 generator (O'Neill 2014, XSH-RR variant).
 - `Core/Simulation.cs`: `Simulation` (class): The whole game state plus the monthly tick.
 - `Core/World.cs`: `World` (class): Every nation in the game, in a fixed order; a nation's index in Nations is its id.
-- `Diagnostics/Contribution.cs`: `Contribution` (struct): One recorded term of a computed value: this tick, Target (optionally for one vice) received Amount from Source.
+- `Diagnostics/Contribution.cs`: `Contribution` (struct): One recorded term of a computed value: this tick, Target (optionally for one vice, government type or generation) received Amount from Source.
 - `Diagnostics/Ledger.cs`: `Ledger` (class): Records every term that went into this tick's computed targets, so any outcome can answer "why?" (the in-game explanation panel, tests, and the generated causal graph all read it).
 - `Diagnostics/LedgerNames.cs`: `LedgerNames` (class): Source names used in ledger entries.
 - `Diagnostics/Quantity.cs`: `Quantity` (enum): Computed quantities whose contributing terms the Ledger records each tick.
@@ -46,11 +48,14 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 - `Institutions/InstitutionSet.cs`: `InstitutionSet` (class): The levers of one nation that the hidden hand can pull.
 - `Institutions/LawPolicy.cs`: `LawPolicy` (class): How hard the courts strike.
 - `Institutions/MediaMix.cs`: `MediaMix` (class): What a nation's media airs: a share of airtime for each vice plus neutral programming, always summing to 1 ("a balance of the 7 aired to the population", Norm's pitch).
-- `Nations/Nation.cs`: `Nation` (class): One country: its identity, the institutions the hidden hand can steer, and the society those institutions act on.
+- `Nations/Nation.cs`: `Nation` (class): One country: its identity, the institutions the hidden hand can steer, the society those institutions act on, and its government (the hand's shield).
 - `Nations/NationSetup.cs`: `NationSetup` (class): Plain data describing one nation at game start; a scenario is a list of these.
+- `Politics/GovernmentState.cs`: `GovernmentState` (class): A nation's political state: its government type (the hidden hand's shield, D-0021), how the people align with each type, the two tiers of suspicion (D-0020), and any revolution or vote under way.
+- `Politics/GovernmentType.cs`: `GovernmentType` (enum): The political systems of politics v1 (Norm's list, D-0021).
+- `Politics/PendingChange.cs`: `PendingChange` (enum): A change of government under way in a nation: none, a fomented revolution, or a vote.
 - `Scenarios/ScenarioLibrary.cs`: `ScenarioLibrary` (class): Built-in starting worlds.
 - `Society/Cohort.cs`: `Cohort` (enum): Generation bands.
-- `Society/CohortState.cs`: `CohortState` (class): One generation band of a nation: its share of the population, the drives it carries (disposition) and the outlets it was trained to use (channeling).
+- `Society/CohortState.cs`: `CohortState` (class): One generation band of a nation: its share of the population, the drives it carries (disposition), the outlets it was trained to use (channeling), what it was taught (schooling), and its own conten...
 - `Society/SocietyState.cs`: `SocietyState` (class): The river itself: a nation's cohorts, its current mood, how much of each vice is expressed and channeled, and the resulting contentment, crime, unrest and aggression.
 - `Society/Vice.cs`: `Vice` (enum): The seven drives the hidden hand steers (Norm's pitch, Docs/design/VICES.md).
 - `Society/ViceVector.cs`: `ViceVector` (struct): One number per Vice.
@@ -58,12 +63,15 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 - `Systems/GenerationSystem.cs`: `GenerationSystem` (class): Time passing through people.
 - `Systems/ISimSystem.cs`: `ISimSystem` (interface): One stage of the monthly tick.
 - `Systems/MediaSystem.cs`: `MediaSystem` (class): Media fills the river.
-- `Systems/OutletSystem.cs`: `OutletSystem` (class): How much of each vice a nation can channel productively: a base every society has, plus what the adult workforce was trained to do.
+- `Systems/OutletSystem.cs`: `OutletSystem` (class): How much of each vice a nation can channel productively: a base every society has, what the adult workforce was trained to do, and what the government type channels or starves.
+- `Systems/PoliticsSystem.cs`: `PoliticsSystem` (class): The shield and what threatens it (D-0020, D-0021, D-0024, D-0032): how the people align with each government type, government and shadow suspicion, fomented revolutions, votes, generational revolts...
 - `Systems/WellbeingSystem.cs`: `WellbeingSystem` (class): Where the river overflows or runs calm.
 - `Tuning/EducationTuning.cs`: `EducationTuning` (class): Coefficients for how schooling trains the channels (outlets) of the next generation.
 - `Tuning/GenerationTuning.cs`: `GenerationTuning` (class): Coefficients for aging: how culture and training pass from youth to adults to elders.
+- `Tuning/GovernmentTraits.cs`: `GovernmentTraits` (class): What one government type changes in the model (INSTITUTIONS.md traits table, D-0023).
 - `Tuning/MediaTuning.cs`: `MediaTuning` (class): Coefficients for how airtime stirs mood now and shapes culture over decades.
 - `Tuning/OutletTuning.cs`: `OutletTuning` (class): Coefficients for how much of each vice a society can channel productively.
+- `Tuning/PoliticsTuning.cs`: `PoliticsTuning` (class): Coefficients for government types, alignment, two-tier suspicion, revolutions, votes and revolts.
 - `Tuning/SimTuning.cs`: `SimTuning` (class): Every tunable coefficient of the model, grouped by system.
 - `Tuning/WellbeingTuning.cs`: `WellbeingTuning` (class): Coefficients for contentment, fear, crime, unrest, aggression and their alarm thresholds.
 
@@ -73,6 +81,7 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 
 - `InstitutionTests.cs`: `InstitutionTests` (class): Lever data: shares normalize, media push is measured from an even mix, severity clamps.
 - `LedgerTests.cs`: `LedgerTests` (class): The "why?" ledger must account for every computed value exactly, or explanations lie.
+- `PoliticsTests.cs`: `PoliticsTests` (class): Executable statements of the politics design (D-0019 to D-0024, D-0032): alignment, two-tier suspicion, the government as a shield, revolutions, votes, generational revolts and defeat.
 - `RiverBehaviorTests.cs`: `RiverBehaviorTests` (class): Executable statements of the design (Docs/design, Docs/simulation/MODEL.md).
 - `ScenarioTests.cs`: `ScenarioTests` (class): Built-in scenarios must keep the personalities they were written to have.
 - `SimDateTests.cs`: `SimDateTests` (class): Calendar math: ticks map to years and months.

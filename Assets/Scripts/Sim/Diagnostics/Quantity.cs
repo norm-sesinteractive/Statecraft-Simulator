@@ -12,5 +12,14 @@ namespace Statecraft.Sim.Diagnostics
         Contentment,
         Unrest,
         Aggression,
+
+        /// <summary>Target of government suspicion.</summary>
+        GovernmentSuspicion,
+
+        /// <summary>This month's drift of shadow suspicion (not counting one-off jumps from events).</summary>
+        ShadowSuspicion,
+
+        /// <summary>Alignment with a government type; the index is a GovernmentType, not a vice.</summary>
+        Alignment,
     }
 }

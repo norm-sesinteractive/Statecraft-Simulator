@@ -1,3 +1,4 @@
+using System;
 using Statecraft.Sim.Core;
 
 namespace Statecraft.Sim.Commands
@@ -15,6 +16,12 @@ namespace Statecraft.Sim.Commands
 
         public double Severity { get; }
 
-        internal override void Apply(World world) => ResolveNation(world, NationIndex).Institutions.Law.Severity = Severity;
+        internal override void Apply(SimContext context)
+        {
+            var nation = ResolveNation(context.World, NationIndex);
+            double before = nation.Institutions.Law.Severity;
+            nation.Institutions.Law.Severity = Severity;
+            nation.Government.leverShock += Math.Abs(nation.Institutions.Law.Severity - before);
+        }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Statecraft.Sim.Diagnostics;
 using Statecraft.Sim.Nations;
+using Statecraft.Sim.Politics;
 using Statecraft.Sim.Society;
 using Statecraft.Sim.Systems;
 using Statecraft.Sim.Tuning;
@@ -38,6 +39,7 @@ namespace Statecraft.Sim.Core
                 new GenerationSystem(),
                 new OutletSystem(),
                 new WellbeingSystem(),
+                new PoliticsSystem(),
             };
 
             Settle();
@@ -62,6 +64,28 @@ namespace Statecraft.Sim.Core
         /// <summary>Commands waiting for the next tick.</summary>
         public int PendingCommandCount => pending.Count;
 
+        /// <summary>True once the hidden hand has been overthrown in its home nation (D-0019, D-0023).</summary>
+        public bool IsGameOver
+        {
+            get
+            {
+                int home = World.PlayerHomeIndex;
+                return home >= 0 && World.Nations[home].Government.HiddenHandOverthrown;
+            }
+        }
+
+        /// <summary>Whether the player may foment a revolution toward <paramref name="target"/> in a nation now.</summary>
+        public bool CanFoment(int nationIndex, GovernmentType target)
+        {
+            if (nationIndex < 0 || nationIndex >= World.Nations.Count) return false;
+            var nation = World.Nations[nationIndex];
+            return nation.PlayerControlled && nation.Government.CanFoment(target);
+        }
+
+        /// <summary>Whether the player may call a vote toward <paramref name="target"/> (only where the type can vote).</summary>
+        public bool CanCallVote(int nationIndex, GovernmentType target) =>
+            CanFoment(nationIndex, target) && Tuning.Politics.Types[(int)World.Nations[nationIndex].Government.Type].CanVote;
+
         /// <summary>Queues a lever change; it applies at the start of the next tick.</summary>
         public void Enqueue(SimCommand command)
         {
@@ -78,11 +102,11 @@ namespace Statecraft.Sim.Core
 
         void Step()
         {
-            for (int i = 0; i < pending.Count; i++) pending[i].Apply(World);
+            context.Date = Date;
+            for (int i = 0; i < pending.Count; i++) pending[i].Apply(context);
             pending.Clear();
 
             Ledger.Clear();
-            context.Date = Date;
             for (int i = 0; i < systems.Length; i++) systems[i].Tick(context);
             Date = Date.Next;
         }
@@ -106,13 +130,21 @@ namespace Statecraft.Sim.Core
                 society.cohorts[(int)Cohort.Elder].channeling = trained;
                 society.mood = MediaSystem.MoodTarget(nations[n].Institutions.Media, Tuning.Media);
                 society.disposition = GenerationSystem.NationalDisposition(society);
+                for (int c = 0; c < society.cohorts.Length; c++)
+                    for (int f = 0; f < Institutions.Curriculum.FocusCount; f++)
+                        society.cohorts[c].schooling[f] = nations[n].Institutions.Curriculum.Share((Institutions.CurriculumFocus)f);
             }
 
             context.Date = Date;
             new OutletSystem().Tick(context);
             for (int iteration = 0; iteration < 50; iteration++)
+            {
                 for (int n = 0; n < nations.Count; n++)
+                {
                     WellbeingSystem.Evaluate(context, nations[n], settle: true);
+                    PoliticsSystem.Evaluate(context, nations[n], settle: true);
+                }
+            }
             Ledger.Clear();
         }
     }
