@@ -15,7 +15,14 @@
 | Revolution | A violent change of government type, fomented by the player or breaking out on its own | [PLANNED] |
 | False revolution | A revolution the player foments to replace the shield and vent suspicion | [PLANNED] |
 | Vote | A democracy's peaceful change of government type, started by the player or the people | [PLANNED] |
-| Home nation | The nation the player starts with; losing it ends the game (provisional, Q-017) | [PLANNED] |
+| Home nation | The nation the player starts with; losing it ends the game (D-0023) | [PLANNED] |
+| Alignment | How strongly a population favors each government type; picks the type after a revolt | [PLANNED] |
+| Culture | A cohort's vices (disposition); carried to importers by trade | [PLANNED] |
+| Schooling profile | A cohort's education share per curriculum focus | [PLANNED] |
+| Educational overlap | Sum over focuses of the smaller share between two cohorts; gates trade influence and goodwill | [PLANNED] |
+| Commerce floor | Half a cohort's Commerce share: the minimum trade influence and goodwill rate (D-0028) | [PLANNED] |
+| Infrastructure efficiency | 50% at 0 infrastructure to 100% at 100; sets transit loss on trade and military efficiency (D-0030) | [PLANNED] |
+| Relations | Score between two peoples, -100 hated rivalry to +100 lasting bond | [PLANNED] |
 | Rival hand | Another shadow organization steering other nations | [PLANNED] |
 | Cultural conquest | A nation's people falling under a rival hand through culture rather than war | [PLANNED] |
 | Institution | A social machine the player steers: media, education, law and order, politics | `InstitutionSet` |

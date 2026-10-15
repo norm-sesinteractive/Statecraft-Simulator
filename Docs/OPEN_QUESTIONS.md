@@ -2,7 +2,8 @@
 
 > **Owns:** design questions only Norm can settle, each with Claude's recommendation. **Budget:** 220 lines.
 > Answered questions are removed here and recorded as decisions (`/design-review` does both).
-> Answered so far: Q-001 (D-0018), Q-002 (D-0019, D-0020), Q-009 (D-0022), Q-013 (D-0021).
+> Answered so far: Q-001 (D-0018), Q-002 (D-0019, D-0020), Q-009 (D-0022), Q-013 (D-0021),
+> Q-017 to Q-019 (D-0023), Q-020 (D-0024), Q-021 (D-0025), Q-022 (D-0032), Q-023 (D-0028), Q-024 (D-0031).
 
 ### Q-003: Setting and era
 **Options:** (a) fictional world, modern day; (b) fictional world over centuries, media evolving from criers to
@@ -56,25 +57,8 @@ Premium or free-to-play affects pacing, session design and progression. **Claude
 Model v0 has schools train outlets only. Norm's pitch has schools pushing forms of government too.
 **Claude recommends:** add civic ideology (which government types the young favor), feeding votes and emergent revolts.
 
-### Q-017: Single nation or expansion: what ends the game?
-Norm chose both "Single nation, loss ends game" and "Start with one, expand".
-**Options:** (a) losing the home nation ends the game; gained nations are setbacks; (b) losing any nation ends it;
-(c) the game ends when you hold no nations.
-**Claude recommends:** (a), recorded provisionally in D-0019.
-
-### Q-018: How much suspicion does the player see?
-**Options:** exact meters; fuzzy gauges plus warning events (pamphlets, investigations, whistleblowers); events only.
-**Claude recommends:** fuzzy gauges plus warning events: readable but tense.
-
-### Q-019: Meritocracy
-Norm: "Possibly Meritocracy but that might be over-powered." **Claude recommends:** leave it out of politics v1;
-add it after balancing, with a real weakness (for example, unrest when advancement stalls).
-
-### Q-020: Who picks the new type after an emergent revolt?
-**Options:** the people's mood picks it; the player picks among the types the mood allows; the player always picks.
-**Claude recommends:** the player picks among two or three types the mood allows: the shield stays yours, but at a price.
-
-### Q-021: What does cultural conquest mean in the simulation?
-**Options:** a foreign culture's share of the population's disposition passes a threshold; the people's loyalty
-shifts to a rival hand once its culture dominates media and schools; both.
-**Claude recommends:** both, built in M3 alongside culture flow between nations.
+### Q-025: Whose Commerce sets the floor?
+D-0028: "Half of a nation's commerce value should be the floor."
+**Options:** (a) each receiving cohort's own Commerce share; (b) the importing nation's adults; (c) the smaller of
+importer and supplier.
+**Claude recommends:** (a), matching how overlap is measured per receiving cohort (recorded provisionally).

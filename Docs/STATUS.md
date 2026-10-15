@@ -33,13 +33,17 @@
 
 No goals (D-0018); four defeats and free levers (D-0019); two-tier suspicion (D-0020); the player picks the
 government type, changed only by revolution or vote, and it shields the hidden hand (D-0021); start with one
-nation, expand by conquest, rival hands exist (D-0022). Owner doc: Docs/design/HIDDEN_HAND.md.
+nation, expand by conquest, rival hands exist (D-0022). Proposals accepted as the starting design (D-0023);
+revolts install the type the people are most aligned with (D-0024); culture flows only through trade imports
+(D-0025); relations between peoples, -100 to 100 (D-0026); educational overlap gates trade influence (D-0027)
+with a Commerce floor (D-0028); infrastructure is transit efficiency from adult schooling, 50% to 100%
+(D-0029 to D-0031); contentment, unrest and revolts per generation (D-0032). Owner docs: HIDDEN_HAND.md, WORLD_STAGE.md.
 
 ## Next up (suggested order)
 
-1. Norm confirms Q-017 (what ends the game) and glances at the [PROPOSED] type traits and suspicion drivers.
-2. Build M1 model v1: politics (five types, revolutions, votes, emergent revolts) and suspicion, with tests and
-   runner scripts (for example "false-revolution"), then the dev HUD controls for them.
+1. Build M1 model v1: contentment and unrest per generation, politics (five types, alignment, revolutions, votes,
+   generational revolts) and two-tier suspicion, with tests and runner scripts (for example "false-revolution").
+2. Dev HUD controls for government type, fomenting a revolution, calling a vote; suspicion gauges.
 3. Defeat v1: the hidden hand overthrown; game over for the home nation.
 
 ## Notes for the design session

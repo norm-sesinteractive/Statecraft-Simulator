@@ -87,6 +87,8 @@ consume more resources and drive a higher desire in a country's people to invade
 
 Norm: "Weaved with all of these is the contentment/suffering of the average citizen."
 - One axis in v0: -1 is suffering, +1 is content. Q-010 asks whether two gauges would play better.
+- [PLANNED, D-0032] Per generation: youth, adults and elders each have their own contentment (their expressed vices
+  against the nation's outlets) and their own unrest; the national value is the population-weighted average.
 - Raised by satisfaction. Lowered by frustration (softened by Sloth), by fear of the courts, and by crime.
 - Suffering feeds unrest, amplified by Pride and Envy. Contentment starves crime: a content enough people can
   reach zero crime (pinned by `ASufficientlyContentPeopleNeedsNoCourts`).

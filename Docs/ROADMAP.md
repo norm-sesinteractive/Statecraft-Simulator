@@ -22,7 +22,9 @@
 Goal: steering one nation is interesting for 30 minutes, with real danger of losing it from within.
 - [x] Design session: no goals, defeats, suspicion, politics, reach (D-0018 to D-0022, 2026-10-14)
 - [ ] Politics v1 (D-0021): government type lever; Democracy, Monarchy, Communism, Military junta, Theocracy with traits;
-      fomented revolutions; democratic votes started by the player or the people; emergent revolts
+      fomented revolutions; democratic votes started by the player or the people; emergent revolts that install
+      the type the people are most aligned with (D-0024)
+- [ ] Contentment and unrest per generation (D-0032); any generation can revolt, with its own consequences
 - [ ] Suspicion v1 (D-0020): government and shadow tiers, drivers and dampers, leak between tiers, venting by revolution
 - [ ] Defeat v1 (D-0019): a revolt that topples the hidden hand; game over when the home nation is lost (Q-017)
 - [ ] Puppet government v1: decisions it makes on its own (crackdowns, reforms), driven by society state
@@ -43,7 +45,8 @@ Goal: steering one nation is interesting for 30 minutes, with real danger of los
 ## M3 The world stage [PROPOSED]
 
 - [ ] Trade between nations
-- [ ] Culture flow (Lust and Pride export, Envy imports) and cultural conquest as a defeat (Q-021)
+- [ ] Culture through trade imports (D-0025) and cultural conquest as a defeat
+- [ ] Relations between peoples, -100 to 100 (D-0026)
 - [ ] War: puppet declarations, abstract fronts, territory, war weariness; military conquest as a defeat
 - [ ] Diplomacy, only as much as the design needs
 - [ ] Rival hands with personalities; the player gains nations by conquest (D-0022)

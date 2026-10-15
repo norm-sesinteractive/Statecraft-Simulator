@@ -35,6 +35,8 @@ potentially others."
 - **Which focus channels which vice** [PROPOSED]: the FocusChanneling table in
   [../generated/PARAMETERS.md](../generated/PARAMETERS.md). Norm should review it.
 - [PLANNED] Civic ideology: which form of government the young come to favor (feeds Politics).
+- [PLANNED] Schooling between nations: shared schooling lets trade carry vices and goodwill (D-0027); Commerce sets a
+  floor under that (D-0028); Infrastructure makes revenue and military activity efficient (D-0029). See WORLD_STAGE.md.
 - [PLANNED] Sector growth: trained farmers grow food, trained engineers build (M2 economy).
 - [OPEN] Q-016: should schools also shape values (dispositions), not only outlets?
 
@@ -62,9 +64,9 @@ Democracies can vote to change to another type, but they can also experience rev
 - **Role:** the government is the shield: it absorbs or stokes the people's whims and takes the fall, venting
   government suspicion when it is replaced ([HIDDEN_HAND.md](HIDDEN_HAND.md)).
 - **First types** (Norm): Democracy, Monarchy, Communism, Military junta, Theocracy (unspecified religion).
-  Meritocracy is a candidate, held back as possibly overpowered (Q-019).
+  Meritocracy is a candidate, left out of politics v1 as possibly overpowered (D-0023).
 
-[PROPOSED] What each type changes:
+What each type changes (accepted starting design, D-0023; tune by playing):
 
 | Type | How grievance vents | Courts | War | Vices it channels or frustrates | Suspicion |
 |---|---|---|---|---|---|
@@ -75,9 +77,11 @@ Democracies can vote to change to another type, but they can also experience rev
 | Theocracy | absorbed by faith (Sloth as acceptance) | harsh on vice crimes | holy wars possible | condemns Lust and Gluttony | high Science raises suspicion sharply |
 | Meritocracy (candidate) | advancement vents ambition | moderate | moderate | channels Pride and Envy through advancement | Science raises little suspicion: maybe too strong |
 
-[PROPOSED] Revolutions: the player picks a target type and foments; it needs some unrest to work with, takes months,
-costs lives and stability, and can fail. Emergent revolts pick a type from the people's mood (Wrath and Pride lean to
-a junta, Envy to communism, Sloth and Pride to monarchy, Pride and Envy with high schooling to democracy).
+Revolutions (D-0023, D-0024): the player picks a target type and foments; it needs some unrest to work with, takes
+months, costs lives and stability, and can fail. Revolts the people start install the type the population is most
+aligned with, possibly the same one. [PROPOSED] first draft of alignment: Wrath and Pride lean to a junta, Envy to
+communism, Sloth and Pride to monarchy, Sloth with low Science to theocracy, Pride and Envy with high schooling to
+democracy; the current type gets a small inertia bonus.
 
 ## Faith [OPEN]
 
