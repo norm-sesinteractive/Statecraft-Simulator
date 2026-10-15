@@ -107,24 +107,26 @@ Coefficients for government types, alignment, two-tier suspicion, revolutions, v
 | ScienceSuspicion | 0.6 | Government suspicion per unit of the adult generation's Science schooling share. |
 | PrideSuspicion | 0.15 | Government suspicion per unit of expressed Pride (people who question authority). |
 | BlockedAmbitionSuspicion | 0.5 | Government suspicion per unit of frustrated Envy or Greed (the system visibly blocking ambition). |
-| ImbalanceSuspicion | 1 | Government suspicion per unit of mean disposition distance from human nature beyond the tolerance. |
-| ImbalanceTolerance | 0.05 | Mean distance from human nature that raises no suspicion. |
-| ConcentrationSuspicion | 0.3 | Government suspicion per unit of the largest curriculum or vice airtime share beyond its start point. |
-| CurriculumConcentrationStart | 0.5 | Largest curriculum share that raises no suspicion. |
-| AirtimeConcentrationStart | 0.4 | Largest single-vice airtime share that raises no suspicion. |
+| DriftSuspicion | 1 | Government suspicion per unit of cultural drift: the sum over vices of disposition distance from tradition beyond the tolerance. |
+| DriftTolerance | 0.1 | Per-vice distance from tradition that nobody notices. |
+| TraditionTauMonths | 600 | Time constant in months for tradition to accept a lasting change of culture as the new normal. |
+| ConcentrationSuspicion | 0.8 | Government suspicion per unit of the largest curriculum or vice airtime share beyond its start point. |
+| CurriculumConcentrationStart | 0.4 | Largest curriculum share that raises no suspicion. |
+| AirtimeConcentrationStart | 0.35 | Largest single-vice airtime share that raises no suspicion. |
 | LeverShockSuspicion | 0.5 | Government suspicion per unit of recent lever shock. |
 | LeverShockTauMonths | 12 | Time constant in months for lever shocks to fade. |
 | SufferingSuspicion | 0.4 | Government suspicion per unit of suffering (negative contentment). |
 | SlothDamping | 0.15 | Suspicion removed per unit of expressed Sloth (acceptance). |
 | GluttonyDamping | 0.2 | Suspicion removed per unit of satisfied Gluttony (bread and circuses). |
 | NeutralAirtimeDamping | 0.2 | Suspicion removed per unit of neutral airtime share. |
-| SuspicionTauMonths | 18 | Time constant in months for government suspicion to follow its target. |
-| LeakThreshold | 0.4 | Government suspicion above which it leaks into shadow suspicion. |
-| LeakRate | 0.01 | Monthly shadow suspicion per unit of government suspicion above the threshold. |
+| SuspicionTauMonths | 12 | Time constant in months for government suspicion to follow its target. |
+| LeakThreshold | 0.5 | Government suspicion above which it leaks into shadow suspicion. |
+| LeakRate | 0.02 | Monthly shadow suspicion per unit of government suspicion above the threshold. |
 | ShadowDecayTauMonths | 600 | Time constant in months for shadow suspicion to fade with nothing feeding it. Long: people remember. |
 | ChangeLeak | 0.03 | Shadow suspicion added per recent government change when another happens ("new masters, same strings"). |
 | ShadowBreakingPoint | 0.7 | Shadow suspicion at which revolts aim at the hidden hand itself instead of the government. |
-| UnrestFromSuspicion | 0.2 | Unrest per unit of government suspicion. |
+| UnrestFromSuspicion | 0.5 | Unrest per unit of government suspicion. |
+| UnrestFromShadowSuspicion | 0.4 | Unrest per unit of shadow suspicion: a people that believes in a hidden hand grows restless. |
 | SuspicionAlarm | 0.5 | Government suspicion above which a SuspicionRising event fires. |
 | SuspicionCalm | 0.4 | Government suspicion below which the alarm clears. |
 | ShadowAlarm | 0.3 | Shadow suspicion above which a ShadowRumors event fires. |

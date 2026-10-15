@@ -29,7 +29,8 @@ namespace Statecraft.Sim.Diagnostics
 
         public const string Inertia = "Inertia";
         public const string GovernmentSuspicion = "GovernmentSuspicion";
-        public const string Imbalance = "Imbalance";
+        public const string CulturalDrift = "Cultural drift";
+        public const string ShadowSuspicion = "ShadowSuspicion";
         public const string CurriculumConcentration = "Curriculum concentration";
         public const string AirtimeConcentration = "Airtime concentration";
         public const string LeverShocks = "Lever shocks";

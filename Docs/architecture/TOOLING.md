@@ -22,8 +22,10 @@ From the repo root:
 - `dotnet run --project Tools/Headless/Runner -- scripts`: list the lever scripts.
 - `dotnet run --project Tools/Headless/Runner -- run --script iron-fist --years 40 --every 5`, optionally with
   `--csv out.csv` (one row per nation per year) and `--trace` (the home nation's politics every month while a
-  revolution or vote is under way). Scripts: baseline, wrath-media, military-school, iron-fist, velvet-glove,
-  bread-and-circuses, stoke-then-channel, scholars, false-revolution, people-vote, tyranny.
+  revolution or vote is under way), `--why suspicion|shadow|unrest|contentment` (the ledger terms behind that
+  value at each printed row). Scripts: baseline, wrath-media, military-school, iron-fist, velvet-glove,
+  bread-and-circuses, stoke-then-channel, scholars, false-revolution, people-vote, tyranny, propaganda,
+  monoculture, extremist, whiplash.
 - Do not pair `--no-build` with runner changes: `dotnet test` does not refresh the runner's output (LESSONS).
 - `dotnet run --project Tools/Headless/Runner -- docs`: regenerate PARAMETERS.md and SOCIETY_GRAPH.md.
 

@@ -30,6 +30,8 @@ namespace Statecraft.Sim.Systems
             if (government.cooldown > 0) government.cooldown--;
             government.recentChanges -= government.recentChanges * SimMath.AlphaFromTau(tuning.RecentChangeTauMonths);
             government.leverShock -= government.leverShock * SimMath.AlphaFromTau(tuning.LeverShockTauMonths);
+            var society = nation.Society;
+            society.tradition = ViceVector.Lerp(society.tradition, society.disposition, SimMath.AlphaFromTau(tuning.TraditionTauMonths));
 
             Evaluate(context, nation, settle: false);
             Announce(context, nation);
@@ -60,11 +62,12 @@ namespace Statecraft.Sim.Systems
             if (society.frustration.Greed > 0)
                 s += ledger.Add(n, Quantity.GovernmentSuspicion, LedgerNames.Frustration[(int)Vice.Greed], tuning.BlockedAmbitionSuspicion * society.frustration.Greed);
 
-            double distance = 0;
-            var nature = context.Tuning.Generations.HumanNature;
-            for (int v = 0; v < ViceVector.Count; v++) distance += Math.Abs(society.disposition[v] - nature[v]);
-            double imbalance = distance / ViceVector.Count - tuning.ImbalanceTolerance;
-            if (imbalance > 0) s += ledger.Add(n, Quantity.GovernmentSuspicion, LedgerNames.Imbalance, tuning.ImbalanceSuspicion * imbalance);
+            // Vices "out of whack": culture pushed away from the nation's own tradition, not away from other nations.
+            double culturalDrift = 0;
+            for (int v = 0; v < ViceVector.Count; v++)
+                culturalDrift += Math.Max(0, Math.Abs(society.disposition[v] - society.tradition[v]) - tuning.DriftTolerance);
+            if (culturalDrift > 0)
+                s += ledger.Add(n, Quantity.GovernmentSuspicion, LedgerNames.CulturalDrift, tuning.DriftSuspicion * culturalDrift);
 
             double maxFocus = 0;
             var curriculum = nation.Institutions.Curriculum;
@@ -280,6 +283,9 @@ namespace Statecraft.Sim.Systems
                         government.hiddenHandOverthrown = true;
                         nation.PlayerControlled = false;
                         Raise(context, nation, SimEventKind.HiddenHandOverthrown, government.shadowSuspicion, c);
+                        // The hand is exposed and gone: what the people suspected has been found and removed.
+                        government.shadowSuspicion = 0;
+                        government.suspicion *= 1 - tuning.RevolutionVent;
                     }
                 }
                 else

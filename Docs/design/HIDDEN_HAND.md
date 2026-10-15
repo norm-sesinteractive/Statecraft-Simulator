@@ -41,7 +41,8 @@ Raised by (Norm): "extremely high science", "frustrations with infrastructure", 
 whack". Concretely:
 - An educated, curious population: high Science schooling and high Pride.
 - Frustrated Envy and Greed where Infrastructure and Commerce outlets are thin (people see the system blocking them).
-- Any vice far above or below human nature, or a curriculum or airtime mix concentrated on one thing.
+- Cultural drift: any vice pushed far from the nation's own tradition (D-0033), or a curriculum or airtime mix
+  concentrated on one thing.
 - Abrupt, large lever swings (the river visibly changes course overnight).
 - Long suffering with no visible cause.
 
@@ -52,7 +53,8 @@ Lowered by:
 
 How the tiers connect: government suspicion that stays high for years leaks into shadow suspicion. Revolutions vent
 the government tier; each one that changes nothing for the people vents less and leaks more ("new masters, same
-strings"). Shadow suspicion has no shield: past a breaking point, a revolt aims at the hidden hand itself.
+strings"). Shadow suspicion has no shield: it feeds unrest directly, and past a breaking point a revolt aims at the hidden hand
+itself. Balance targets for how fast this happens: D-0033.
 
 Visibility: the player sees both tiers as fuzzy gauges, plus warning signs (pamphlets, investigations,
 whistleblowers) as events, never exact numbers.

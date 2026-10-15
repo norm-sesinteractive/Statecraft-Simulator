@@ -90,6 +90,25 @@ namespace Statecraft.SimRunner
                 var best = BestAlternative(government);
                 if (year == 20 && sim.CanCallVote(home, best)) sim.Enqueue(new CallVote(home, best));
             }),
+            new Script("propaganda", "From year 2 the home media airs nothing but Envy (one extreme lever).", (sim, year, home) =>
+            {
+                if (year == 2) sim.Enqueue(new SetMediaMix(home, Airtime(Vice.Envy)));
+            }),
+            new Script("monoculture", "From year 2 every school hour at home goes to Commerce (one extreme lever).", (sim, year, home) =>
+            {
+                if (year == 2) sim.Enqueue(new SetCurriculum(home, Focus(CurriculumFocus.Commerce)));
+            }),
+            new Script("extremist", "From year 2 all-Envy media, all-Science schools and ruthless courts (every lever at an extreme).", (sim, year, home) =>
+            {
+                if (year != 2) return;
+                sim.Enqueue(new SetMediaMix(home, Airtime(Vice.Envy)));
+                sim.Enqueue(new SetCurriculum(home, Focus(CurriculumFocus.Science)));
+                sim.Enqueue(new SetLawSeverity(home, 1));
+            }),
+            new Script("whiplash", "From year 2 the home media flips every year between all-Wrath and all-Sloth.", (sim, year, home) =>
+            {
+                if (year >= 2) sim.Enqueue(new SetMediaMix(home, Airtime(year % 2 == 0 ? Vice.Wrath : Vice.Sloth)));
+            }),
             new Script("tyranny", "From year 2 ruthless courts, nothing but Wrath on the air, and Arts schools: frustrated youth and revolts.", (sim, year, home) =>
             {
                 if (year != 2) return;

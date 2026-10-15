@@ -3,47 +3,38 @@
 > **Owns:** where the project stands right now: phase, what is verified, loose ends, next steps.
 > **Budget:** 80 lines. Rewritten, not appended, by every `/wrap-up`.
 
-**Last updated:** 2026-10-14, session 2 (design, then politics build). **Phase:** M1 core loop; model v1 built.
+**Last updated:** 2026-10-15, session 3 (balance pass 1). **Phase:** M1 core loop; model v1 built and balanced once.
 
-## Verified working (2026-10-14)
+## Verified working
 
-- M0 done: Unity 6000.3.13f1 project, pure C# sim, headless harness, generated scene, docs system; Norm confirmed
-  the first build runs in the editor.
-- Model v1 (headless): per-generation contentment and unrest (D-0032); politics with five government types,
-  alignment, fomented revolutions, votes, generational revolts (D-0021, D-0024); two-tier suspicion (D-0020);
-  the hidden hand's overthrow and game over (D-0019). 57 tests pass headless.
-- All Unity assemblies compile against the real Unity libraries (`dotnet build Statecraft.Editor.csproj`, 0 errors),
-  using throwaway includes for files the open editor had not yet picked up.
-- Runner experiments behave as designed (MODEL.md, "Observations"): false revolutions succeed about 30% toward an
-  unpopular type and 75% toward a popular one; tyranny ends in the people voting in a junta.
+- M0 done (2026-10-14). Model v1 (politics, two-tier suspicion, generational revolts, the hand's overthrow) built
+  2026-10-14; Norm confirmed the Politics tab works in the editor (2026-10-15).
+- Balance pass 1 (2026-10-15, D-0033, Proposed): extremes now overload suspicion on a playable time scale and can
+  topple the hand; untouched nations stay calm for a century. 63 tests pass headless, including 6 balance-target
+  tests that use default tuning.
+- All Unity assemblies compile against the real Unity libraries (`dotnet build Statecraft.Editor.csproj`, 0 errors).
 
 ## Not yet verified (needs Norm)
 
-- [ ] In the editor (focus it so it recompiles): Play `Main.unity`, open the **Politics** tab, foment a revolution
-      and (in the Democracy) call a vote; watch the Generations rows and the two suspicion meters.
-- [ ] Unity's Test Runner has not run the 14 new tests (batch mode is blocked while the editor is open; run
-      Window > General > Test Runner > EditMode, or close the editor and `Tools/unity.ps1 -Mode test`).
+- [ ] In the editor: Media and Education rows now have "Only" buttons and each group an "Even" button. Try an
+      extreme (Only on one vice, Only on one school focus, courts at 1) at 8x speed: the suspicion alarm should come
+      within about two game years, shadow rumors within about six, and the hand should be in danger after a decade.
+- [ ] Does that pace feel right in play? The targets are in D-0033 and MODEL.md, "Balance targets".
+- [ ] Unity's Test Runner has not run the 20 tests added since session 1 (editor open blocks batch mode).
 - [ ] No Android build or device check yet.
 
 ## Provisional, for Norm to confirm
 
+- D-0033 balance targets and the "cultural drift against tradition" reading of "vices out of whack".
 - Company "SES Interactive", bundle id `com.SESInteractive.StatecraftSimulator`, landscape only (D-0017, Q-012).
 - Dev tooling may use plain English while game text is Norm's (D-0015).
-- Balance changes made while building (MODEL.md): revolt threshold 0.3, unrest from suffering 1.2, stronger
-  fomenting. All tuning lives in Docs/generated/PARAMETERS.md.
-
-## Design settled in session 2 (2026-10-14)
-
-D-0018 to D-0032: no goals; four defeats and free levers; two-tier suspicion; the government as the shield,
-changed by revolution or vote; reach by conquest and rival hands; revolts install the people's preferred type;
-culture through trade imports gated by educational overlap with a Commerce floor; infrastructure as transit
-efficiency from adult schooling; relations between peoples; contentment and revolts per generation.
 
 ## Next up (suggested order)
 
-1. Norm's editor check of the Politics tab (above).
-2. Balance pass: make generational revolts reachable in bad times but not routine; tune suspicion speed.
-3. Puppet government v1 (crackdowns, reforms on its own), then events with text keys for Norm.
+1. Norm plays the balance pass and says whether the pace feels right.
+2. Balance pass 2: each lever within its own time horizon; revolts from hardship (not only from suspicion).
+3. Puppet government v1 (crackdowns and reforms on its own; resetting levers after the hand falls), then events with
+   text keys for Norm.
 4. Then M2 (land, population, food: starvation as a defeat) or M3 (trade, culture, relations, war), Norm's choice.
 
 ## Open questions worth Norm's time next

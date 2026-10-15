@@ -194,6 +194,9 @@ namespace Statecraft.Sim.Systems
             if (government.suspicion > 0)
                 unrest += ledger.Add(n, Quantity.Unrest, -1, c, LedgerNames.GovernmentSuspicion,
                     context.Tuning.Politics.UnrestFromSuspicion * government.suspicion);
+            if (government.shadowSuspicion > 0)
+                unrest += ledger.Add(n, Quantity.Unrest, -1, c, LedgerNames.ShadowSuspicion,
+                    context.Tuning.Politics.UnrestFromShadowSuspicion * government.shadowSuspicion);
             if (government.pending == PendingChange.Revolution)
                 unrest += ledger.Add(n, Quantity.Unrest, -1, c, LedgerNames.Revolution, context.Tuning.Politics.FomentUnrest);
             unrest += ledger.Add(n, Quantity.Unrest, -1, c, LedgerNames.Expressed[(int)Vice.Sloth], -tuning.SlothDampening * cohort.expressed.Sloth);

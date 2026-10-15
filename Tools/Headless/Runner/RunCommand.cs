@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using Statecraft.Sim.Core;
+using Statecraft.Sim.Diagnostics;
 using Statecraft.Sim.Politics;
 using Statecraft.Sim.Scenarios;
 using Statecraft.Sim.Society;
@@ -22,6 +23,9 @@ namespace Statecraft.SimRunner
             ulong seed = options.GetULong("seed", 1);
             string csvPath = options.Get("csv", null);
             bool trace = options.Get("trace", null) != null;
+            string why = options.Get("why", null);
+            if (why != null && WhyTarget(why, out _, out _) == false)
+                throw new ArgumentException("--why takes suspicion, shadow, unrest (youth) or contentment (adults).");
 
             if (!LeverScripts.TryGet(scriptName, out var onYearStart, out string description))
                 throw new ArgumentException($"Unknown script '{scriptName}'. Known: {string.Join(", ", LeverScripts.Names())}.");
@@ -58,7 +62,11 @@ namespace Statecraft.SimRunner
                     }
                     if (csv != null) WriteCsv(csv, simulation);
                     eventsSeen = PrintNewEvents(simulation, eventsSeen, eventCounts);
-                    if (year % every == 0 || year == years) PrintRows(simulation);
+                    if (year % every == 0 || year == years)
+                    {
+                        PrintRows(simulation);
+                        if (why != null) PrintWhy(simulation, home, why);
+                    }
                 }
             }
             finally
@@ -105,6 +113,35 @@ namespace Statecraft.SimRunner
                 counts[e.Kind] = count + 1;
             }
             return simulation.Events.TotalRaised;
+        }
+
+        static bool WhyTarget(string name, out Quantity quantity, out int cohort)
+        {
+            cohort = -1;
+            switch (name.ToLowerInvariant())
+            {
+                case "suspicion": quantity = Quantity.GovernmentSuspicion; return true;
+                case "shadow": quantity = Quantity.ShadowSuspicion; return true;
+                case "unrest": quantity = Quantity.Unrest; cohort = (int)Cohort.Youth; return true;
+                case "contentment": quantity = Quantity.Contentment; cohort = (int)Cohort.Adult; return true;
+                default: quantity = Quantity.Mood; return false;
+            }
+        }
+
+        // Diagnostic: the terms behind one of the home nation's values in the last simulated month (from the ledger).
+        static void PrintWhy(Simulation simulation, int home, string name)
+        {
+            WhyTarget(name, out var quantity, out int cohort);
+            var terms = new List<Contribution>();
+            simulation.Ledger.Collect(home, quantity, -1, cohort, terms);
+            var parts = new List<string>();
+            double sum = 0;
+            foreach (var term in terms)
+            {
+                sum += term.Amount;
+                parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} {1:+0.000;-0.000}", term.Source, term.Amount));
+            }
+            Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "      why {0} (sum {1:+0.000;-0.000}): {2}", name, sum, string.Join(", ", parts)));
         }
 
         // Diagnostic: the home nation's politics each month while a revolution or vote is under way.

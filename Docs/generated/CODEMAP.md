@@ -79,6 +79,7 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 
 `Assets/Tests/Sim`, Editor only. References: Statecraft.Sim, UnityEngine.TestRunner, UnityEditor.TestRunner.
 
+- `BalanceTests.cs`: `BalanceTests` (class): Balance targets for suspicion and the hand's survival (MODEL.md, "Balance targets", 2026-10-15).
 - `InstitutionTests.cs`: `InstitutionTests` (class): Lever data: shares normalize, media push is measured from an even mix, severity clamps.
 - `LedgerTests.cs`: `LedgerTests` (class): The "why?" ledger must account for every computed value exactly, or explanations lie.
 - `PoliticsTests.cs`: `PoliticsTests` (class): Executable statements of the politics design (D-0019 to D-0024, D-0032): alignment, two-tier suspicion, the government as a shield, revolutions, votes, generational revolts and defeat.

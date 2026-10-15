@@ -73,20 +73,23 @@ namespace Statecraft.Sim.Tuning
         /// <summary>Government suspicion per unit of frustrated Envy or Greed (the system visibly blocking ambition).</summary>
         public double BlockedAmbitionSuspicion = 0.5;
 
-        /// <summary>Government suspicion per unit of mean disposition distance from human nature beyond the tolerance.</summary>
-        public double ImbalanceSuspicion = 1.0;
+        /// <summary>Government suspicion per unit of cultural drift: the sum over vices of disposition distance from tradition beyond the tolerance.</summary>
+        public double DriftSuspicion = 1.0;
 
-        /// <summary>Mean distance from human nature that raises no suspicion.</summary>
-        public double ImbalanceTolerance = 0.05;
+        /// <summary>Per-vice distance from tradition that nobody notices.</summary>
+        public double DriftTolerance = 0.1;
+
+        /// <summary>Time constant in months for tradition to accept a lasting change of culture as the new normal.</summary>
+        public double TraditionTauMonths = 600;
 
         /// <summary>Government suspicion per unit of the largest curriculum or vice airtime share beyond its start point.</summary>
-        public double ConcentrationSuspicion = 0.3;
+        public double ConcentrationSuspicion = 0.8;
 
         /// <summary>Largest curriculum share that raises no suspicion.</summary>
-        public double CurriculumConcentrationStart = 0.5;
+        public double CurriculumConcentrationStart = 0.4;
 
         /// <summary>Largest single-vice airtime share that raises no suspicion.</summary>
-        public double AirtimeConcentrationStart = 0.4;
+        public double AirtimeConcentrationStart = 0.35;
 
         /// <summary>Government suspicion per unit of recent lever shock.</summary>
         public double LeverShockSuspicion = 0.5;
@@ -107,13 +110,13 @@ namespace Statecraft.Sim.Tuning
         public double NeutralAirtimeDamping = 0.2;
 
         /// <summary>Time constant in months for government suspicion to follow its target.</summary>
-        public double SuspicionTauMonths = 18;
+        public double SuspicionTauMonths = 12;
 
         /// <summary>Government suspicion above which it leaks into shadow suspicion.</summary>
-        public double LeakThreshold = 0.4;
+        public double LeakThreshold = 0.5;
 
         /// <summary>Monthly shadow suspicion per unit of government suspicion above the threshold.</summary>
-        public double LeakRate = 0.01;
+        public double LeakRate = 0.02;
 
         /// <summary>Time constant in months for shadow suspicion to fade with nothing feeding it. Long: people remember.</summary>
         public double ShadowDecayTauMonths = 600;
@@ -125,7 +128,10 @@ namespace Statecraft.Sim.Tuning
         public double ShadowBreakingPoint = 0.7;
 
         /// <summary>Unrest per unit of government suspicion.</summary>
-        public double UnrestFromSuspicion = 0.2;
+        public double UnrestFromSuspicion = 0.5;
+
+        /// <summary>Unrest per unit of shadow suspicion: a people that believes in a hidden hand grows restless.</summary>
+        public double UnrestFromShadowSuspicion = 0.4;
 
         /// <summary>Government suspicion above which a SuspicionRising event fires.</summary>
         public double SuspicionAlarm = 0.5;

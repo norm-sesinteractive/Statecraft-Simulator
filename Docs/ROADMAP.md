@@ -19,11 +19,12 @@ Goal: steering one nation is interesting for 30 minutes, with real danger of los
 - [x] Contentment and unrest per generation (D-0032); any generation can revolt, with its own consequences
 - [x] Suspicion v1 (D-0020): government and shadow tiers, drivers and dampers, leak between tiers, venting by revolution
 - [x] Defeat v1 (D-0019): a revolt that topples the hidden hand; game over when the home nation is lost (sim and dev HUD)
-- [ ] Dev HUD politics controls verified in the editor (Norm)
+- [x] Dev HUD politics controls verified in the editor (Norm, 2026-10-15: "Politics tab functions")
 - [ ] Puppet government v1: decisions it makes on its own (crackdowns, reforms), driven by society state
 - [ ] Events v1: politics events exist in the sim (revolutions, votes, revolts, suspicion alarms); player-facing
       event text keys for Norm still to come
-- [ ] Balance pass with the runner: generational revolts are still rare; each lever matters within its own time horizon
+- [x] Balance pass 1 (2026-10-15): suspicion overload and the hand's fall on a playable time scale (D-0033)
+- [ ] Balance pass 2: each lever matters within its own time horizon; revolts in hard times without suspicion
 - [ ] Explanation ("why?") in the real UI, not only the dev HUD
 - [ ] Text catalog: a key for every player-facing string, values from Norm
 - [ ] Verify RESEARCH.md citations before any reach game text

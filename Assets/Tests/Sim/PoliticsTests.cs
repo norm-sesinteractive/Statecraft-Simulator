@@ -61,7 +61,11 @@ namespace Statecraft.Sim.Tests
         {
             var simulation = TestWorlds.Single(
                 s => s.CurriculumWeights = TestWorlds.OnlyFocus(CurriculumFocus.Science),
-                t => t.Politics.ScienceSuspicion = 3);
+                t =>
+                {
+                    t.Politics.ScienceSuspicion = 3;
+                    t.Politics.RevoltThreshold = 2; // no revolts: they would vent the suspicion this test watches leak
+                });
             Assert.That(Government(simulation).ShadowSuspicion, Is.EqualTo(0));
             simulation.Advance(TestWorlds.Years(20));
             Assert.That(Government(simulation).Suspicion, Is.GreaterThan(0.8));

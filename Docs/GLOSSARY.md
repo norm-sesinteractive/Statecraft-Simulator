@@ -18,6 +18,8 @@
 | Vote | A democracy's peaceful change of government type, started by the player or the people | `CallVote` |
 | Home nation | The nation the player starts with; losing it ends the game (D-0023) | `World.PlayerHomeIndex`, `Simulation.IsGameOver` |
 | Alignment | How strongly a population favors each government type; picks the type after a revolt | `GovernmentState.Alignment` |
+| Tradition | What a nation considers its normal culture: its starting disposition, slowly accepting lasting change | `SocietyState.Tradition` |
+| Cultural drift | Vices pushed away from tradition; raises suspicion (D-0033) | `PoliticsSystem` (Cultural drift term) |
 | Lever shock | Recent abrupt lever changes, decaying; raises suspicion | `GovernmentState.LeverShock` |
 | Culture | A cohort's vices (disposition); carried to importers by trade | [PLANNED] |
 | Schooling profile | A cohort's education share per curriculum focus | `CohortState.Schooling` |

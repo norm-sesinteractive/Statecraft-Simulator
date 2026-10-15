@@ -187,3 +187,9 @@ Button {
 .nation-chip--selected {
     background-color: #3A6EA5;
 }
+
+.small-button {
+    font-size: 20px;
+    min-width: 72px;
+    min-height: 56px;
+}

@@ -182,17 +182,24 @@ namespace Statecraft.UI
             }
 
             var media = leverGroups[(int)LeverTab.Media];
-            media.Add(Note("Airtime weights; the % is the share actually aired."));
+            media.Add(Note("Airtime weights; the % is the share actually aired. Only: all airtime to one row."));
+            media.Add(SmallButton("Even", () => SetAll(mediaSliders, -1, OnMediaChanged)));
             for (int i = 0; i < MediaMix.CategoryCount; i++)
             {
+                int row = i;
                 string label = i < ViceVector.Count ? ((Vice)i).ToString() : "Neutral";
-                mediaSliders[i] = AddSlider(media, label, out mediaShares[i], OnMediaChanged);
+                mediaSliders[i] = AddSlider(media, label, out mediaShares[i], OnMediaChanged, () => SetAll(mediaSliders, row, OnMediaChanged));
             }
 
             var education = leverGroups[(int)LeverTab.Education];
-            education.Add(Note("School weights. Youth train now; adults change a generation later."));
+            education.Add(Note("School weights. Youth train now; adults change a generation later. Only: one focus."));
+            education.Add(SmallButton("Even", () => SetAll(curriculumSliders, -1, OnCurriculumChanged)));
             for (int i = 0; i < Curriculum.FocusCount; i++)
-                curriculumSliders[i] = AddSlider(education, ((CurriculumFocus)i).ToString(), out curriculumShares[i], OnCurriculumChanged);
+            {
+                int row = i;
+                curriculumSliders[i] = AddSlider(education, ((CurriculumFocus)i).ToString(), out curriculumShares[i], OnCurriculumChanged,
+                    () => SetAll(curriculumSliders, row, OnCurriculumChanged));
+            }
 
             var law = leverGroups[(int)LeverTab.Law];
             law.Add(Note("0 pardons all but the most guilty; 1 cracks down ruthlessly."));
@@ -267,7 +274,8 @@ namespace Statecraft.UI
             }
         }
 
-        static Slider AddSlider(VisualElement parent, string name, out Label valueLabel, EventCallback<ChangeEvent<float>> onChange)
+        static Slider AddSlider(VisualElement parent, string name, out Label valueLabel, EventCallback<ChangeEvent<float>> onChange,
+            System.Action only = null)
         {
             var row = new VisualElement();
             row.AddToClassList("lever-row");
@@ -281,8 +289,24 @@ namespace Statecraft.UI
             row.Add(label);
             row.Add(slider);
             row.Add(valueLabel);
+            if (only != null) row.Add(SmallButton("Only", only));
             parent.Add(row);
             return slider;
+        }
+
+        static Button SmallButton(string text, System.Action onClick)
+        {
+            var button = new Button(onClick) { text = text };
+            button.AddToClassList("small-button");
+            return button;
+        }
+
+        // Sets one slider to 1 and the rest to 0 (or all to 1 when row is -1), then sends one command.
+        void SetAll(Slider[] sliders, int row, EventCallback<ChangeEvent<float>> send)
+        {
+            if (!CanCommand() || !host.Simulation.World.Nations[selectedNation].PlayerControlled) return;
+            for (int i = 0; i < sliders.Length; i++) sliders[i].SetValueWithoutNotify(row < 0 || i == row ? 1f : 0f);
+            send(null);
         }
 
         static Meter AddMeter(VisualElement parent, string name, double min, double max)

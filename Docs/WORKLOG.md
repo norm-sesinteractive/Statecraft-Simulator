@@ -4,6 +4,18 @@
 > `python Tools/docs/doctool.py rotate-worklog`. Format: [DOCS_GUIDE.md](DOCS_GUIDE.md), "Worklog entry".
 > Narrative only: decisions go to `decisions/`, open work to STATUS.md and ROADMAP.md.
 
+## 2026-10-15: session 3, balance pass 1 (suspicion overload)
+
+- Norm: the Politics tab works, but suspicion is "nearly impossible to overload". Measured first: new runner option
+  `--why` (ledger terms behind a value) and scripts propaganda, monoculture, extremist, whiplash.
+- Findings: concentration terms capped too low, "imbalance" diluted across seven vices, and suspicion barely fed
+  unrest, so even total suspicion never caused the revolt that topples the hand.
+- Changes (D-0033, Proposed): stronger concentration, cultural drift against each nation's tradition, faster
+  suspicion and leak, suspicion and shadow suspicion feed unrest, shadow resets when the hand falls.
+- Six balance-target tests with default tuning (63 tests total, all pass). Dev HUD: "Only" and "Even" buttons.
+- Placeholders added for Norm: none.
+- Pick up at: STATUS.md, "Next up" (Norm's feel check first).
+
 ## 2026-10-14: session 2, design rounds and politics model v1
 
 - Design with Norm, recorded verbatim in PITCH.md and as D-0018 to D-0032: no goals, four defeats, two-tier

@@ -3,7 +3,7 @@
 
 What feeds what in the society model, observed from the ledger rather than declared: every term the
 simulation recorded while the three-nation scenario ran each built-in lever script for 60 years
-(baseline, wrath-media, military-school, iron-fist, velvet-glove, bread-and-circuses, stoke-then-channel, scholars, false-revolution, people-vote, tyranny). Solid arrows are observed terms; dotted arrows are slow stock dynamics
+(baseline, wrath-media, military-school, iron-fist, velvet-glove, bread-and-circuses, stoke-then-channel, scholars, false-revolution, people-vote, propaganda, monoculture, extremist, whiplash, tyranny). Solid arrows are observed terms; dotted arrows are slow stock dynamics
 that the ledger does not record (declared in Tools/Headless/Runner/DocsCommand.cs). The model itself is
 explained in Docs/simulation/MODEL.md.
 
@@ -18,6 +18,7 @@ flowchart LR
   n_Channels["Channels"]
   n_Contentment["Contentment"]
   n_Crime["Crime"]
+  n_Cultural_drift["Cultural drift"]
   n_Curriculum["Curriculum"]
   n_Curriculum_concentration["Curriculum concentration"]
   n_Decay["Decay"]
@@ -28,7 +29,6 @@ flowchart LR
   n_Frustration["Frustration"]
   n_Government["Government"]
   n_GovernmentSuspicion["GovernmentSuspicion"]
-  n_Imbalance["Imbalance"]
   n_Inertia["Inertia"]
   n_Law_Severity["Law.Severity"]
   n_Lever_shocks["Lever shocks"]
@@ -50,6 +50,7 @@ flowchart LR
   n_Channels -->|+| n_Outlet
   n_Contentment -->|-| n_Crime
   n_Crime -->|-| n_Contentment
+  n_Cultural_drift -->|+| n_GovernmentSuspicion
   n_Curriculum_concentration -->|+| n_GovernmentSuspicion
   n_Decay -->|-| n_ShadowSuspicion
   n_Disposition -->|+| n_Expressed
@@ -67,11 +68,10 @@ flowchart LR
   n_Frustration -->|+| n_GovernmentSuspicion
   n_Frustration -->|+| n_Unrest
   n_Government -->|+/-| n_Aggression
-  n_Government -->|+| n_Outlet
+  n_Government -->|+/-| n_Outlet
   n_Government -->|-| n_Unrest
   n_GovernmentSuspicion -->|+| n_ShadowSuspicion
   n_GovernmentSuspicion -->|+| n_Unrest
-  n_Imbalance -->|+| n_GovernmentSuspicion
   n_Inertia -->|+| n_Alignment
   n_Law_Severity -->|-| n_Crime
   n_Law_Severity -->|+| n_Fear
@@ -86,6 +86,7 @@ flowchart LR
   n_Satisfaction_Gluttony -->|-| n_GovernmentSuspicion
   n_Schooling -->|+/-| n_Alignment
   n_Schooling -->|+| n_GovernmentSuspicion
+  n_ShadowSuspicion -->|+| n_Unrest
   n_Suffering -->|+| n_GovernmentSuspicion
   n_Suffering -->|+| n_Unrest
   n_Media -.->|cultivation, years| n_Disposition
@@ -102,104 +103,111 @@ Typical size is the mean absolute contribution per tick across all runs and nati
 
 | Source | Target | Sign | Typical size |
 |---|---|---|---|
-| Envy x Wrath | Aggression | + | 0.0608 |
-| Expressed.Envy | Aggression | + | 0.0337 |
-| Expressed.Gluttony | Aggression | + | 0.0204 |
-| Expressed.Greed | Aggression | + | 0.0689 |
-| Expressed.Pride | Aggression | + | 0.0565 |
-| Expressed.Sloth | Aggression | - | 0.0552 |
-| Expressed.Wrath | Aggression | + | 0.1962 |
-| Government | Aggression | +/- | 0.0771 |
+| Envy x Wrath | Aggression | + | 0.0623 |
+| Expressed.Envy | Aggression | + | 0.0359 |
+| Expressed.Gluttony | Aggression | + | 0.0202 |
+| Expressed.Greed | Aggression | + | 0.0684 |
+| Expressed.Pride | Aggression | + | 0.0562 |
+| Expressed.Sloth | Aggression | - | 0.0557 |
+| Expressed.Wrath | Aggression | + | 0.1923 |
+| Government | Aggression | +/- | 0.0827 |
 | Base | Alignment.Communism | + | 0.0500 |
-| Expressed.Envy | Alignment.Communism | +/- | 0.0333 |
-| Expressed.Greed | Alignment.Communism | +/- | 0.0071 |
-| Schooling.Agriculture | Alignment.Communism | +/- | 0.0246 |
+| Expressed.Envy | Alignment.Communism | +/- | 0.0475 |
+| Expressed.Greed | Alignment.Communism | +/- | 0.0076 |
+| Inertia | Alignment.Communism | + | 0.0500 |
+| Schooling.Agriculture | Alignment.Communism | +/- | 0.0243 |
 | Schooling.Infrastructure | Alignment.Communism | +/- | 0.0162 |
 | Base | Alignment.Democracy | + | 0.1000 |
-| Expressed.Envy | Alignment.Democracy | +/- | 0.0143 |
-| Expressed.Pride | Alignment.Democracy | +/- | 0.0265 |
-| Expressed.Wrath | Alignment.Democracy | +/- | 0.0171 |
+| Expressed.Envy | Alignment.Democracy | +/- | 0.0204 |
+| Expressed.Pride | Alignment.Democracy | +/- | 0.0270 |
+| Expressed.Wrath | Alignment.Democracy | +/- | 0.0168 |
 | Inertia | Alignment.Democracy | + | 0.0500 |
-| Schooling.Commerce | Alignment.Democracy | - | 0.0329 |
+| Schooling.Commerce | Alignment.Democracy | +/- | 0.0355 |
 | Schooling.Infrastructure | Alignment.Democracy | +/- | 0.0162 |
-| Schooling.Science | Alignment.Democracy | +/- | 0.0302 |
+| Schooling.Science | Alignment.Democracy | +/- | 0.0308 |
 | Base | Alignment.MilitaryJunta | + | 0.0500 |
-| Expressed.Pride | Alignment.MilitaryJunta | +/- | 0.0353 |
-| Expressed.Wrath | Alignment.MilitaryJunta | +/- | 0.1028 |
+| Expressed.Pride | Alignment.MilitaryJunta | +/- | 0.0360 |
+| Expressed.Wrath | Alignment.MilitaryJunta | +/- | 0.1005 |
 | Inertia | Alignment.MilitaryJunta | + | 0.0500 |
-| Schooling.Military | Alignment.MilitaryJunta | +/- | 0.0981 |
+| Schooling.Military | Alignment.MilitaryJunta | +/- | 0.0960 |
 | Base | Alignment.Monarchy | + | 0.1000 |
-| Expressed.Pride | Alignment.Monarchy | +/- | 0.0353 |
-| Expressed.Sloth | Alignment.Monarchy | +/- | 0.0450 |
+| Expressed.Pride | Alignment.Monarchy | +/- | 0.0360 |
+| Expressed.Sloth | Alignment.Monarchy | +/- | 0.0470 |
 | Inertia | Alignment.Monarchy | + | 0.0500 |
-| Schooling.Agriculture | Alignment.Monarchy | +/- | 0.0246 |
-| Schooling.Military | Alignment.Monarchy | +/- | 0.0196 |
+| Schooling.Agriculture | Alignment.Monarchy | +/- | 0.0243 |
+| Schooling.Military | Alignment.Monarchy | +/- | 0.0192 |
 | Base | Alignment.Theocracy | + | 0.0500 |
 | Expressed.Gluttony | Alignment.Theocracy | +/- | 0.0228 |
-| Expressed.Lust | Alignment.Theocracy | +/- | 0.0131 |
-| Expressed.Sloth | Alignment.Theocracy | +/- | 0.0563 |
-| Schooling.Arts | Alignment.Theocracy | +/- | 0.0136 |
-| Schooling.Science | Alignment.Theocracy | +/- | 0.0402 |
+| Expressed.Lust | Alignment.Theocracy | +/- | 0.0134 |
+| Expressed.Sloth | Alignment.Theocracy | +/- | 0.0588 |
+| Inertia | Alignment.Theocracy | + | 0.0500 |
+| Schooling.Arts | Alignment.Theocracy | +/- | 0.0130 |
+| Schooling.Science | Alignment.Theocracy | +/- | 0.0411 |
 | Base | Contentment | + | 0.1500 |
-| Crime | Contentment | - | 0.0371 |
-| Expressed.Sloth | Contentment | + | 0.0096 |
-| Fear | Contentment | - | 0.0760 |
-| Frustration.Envy | Contentment | - | 0.0090 |
-| Frustration.Gluttony | Contentment | - | 0.0189 |
-| Frustration.Greed | Contentment | - | 0.0086 |
-| Frustration.Lust | Contentment | - | 0.0080 |
-| Frustration.Pride | Contentment | - | 0.0074 |
-| Frustration.Sloth | Contentment | - | 0.0148 |
-| Frustration.Wrath | Contentment | - | 0.0175 |
+| Crime | Contentment | - | 0.0385 |
+| Expressed.Sloth | Contentment | + | 0.0099 |
+| Fear | Contentment | - | 0.0701 |
+| Frustration.Envy | Contentment | - | 0.0129 |
+| Frustration.Gluttony | Contentment | - | 0.0193 |
+| Frustration.Greed | Contentment | - | 0.0087 |
+| Frustration.Lust | Contentment | - | 0.0081 |
+| Frustration.Pride | Contentment | - | 0.0072 |
+| Frustration.Sloth | Contentment | - | 0.0160 |
+| Frustration.Wrath | Contentment | - | 0.0145 |
 | Satisfaction | Contentment | + | 0.1681 |
 | Base | Crime | + | 0.1200 |
-| Contentment | Crime | - | 0.0260 |
-| Frustration.Envy | Crime | + | 0.0157 |
-| Frustration.Gluttony | Crime | + | 0.0111 |
-| Frustration.Greed | Crime | + | 0.0175 |
+| Contentment | Crime | - | 0.0256 |
+| Frustration.Envy | Crime | + | 0.0226 |
+| Frustration.Gluttony | Crime | + | 0.0114 |
+| Frustration.Greed | Crime | + | 0.0178 |
 | Frustration.Lust | Crime | + | 0.0046 |
-| Frustration.Pride | Crime | + | 0.0042 |
-| Frustration.Sloth | Crime | + | 0.0044 |
-| Frustration.Wrath | Crime | + | 0.0347 |
-| Law.Severity | Crime | - | 0.0618 |
-| Disposition.* | Expressed.* | + | 0.3768 |
-| Mood.* | Expressed.* | +/- | 0.0261 |
-| Law.Severity | Fear | + | 0.3089 |
-| Expressed.* | Frustration.* | + | 0.4276 |
-| Outlet.* | Frustration.* | - | 0.3571 |
-| Airtime concentration | GovernmentSuspicion | + | 0.1371 |
-| Curriculum concentration | GovernmentSuspicion | + | 0.0463 |
-| Expressed.Pride | GovernmentSuspicion | + | 0.0565 |
-| Expressed.Sloth | GovernmentSuspicion | - | 0.0552 |
-| Frustration.Envy | GovernmentSuspicion | + | 0.0261 |
-| Frustration.Greed | GovernmentSuspicion | + | 0.0250 |
-| Imbalance | GovernmentSuspicion | + | 0.0365 |
-| Law.Severity | GovernmentSuspicion | + | 0.0417 |
-| Lever shocks | GovernmentSuspicion | + | 0.0146 |
-| Media.Neutral | GovernmentSuspicion | - | 0.0187 |
-| Satisfaction.Gluttony | GovernmentSuspicion | - | 0.0689 |
-| Schooling.Science | GovernmentSuspicion | + | 0.0408 |
-| Suffering | GovernmentSuspicion | + | 0.0164 |
-| Media.* | Mood.* | +/- | 0.0221 |
+| Frustration.Pride | Crime | + | 0.0041 |
+| Frustration.Sloth | Crime | + | 0.0047 |
+| Frustration.Wrath | Crime | + | 0.0286 |
+| Law.Severity | Crime | - | 0.0626 |
+| Disposition.* | Expressed.* | + | 0.3773 |
+| Mood.* | Expressed.* | +/- | 0.0280 |
+| Law.Severity | Fear | + | 0.3131 |
+| Expressed.* | Frustration.* | + | 0.4315 |
+| Outlet.* | Frustration.* | - | 0.3593 |
+| Airtime concentration | GovernmentSuspicion | + | 0.4547 |
+| Cultural drift | GovernmentSuspicion | + | 0.0642 |
+| Curriculum concentration | GovernmentSuspicion | + | 0.2004 |
+| Expressed.Pride | GovernmentSuspicion | + | 0.0562 |
+| Expressed.Sloth | GovernmentSuspicion | - | 0.0557 |
+| Frustration.Envy | GovernmentSuspicion | + | 0.0376 |
+| Frustration.Greed | GovernmentSuspicion | + | 0.0254 |
+| Law.Severity | GovernmentSuspicion | + | 0.0332 |
+| Lever shocks | GovernmentSuspicion | + | 0.0486 |
+| Media.Neutral | GovernmentSuspicion | - | 0.0179 |
+| Satisfaction.Gluttony | GovernmentSuspicion | - | 0.0686 |
+| Schooling.Science | GovernmentSuspicion | + | 0.0523 |
+| Suffering | GovernmentSuspicion | + | 0.0221 |
+| Media.* | Mood.* | +/- | 0.0245 |
 | Channels.* | Outlet.* | + | 0.0977 |
 | Base | Outlet.Envy | + | 0.2500 |
-| Government | Outlet.Envy | + | 0.0500 |
+| Government | Outlet.Envy | + | 0.0601 |
 | Base | Outlet.Gluttony | + | 0.2500 |
+| Government | Outlet.Gluttony | - | 0.0800 |
 | Base | Outlet.Greed | + | 0.2500 |
+| Government | Outlet.Greed | - | 0.1000 |
 | Base | Outlet.Lust | + | 0.2500 |
+| Government | Outlet.Lust | - | 0.0800 |
 | Base | Outlet.Pride | + | 0.2500 |
-| Government | Outlet.Pride | + | 0.0609 |
+| Government | Outlet.Pride | + | 0.0613 |
 | Base | Outlet.Sloth | + | 0.2500 |
+| Government | Outlet.Sloth | + | 0.0800 |
 | Base | Outlet.Wrath | + | 0.2500 |
 | Government | Outlet.Wrath | + | 0.1000 |
-| Decay | ShadowSuspicion | - | 0.0002 |
-| GovernmentSuspicion | ShadowSuspicion | + | 0.0007 |
-| Expressed.Envy | Unrest | + | 0.0073 |
-| Expressed.Pride | Unrest | + | 0.0073 |
-| Expressed.Sloth | Unrest | - | 0.0552 |
-| Fear | Unrest | - | 0.0729 |
-| Frustration.Wrath | Unrest | + | 0.0307 |
-| Government | Unrest | - | 0.0800 |
-| GovernmentSuspicion | Unrest | + | 0.0321 |
+| Decay | ShadowSuspicion | - | 0.0009 |
+| GovernmentSuspicion | ShadowSuspicion | + | 0.0054 |
+| Expressed.Envy | Unrest | + | 0.0225 |
+| Expressed.Pride | Unrest | + | 0.0112 |
+| Expressed.Sloth | Unrest | - | 0.0557 |
+| Fear | Unrest | - | 0.0782 |
+| Frustration.Wrath | Unrest | + | 0.0253 |
+| Government | Unrest | - | 0.0781 |
+| GovernmentSuspicion | Unrest | + | 0.1674 |
 | Revolution | Unrest | + | 0.5000 |
-| Suffering | Unrest | + | 0.0508 |
+| ShadowSuspicion | Unrest | + | 0.2098 |
+| Suffering | Unrest | + | 0.0781 |

@@ -17,6 +17,7 @@ namespace Statecraft.Sim.Society
         internal ViceVector expressed;
         internal ViceVector outlets;
         internal ViceVector frustration;
+        internal ViceVector tradition;
 
         internal double contentment;
         internal double contentmentTarget;
@@ -45,12 +46,16 @@ namespace Statecraft.Sim.Society
                 new CohortState(Cohort.Elder, setup.ElderShare / total, start),
             };
             disposition = start;
+            tradition = start;
         }
 
         public CohortState GetCohort(Cohort cohort) => cohorts[(int)cohort];
 
         /// <summary>Short-lived stirring of each vice by media and events, about -1 to 1. Fades within months.</summary>
         public ViceVector Mood => mood;
+
+        /// <summary>What the nation considers its normal culture: the starting disposition, slowly accepting lasting change.</summary>
+        public ViceVector Tradition => tradition;
 
         /// <summary>Population-weighted disposition of all cohorts, 0 to 1.</summary>
         public ViceVector Disposition => disposition;

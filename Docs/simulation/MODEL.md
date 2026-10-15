@@ -113,9 +113,13 @@ behaviors; if a change breaks one, the design changed and this doc must say so.
 - **Alignment** with type k: `AlignmentBase + sum_v AlignmentFromVices[v] * (expressed_v - humanNature_v) +
   sum_f AlignmentFromSchooling[f] * (schooling_f - 1/7)`, plus `InertiaBonus` for the type in power.
 - **Government suspicion target**, clamped 0..1: Science schooling of adults (scaled by the type), expressed
-  Pride, frustrated Envy and Greed, disposition imbalance beyond a tolerance, curriculum or single-vice airtime
-  concentration, recent lever shocks (scaled by the type), suffering, court severity (by type); minus expressed
-  Sloth, satisfied Gluttony and neutral airtime. Stock follows with tau `SuspicionTauMonths`.
+  Pride, frustrated Envy and Greed, cultural drift (per vice, disposition distance from the nation's tradition
+  beyond `DriftTolerance`, summed), curriculum or single-vice airtime concentration, recent lever shocks (scaled by
+  the type), suffering, court severity (by type); minus expressed Sloth, satisfied Gluttony and neutral airtime.
+  Stock follows with tau `SuspicionTauMonths`. Tradition starts as the setup disposition and follows the national
+  disposition with tau `TraditionTauMonths`.
+- Unrest gains `UnrestFromShadowSuspicion * shadowSuspicion` as well: a people that believes in a hidden hand revolts.
+- When a revolt topples the hand, shadow suspicion resets to 0 and government suspicion is vented.
 - **Shadow suspicion** drifts each month by `LeakRate * max(0, suspicion - LeakThreshold)` minus a slow decay, and
   jumps on each government change by `ChangeLeak * recentChanges` and on failed plots.
 - **Changing the government** (revolution success, passed vote, successful revolt): government suspicion is cut by
@@ -177,7 +181,22 @@ its target, stocks at their targets), so a new game opens without a transient (p
   the people voting in a Military Junta (aligned with their Wrath), venting suspicion; shadow suspicion reaches
   about 0.5 first. "people-vote" for Monarchy passed at 30%. Generational revolts stay rare in these scripts.
 
+## Balance targets (D-0033, pinned by BalanceTests.cs)
+
+Untouched world calm for a century; a 2:1 tilt below the alarm; one extreme lever raises the alarm within a decade;
+every lever at an extreme overloads suspicion within five years; sustained suspicion breaks shadow suspicion within
+15 years and topples the hand within 30 in most games.
+
+Balance pass 1 (2026-10-15): `ConcentrationSuspicion` 0.3 to 0.8, concentration starts 0.5 and 0.4 to 0.4 and 0.35,
+drift against tradition (new), `SuspicionTauMonths` 18 to 12, `LeakThreshold` 0.4 to 0.5, `LeakRate` 0.01 to 0.02,
+`UnrestFromSuspicion` 0.2 to 0.5, `UnrestFromShadowSuspicion` 0.4 (new). Runner results: extremist alarm in year 2,
+rumors year 6, overthrow year 13; whiplash overthrow year 10; one-vice propaganda overthrow around year 20; a
+one-focus monoculture holds at the alarm without leaking; the AI nations stay calm for 100 years.
+
 ## Known simplifications (v1)
+
+- After the hand falls, the nation's levers stay where the player left them (no one resets them until puppet
+  governments exist), so an abandoned extreme keeps that nation in turmoil.
 
 - Fixed cohort shares: no population numbers, births or deaths yet (revolutions "cost lives" only as contentment).
 - Outlets have no venues; nations do not interact; no puppet decision-making beyond votes and revolts.
