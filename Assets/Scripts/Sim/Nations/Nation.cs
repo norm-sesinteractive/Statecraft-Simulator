@@ -1,3 +1,4 @@
+using Statecraft.Sim.Economy;
 using Statecraft.Sim.Institutions;
 using Statecraft.Sim.Politics;
 using Statecraft.Sim.Society;
@@ -18,6 +19,7 @@ namespace Statecraft.Sim.Nations
             Institutions = new InstitutionSet(setup);
             Society = new SocietyState(setup);
             Government = new GovernmentState(setup.Government);
+            Economy = new EconomyState(setup);
         }
 
         /// <summary>Position in <see cref="Core.World.Nations"/>; the nation's id.</summary>
@@ -34,5 +36,8 @@ namespace Statecraft.Sim.Nations
         public SocietyState Society { get; }
 
         public GovernmentState Government { get; }
+
+        /// <summary>Land, work, goods, food and wealth (D-0036).</summary>
+        public EconomyState Economy { get; }
     }
 }

@@ -39,12 +39,12 @@ Norm: "Aggression, vengeance, punishment."
 - Outlets: military service and war (v0: Military schooling); a public appetite for harsh justice; sport and spectacle.
 - Frustrated: violent crime, feuds and riots; feeds unrest directly (v0).
 - Effects: war appetite (v0: the largest aggression weight) and military effectiveness [PLANNED]; internal
-  violence (Norm: "increasing acts of internal violence").
+  violence (Norm: "increasing acts of internal violence"); with Pride, elder neglect (economy v1).
 
 ### Sloth
 Norm: "complacency, acceptance."
 - Outlets: leisure, comfort and care (v0: Agriculture, Medicine, Arts).
-- Frustrated: little crime, but listlessness [PLANNED: lower productivity].
+- Frustrated: little crime, but listlessness: expressed Sloth costs labor (economy v1).
 - Effects: softens frustration into acceptance and dampens unrest (v0). A slothful people endures more and
   achieves less; too much is the road to decadence.
 
@@ -52,13 +52,14 @@ Norm: "complacency, acceptance."
 Norm: "many obvious implications with financial systems and desire of conquest."
 - Outlets: commerce, markets, property, trade (v0: Commerce, Infrastructure, some Agriculture).
 - Frustrated: theft, fraud and corruption; a strong source of crime (v0).
-- Effects: economic drive and trade appetite [PLANNED]; desire for conquest when blocked (v0 aggression weight).
+- Effects: economic drive (economy v1: more materials and luxuries) and trade appetite [PLANNED]; desire for
+  conquest when blocked (v0 aggression weight). Luxuries are one of its venues (comfort).
 
 ### Lust
 Norm: "influence reproductive rate and potentially culture spread."
 - Outlets: family life, romance, the arts (v0: Arts, Medicine).
 - Frustrated: vice crime and scandal (v0, small).
-- Effects [PLANNED]: birth rate; cultural output that spreads to neighbors.
+- Effects: birth rate (economy v1); luxuries are a venue (comfort); cultural output that spreads to neighbors [PLANNED].
 
 ### Pride
 Norm: "A little pride helps drive a population, a lot can drive them into individualism. This can create high
@@ -66,7 +67,8 @@ highs in technological growth, but also drives people apart. An aggressive and i
 suffer from acts of violence and a society that doesn't take care of its elder's, etc."
 - Outlets: achievement, science, monuments, prestige and honor (v0: Science, Military, Arts, Infrastructure).
 - Frustrated: defiance; amplifies unrest when people suffer (v0).
-- Effects [PLANNED]: technological growth; weaker cohesion and elder care at high levels, worst with Wrath.
+- Effects: fewer children and elder neglect at high levels, worst with Wrath (economy v1); technological growth and
+  weaker cohesion [PLANNED].
 
 ### Envy
 Norm: "Susceptible to other cultures. Also creates a more conquest oriented society, taking what others have
@@ -81,7 +83,8 @@ Norm: "influence resource consumption. There may be times when it is beneficial 
 consume more resources and drive a higher desire in a country's people to invade their neighboring countries."
 - Outlets: abundance and feasting (v0: Agriculture, some Commerce).
 - Frustrated: hoarding and black markets (v0, small crime weight).
-- Effects [PLANNED]: consumption per person; scarcity pressure that becomes appetite for neighbors' land.
+- Effects: food eaten per person (economy v1), so land fills sooner; luxuries are a venue (comfort); scarcity
+  pressure that becomes appetite for neighbors' land [PLANNED].
 
 ## Contentment and suffering
 
@@ -90,7 +93,7 @@ Norm: "Weaved with all of these is the contentment/suffering of the average citi
 - Per generation (model v1, D-0032): youth, adults and elders each have their own contentment (their expressed vices
   against the nation's outlets) and their own unrest; the national value is the population-weighted average.
 - Raised by satisfaction. Lowered by frustration of each vice, counted separately so one starved drive hurts on its
-  own (D-0034), softened by Sloth; by fear of the courts; and by crime.
+  own (D-0034), softened by Sloth; by fear of the courts; by crime; by hunger and a shortage of materials (D-0036).
 - Suffering feeds unrest, amplified by Pride and Envy. Contentment starves crime: a content enough people can
   reach zero crime (pinned by `ASufficientlyContentPeopleNeedsNoCourts`).
 
@@ -106,4 +109,5 @@ Norm: "Weaved with all of these is the contentment/suffering of the average citi
 ## Open
 
 - Should each vice show the player a virtue mirror (Q-006)?
-- Which vices should first drive births, production and consumption (M2)?
+- Economy v1 (D-0036, proposed) chose: Lust and Pride for births, Pride and Wrath for elder deaths, Gluttony for
+  consumption, Greed for production and Sloth for lost labor. Norm to confirm.

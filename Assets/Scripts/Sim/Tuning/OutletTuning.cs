@@ -10,5 +10,11 @@ namespace Statecraft.Sim.Tuning
 
         /// <summary>Outlet capacity added per unit of the adult cohort's trained channels.</summary>
         public double ChannelGain = 0.8;
+
+        /// <summary>
+        /// Outlet per vice gained (or lost) per unit of comfort above (or below) expectation: luxuries are a venue for
+        /// Greed, Lust and Gluttony (D-0036). Comfort counts from -1 to +1.
+        /// </summary>
+        public ViceVector LuxuryVenue = new ViceVector(0, 0, 0.15, 0.15, 0, 0, 0.2);
     }
 }

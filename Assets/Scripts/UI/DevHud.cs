@@ -4,6 +4,7 @@ using Statecraft.Game;
 using Statecraft.Sim.Commands;
 using Statecraft.Sim.Core;
 using Statecraft.Sim.Diagnostics;
+using Statecraft.Sim.Economy;
 using Statecraft.Sim.Institutions;
 using Statecraft.Sim.Nations;
 using Statecraft.Sim.Politics;
@@ -15,7 +16,7 @@ namespace Statecraft.UI
 {
     /// <summary>
     /// Developer HUD, not the player UI: date and speed, the selected nation's levers, its vice
-    /// table and outcomes, a "why" breakdown from the ledger, and recent events. Labels are plain
+    /// table, generations, economy and outcomes, a "why" breakdown from the ledger, and recent events. Labels are plain
     /// technical ASCII (dev tooling); the shipping UI will carry Norm's text.
     /// </summary>
     [RequireComponent(typeof(UIDocument))]
@@ -48,7 +49,8 @@ namespace Statecraft.UI
         readonly Label[,] viceCells = new Label[ViceVector.Count, 3];
         readonly Label[] whyLabels = new Label[WhyRows];
         readonly Label[] eventLabels = new Label[EventRows];
-        readonly Label[,] generationCells = new Label[3, 2];
+        readonly Label[,] generationCells = new Label[3, 3];
+        readonly Label[,] economyCells = new Label[3, 3];
         readonly Button[] fomentButtons = new Button[GovernmentState.TypeCount];
         readonly Button[] voteButtons = new Button[GovernmentState.TypeCount];
         Label politicsStatus;
@@ -68,6 +70,10 @@ namespace Statecraft.UI
         Meter unrestMeter;
         Meter fearMeter;
         Meter aggressionMeter;
+        Meter hungerMeter;
+        Meter pressureMeter;
+        Meter comfortMeter;
+        Meter productivityMeter;
         LeverTab tab = LeverTab.Media;
         int selectedNation = -1;
         long eventsShown = -1;
@@ -240,13 +246,28 @@ namespace Statecraft.UI
             }
 
             scroll.Add(SectionTitle("Generations"));
-            scroll.Add(TableRow("", "Content", "Unrest", "", header: true));
+            scroll.Add(TableRow("", "Content", "Unrest", "Share", header: true));
             for (int c = 0; c < 3; c++)
             {
-                var row = TableRow(((Cohort)c).ToString(), "-", "-", "", header: false);
-                for (int k = 0; k < 2; k++) generationCells[c, k] = (Label)row[k + 1];
+                var row = TableRow(((Cohort)c).ToString(), "-", "-", "-", header: false);
+                for (int k = 0; k < 3; k++) generationCells[c, k] = (Label)row[k + 1];
                 scroll.Add(row);
             }
+
+            // People: millions, births and deaths per 1000 a year. Food: months stored, share of workers farming,
+            // food produced over need. Goods: materials shortage, luxuries per head, wealth per head.
+            scroll.Add(SectionTitle("Economy"));
+            var economyRows = new[] { TableRow("People M", "-", "-", "-", header: false), TableRow("Store/Farm", "-", "-", "-", header: false),
+                TableRow("Short/Lux", "-", "-", "-", header: false) };
+            for (int r = 0; r < economyRows.Length; r++)
+            {
+                for (int k = 0; k < 3; k++) economyCells[r, k] = (Label)economyRows[r][k + 1];
+                scroll.Add(economyRows[r]);
+            }
+            hungerMeter = AddMeter(scroll, "Hunger", 0, 1);
+            pressureMeter = AddMeter(scroll, "Land pressure", 0, 1.2);
+            comfortMeter = AddMeter(scroll, "Comfort", -1, 1);
+            productivityMeter = AddMeter(scroll, "Productivity", 0, 1.2);
 
             scroll.Add(SectionTitle("Outcomes"));
             contentmentMeter = AddMeter(scroll, "Contentment", -1, 1);
@@ -464,7 +485,7 @@ namespace Statecraft.UI
 
             var nation = nations[selectedNation];
             var society = nation.Society;
-            dateLabel.text = (simulation.IsGameOver ? "GAME OVER: hand overthrown. " : "") +
+            dateLabel.text = GameOverText(simulation.Defeat) +
                 "Year " + simulation.Date.Year + ", Month " + simulation.Date.Month;
             nationLabel.text = nation.NameKey + (nation.PlayerControlled ? " (yours)" : "") + ", " + nation.Government.Type;
             ApplyEditable(nation.PlayerControlled);
@@ -475,7 +496,9 @@ namespace Statecraft.UI
                 generationCells[c, 0].text = Signed(cohort.Contentment);
                 generationCells[c, 1].text = F(cohort.Unrest);
                 generationCells[c, 1].EnableInClassList("cell--hot", cohort.Unrest >= simulation.Tuning.Politics.RevoltThreshold);
+                generationCells[c, 2].text = Percent(cohort.Share);
             }
+            RefreshEconomy(nation);
             RefreshPolitics(simulation, nation);
 
             for (int v = 0; v < ViceVector.Count; v++)
@@ -507,6 +530,40 @@ namespace Statecraft.UI
 
             RefreshEvents(simulation);
             RefreshNationChips(nations);
+        }
+
+        void RefreshEconomy(Nation nation)
+        {
+            var e = nation.Economy;
+            double people = nation.Society.Population;
+            double perThousand = people > 0 ? 1000.0 / people : 0;
+            double labor = e.Workers(Resource.Food) + e.Workers(Resource.Materials) + e.Workers(Resource.Luxuries);
+            double foodNeed = e.Need(Resource.Food);
+            economyCells[0, 0].text = (people / 1e6).ToString("0.000", CultureInfo.InvariantCulture);
+            economyCells[0, 1].text = "b " + (e.BirthsPerYear * perThousand).ToString("0.0", CultureInfo.InvariantCulture);
+            economyCells[0, 2].text = "d " + (e.DeathsPerYear * perThousand).ToString("0.0", CultureInfo.InvariantCulture);
+            economyCells[1, 0].text = e.StoreMonths.ToString("0.0", CultureInfo.InvariantCulture) + " mo";
+            economyCells[1, 1].text = Percent(labor > 0 ? e.Workers(Resource.Food) / labor : 0);
+            economyCells[1, 2].text = "x" + F(foodNeed > 0 ? e.Output(Resource.Food) / foodNeed : 0);
+            economyCells[2, 0].text = F(e.MaterialsShortage);
+            economyCells[2, 1].text = e.LuxuriesPerHead.ToString("0.000", CultureInfo.InvariantCulture);
+            economyCells[2, 2].text = "w " + (people > 0 ? e.Wealth / people : 0).ToString("0", CultureInfo.InvariantCulture);
+            economyCells[0, 2].EnableInClassList("cell--hot", e.Famine);
+            economyCells[2, 0].EnableInClassList("cell--hot", e.MaterialsShortage >= 0.1);
+            SetMeter(hungerMeter, e.Hunger);
+            SetMeter(pressureMeter, e.LandPressure);
+            SetMeter(comfortMeter, e.Comfort);
+            SetMeter(productivityMeter, e.Productivity);
+        }
+
+        static string GameOverText(Defeat defeat)
+        {
+            switch (defeat)
+            {
+                case Defeat.HiddenHandOverthrown: return "GAME OVER: hand overthrown. ";
+                case Defeat.Starvation: return "GAME OVER: the nation starved. ";
+                default: return "";
+            }
         }
 
         void RefreshEvents(Simulation simulation)

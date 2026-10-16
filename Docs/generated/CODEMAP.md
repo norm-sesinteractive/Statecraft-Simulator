@@ -29,6 +29,7 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 - `Commands/SetCurriculum.cs`: `SetCurriculum` (class): Sets a nation's curriculum from one weight per CurriculumFocus, in order.
 - `Commands/SetLawSeverity.cs`: `SetLawSeverity` (class): Sets how hard a nation's courts strike, 0 (pardon all but the most guilty) to 1 (ruthless).
 - `Commands/SetMediaMix.cs`: `SetMediaMix` (class): Sets a nation's airtime mix from eight weights: the seven vices in order, then neutral programming.
+- `Core/Defeat.cs`: `Defeat` (enum): How the player's home nation was lost (D-0019), or None while the game goes on.
 - `Core/EventLog.cs`: `EventLog` (class): Bounded history of recent SimEvents plus a running total, so views can poll for what is new since they last looked without subscribing mid-tick.
 - `Core/SimCommand.cs`: `SimCommand` (class): An instruction to change a lever.
 - `Core/SimContext.cs`: `SimContext` (class): Everything a system needs during one tick.
@@ -43,6 +44,9 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 - `Diagnostics/Ledger.cs`: `Ledger` (class): Records every term that went into this tick's computed targets, so any outcome can answer "why?" (the in-game explanation panel, tests, and the generated causal graph all read it).
 - `Diagnostics/LedgerNames.cs`: `LedgerNames` (class): Source names used in ledger entries.
 - `Diagnostics/Quantity.cs`: `Quantity` (enum): Computed quantities whose contributing terms the Ledger records each tick.
+- `Economy/EconomyState.cs`: `EconomyState` (class): A nation's land and livelihood (D-0036): the area of each terrain, what the land and the workforce produce, what the people need, food stores and hunger, comfort, wealth and famine.
+- `Economy/Resource.cs`: `Resource` (enum): What a nation's land and people produce (D-0036).
+- `Economy/Terrain.cs`: `Terrain` (enum): Kinds of land.
 - `Institutions/Curriculum.cs`: `Curriculum` (class): How a nation's schools split their effort across CurriculumFocus areas.
 - `Institutions/CurriculumFocus.cs`: `CurriculumFocus` (enum): What schools emphasize.
 - `Institutions/InstitutionSet.cs`: `InstitutionSet` (class): The levers of one nation that the hidden hand can pull.
@@ -59,13 +63,15 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 - `Society/SocietyState.cs`: `SocietyState` (class): The river itself: a nation's cohorts, its current mood, how much of each vice is expressed and channeled, and the resulting contentment, crime, unrest and aggression.
 - `Society/Vice.cs`: `Vice` (enum): The seven drives the hidden hand steers (Norm's pitch, Docs/design/VICES.md).
 - `Society/ViceVector.cs`: `ViceVector` (struct): One number per Vice.
+- `Systems/EconomySystem.cs`: `EconomySystem` (class): Land and labor (D-0036).
 - `Systems/EducationSystem.cs`: `EducationSystem` (class): Education digs the channels.
-- `Systems/GenerationSystem.cs`: `GenerationSystem` (class): Time passing through people.
+- `Systems/GenerationSystem.cs`: `GenerationSystem` (class): Time passing through people (D-0036).
 - `Systems/ISimSystem.cs`: `ISimSystem` (interface): One stage of the monthly tick.
 - `Systems/MediaSystem.cs`: `MediaSystem` (class): Media fills the river.
-- `Systems/OutletSystem.cs`: `OutletSystem` (class): How much of each vice a nation can channel productively: a base every society has, what the adult workforce was trained to do, and what the government type channels or starves.
+- `Systems/OutletSystem.cs`: `OutletSystem` (class): How much of each vice a nation can channel productively: a base every society has, what the adult workforce was trained to do, what the government type channels or starves, and luxuries as a venue ...
 - `Systems/PoliticsSystem.cs`: `PoliticsSystem` (class): The shield and what threatens it (D-0020, D-0021, D-0024, D-0032): how the people align with each government type, government and shadow suspicion, fomented revolutions, votes, generational revolts...
 - `Systems/WellbeingSystem.cs`: `WellbeingSystem` (class): Where the river overflows or runs calm.
+- `Tuning/EconomyTuning.cs`: `EconomyTuning` (class): Coefficients for land, work and goods (D-0036): what each terrain yields, how labor turns land into output, what people need, how stores, wealth and living standards move, and when hunger becomes f...
 - `Tuning/EducationTuning.cs`: `EducationTuning` (class): Coefficients for how schooling trains the channels (outlets) of the next generation.
 - `Tuning/GenerationTuning.cs`: `GenerationTuning` (class): Coefficients for aging: how culture and training pass from youth to adults to elders.
 - `Tuning/GovernmentTraits.cs`: `GovernmentTraits` (class): What one government type changes in the model (INSTITUTIONS.md traits table, D-0023).
@@ -80,6 +86,7 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 `Assets/Tests/Sim`, Editor only. References: Statecraft.Sim, UnityEngine.TestRunner, UnityEditor.TestRunner.
 
 - `BalanceTests.cs`: `BalanceTests` (class): Balance targets for suspicion and the hand's survival (MODEL.md, "Balance targets", 2026-10-15).
+- `EconomyTests.cs`: `EconomyTests` (class): The economy and population (D-0036): land, labor, food, goods, wealth, births, deaths and starvation.
 - `InstitutionTests.cs`: `InstitutionTests` (class): Lever data: shares normalize, media push is measured from an even mix, severity clamps.
 - `LedgerTests.cs`: `LedgerTests` (class): The "why?" ledger must account for every computed value exactly, or explanations lie.
 - `PoliticsTests.cs`: `PoliticsTests` (class): Executable statements of the politics design (D-0019 to D-0024, D-0032): alignment, two-tier suspicion, the government as a shield, revolutions, votes, generational revolts and defeat.
@@ -96,7 +103,7 @@ Regenerated at session start (SessionStart hook) and by `/wrap-up`. A "(no summa
 `Assets/Scripts/UI`. References: Statecraft.Sim, Statecraft.Game.
 
 - `DevHud.cs`
-  - `DevHud` (class): Developer HUD, not the player UI: date and speed, the selected nation's levers, its vice table and outcomes, a "why" breakdown from the ledger, and recent events.
+  - `DevHud` (class): Developer HUD, not the player UI: date and speed, the selected nation's levers, its vice table, generations, economy and outcomes, a "why" breakdown from the ledger, and recent events.
   - `LeverTab` (nested enum): Which lever group the left panel shows.
   - `Meter` (nested class): One labeled bar in the outcomes section.
 - `SafeAreaPadding.cs`: `SafeAreaPadding` (class): Pads a full-screen UI Toolkit element so content avoids notches and rounded corners (Screen.safeArea).

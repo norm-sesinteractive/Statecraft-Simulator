@@ -235,6 +235,9 @@ namespace Statecraft.Sim.Tuning
         /// <summary>Crime added per unit of violence.</summary>
         public double ViolenceCrimeShock = 0.1;
 
+        /// <summary>Share of every generation killed per unit of violence (D-0036: revolutions cost lives).</summary>
+        public double ViolenceMortality = 0.01;
+
         /// <summary>Share of the revolting generation's unrest released by a successful revolt.</summary>
         public double RevoltUnrestRelief = 0.7;
 

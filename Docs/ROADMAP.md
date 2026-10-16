@@ -31,9 +31,13 @@ Goal: steering one nation is interesting for 30 minutes, with real danger of los
 
 ## M2 Nations and geography [PROPOSED]
 
-- [ ] Map model: regions with terrain and resources; nation territory
-- [ ] Population dynamics: births, deaths, cohort sizes (Lust, food, Medicine, war); starvation as a defeat (D-0019)
-- [ ] Economy v1: production, consumption (Gluttony), wealth (Greed), resource access by terrain
+- [x] Economy order and scope (D-0035, 2026-10-15): full economy before trade and war
+- [ ] Map model: regions with terrain and resources; nation territory (economy v1 holds terrain areas per nation)
+- [x] Population dynamics (D-0036, 2026-10-15): births, deaths, cohort sizes (Lust, Pride, Medicine, land, famine,
+      violence); starvation as a defeat (D-0019). War deaths wait for M3.
+- [x] Economy v1 (D-0036, 2026-10-15): production by terrain and skill, consumption (Gluttony), stores, comfort,
+      wealth (Greed, Commerce); dev HUD economy readouts
+- [ ] Norm's review of economy v1 (D-0036) in the editor
 - [ ] Map presentation: placeholder regions, then Norm's Blender assets
 - [ ] World generation: procedural or authored (Q-004)
 

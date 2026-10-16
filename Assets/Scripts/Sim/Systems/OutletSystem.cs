@@ -6,8 +6,9 @@ namespace Statecraft.Sim.Systems
 {
     /// <summary>
     /// How much of each vice a nation can channel productively: a base every society has, what the adult
-    /// workforce was trained to do, and what the government type channels or starves. Venues (an army,
-    /// markets, an arts scene) join in a later model version.
+    /// workforce was trained to do, what the government type channels or starves, and luxuries as a venue
+    /// for Greed, Lust and Gluttony (comfort against expectation, D-0036). Other venues (an army at war,
+    /// open markets) join in a later model version.
     /// </summary>
     internal sealed class OutletSystem : ISimSystem
     {
@@ -22,6 +23,7 @@ namespace Statecraft.Sim.Systems
                 var society = nations[n].Society;
                 var adult = society.cohorts[(int)Cohort.Adult];
                 var traits = context.Tuning.Politics.Types[(int)nations[n].Government.type];
+                double comfort = nations[n].Economy.Comfort;
 
                 for (int v = 0; v < ViceVector.Count; v++)
                 {
@@ -30,6 +32,8 @@ namespace Statecraft.Sim.Systems
                         ledger.Add(n, Quantity.Outlet, v, LedgerNames.Channels[v], tuning.ChannelGain * adult.channeling[v]);
                     double bonus = traits.OutletBonus[v];
                     if (bonus != 0) outlet += ledger.Add(n, Quantity.Outlet, v, LedgerNames.Government, bonus);
+                    double venue = tuning.LuxuryVenue[v];
+                    if (venue != 0 && comfort != 0) outlet += ledger.Add(n, Quantity.Outlet, v, LedgerNames.Comfort, venue * comfort);
                     society.outlets[v] = SimMath.Clamp01(outlet);
                 }
             }

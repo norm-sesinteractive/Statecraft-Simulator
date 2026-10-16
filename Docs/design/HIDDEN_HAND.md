@@ -6,7 +6,8 @@
 
 Norm's words are in [PITCH.md](PITCH.md) (session 2 sections). Decisions: D-0018 to D-0024. Everything here is the
 accepted starting design (D-0023), open to tuning. Built in model v1 (2026-10-14): suspicion, the shield,
-revolutions, votes, generational revolts and the overthrow of the hand; conquest, starvation and rivals come later.
+revolutions, votes, generational revolts and the overthrow of the hand; starvation in economy v1 (2026-10-15);
+conquest and rivals come later.
 
 ## What drives it (D-0018)
 
@@ -20,11 +21,13 @@ banks while bending it to your designs.
 |---|---|---|
 | Military conquest | another country takes the nation by force | M3 |
 | Cultural conquest | the population falls under another shadow organization, through trade-borne culture (D-0025) | M3 |
-| Starvation | the people run out of resources and die | M2 |
+| Starvation | the people run out of resources and die: a famine kills a quarter of the people (D-0036) | built (economy v1) |
 | Overthrow of the hidden hand | a revolt goes past the government and topples the shadow organization | built (model v1) |
 
 A revolt that topples only the government is survivable: that is what the government is for (D-0021). Losing the
-home nation ends the game; nations gained later can be lost as setbacks (D-0023).
+home nation ends the game; nations gained later can be lost as setbacks (D-0023). Norm (2026-10-15): "The game ends
+when the player's shadow hand falls, no need to tweak further after that time." What happens when another nation's
+hand falls is open (Q-026).
 
 ## The government as a shield (D-0021)
 

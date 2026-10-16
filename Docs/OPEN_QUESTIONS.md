@@ -57,6 +57,10 @@ Premium or free-to-play affects pacing, session design and progression. **Claude
 Model v0 has schools train outlets only. Norm's pitch has schools pushing forms of government too.
 **Claude recommends:** add civic ideology (which government types the young favor), feeding votes and emergent revolts.
 
+### Q-026: What happens when another nation's hand falls?
+Norm: "It may come up again if another nation's hand falls though. Let's peg that for a later question."
+Matters once rival hands exist (D-0035). **Claude recommends:** decide alongside rival hands.
+
 ### Q-025: Whose Commerce sets the floor?
 D-0028: "Half of a nation's commerce value should be the floor."
 **Options:** (a) each receiving cohort's own Commerce share; (b) the importing nation's adults; (c) the smaller of

@@ -12,8 +12,11 @@ namespace Statecraft.SimRunner
         const string Usage = @"Statecraft SimRunner: the simulation without Unity.
 
 Commands:
-  run      [--script NAME] [--years N] [--seed N] [--every N] [--csv PATH]
+  run      [--script NAME] [--years N] [--seed N] [--every N] [--csv PATH] [--economy] [--trace] [--why WHAT]
            Runs the three-nation scenario under a lever script and prints a table every N years.
+           --economy prints people, food, goods and wealth instead of society and politics.
+           --why prints the ledger terms behind a home value: suspicion, shadow, unrest, contentment,
+           births, deaths, productivity or wealth.
   scripts  Lists the built-in lever scripts.
   sweep    [--seed N]
            Pushes each home lever to an extreme, one at a time, and reports effects at that lever's horizon.

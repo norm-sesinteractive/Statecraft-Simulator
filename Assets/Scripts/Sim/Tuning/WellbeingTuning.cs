@@ -35,6 +35,12 @@ namespace Statecraft.Sim.Tuning
         /// <summary>Crime present in any society regardless of frustration.</summary>
         public double CrimeBase = 0.12;
 
+        /// <summary>Suffering per unit of hunger (the share of food need that goes uneaten).</summary>
+        public double HungerSuffering = 2.0;
+
+        /// <summary>Suffering per unit of materials shortage (the share of materials need unmet).</summary>
+        public double MaterialsHardship = 0.3;
+
         /// <summary>Crime per unit of frustration, per vice.</summary>
         public ViceVector CrimeFromFrustration = new ViceVector(0.35, 0.05, 0.35, 0.10, 0.10, 0.30, 0.10);
 

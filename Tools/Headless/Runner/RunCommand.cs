@@ -24,8 +24,9 @@ namespace Statecraft.SimRunner
             string csvPath = options.Get("csv", null);
             bool trace = options.Get("trace", null) != null;
             string why = options.Get("why", null);
+            bool economy = options.Get("economy", null) != null;
             if (why != null && WhyTarget(why, out _, out _) == false)
-                throw new ArgumentException("--why takes suspicion, shadow, unrest (youth) or contentment (adults).");
+                throw new ArgumentException("--why takes suspicion, shadow, unrest (youth), contentment (adults), births, deaths (elders), productivity or wealth.");
 
             if (!LeverScripts.TryGet(scriptName, out var onYearStart, out string description))
                 throw new ArgumentException($"Unknown script '{scriptName}'. Known: {string.Join(", ", LeverScripts.Names())}.");
@@ -36,9 +37,8 @@ namespace Statecraft.SimRunner
             Console.WriteLine($"Script '{scriptName}': {description}");
             Console.WriteLine($"Three-nation scenario, seed {seed}, {years} years. Contentment runs -1..+1, the rest 0..1.");
             Console.WriteLine();
-            Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0,5} {1,-12} {2,-5} {3,8} {4,6} {5,7} {6,6} {7,6} {8,5} {9,5}  {10,-16} {11}",
-                "Year", "Nation", "Gov", "Content", "Crime", "Unrest", "Fear", "Aggr", "Susp", "Shad", "Loudest vice", "Worst frustration"));
-            PrintRows(simulation);
+            PrintHeader(economy);
+            PrintRows(simulation, economy);
 
             StreamWriter csv = null;
             if (csvPath != null)
@@ -64,7 +64,7 @@ namespace Statecraft.SimRunner
                     eventsSeen = PrintNewEvents(simulation, eventsSeen, eventCounts);
                     if (year % every == 0 || year == years)
                     {
-                        PrintRows(simulation);
+                        PrintRows(simulation, economy);
                         if (why != null) PrintWhy(simulation, home, why);
                     }
                 }
@@ -81,8 +81,43 @@ namespace Statecraft.SimRunner
             return 0;
         }
 
-        static void PrintRows(Simulation simulation)
+        static void PrintHeader(bool economy)
         {
+            if (economy)
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture,
+                    "{0,5} {1,-12} {2,8} {3,6} {4,6} {5,6} {6,6} {7,6} {8,6} {9,6} {10,6} {11,6} {12,6} {13,8}",
+                    "Year", "Nation", "People", "Births", "Deaths", "Press", "Hunger", "Store", "Farm", "Short", "Lux", "Comf", "Prod", "Wealth"));
+            else
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0,5} {1,-12} {2,-5} {3,8} {4,6} {5,7} {6,6} {7,6} {8,5} {9,5}  {10,-16} {11}",
+                    "Year", "Nation", "Gov", "Content", "Crime", "Unrest", "Fear", "Aggr", "Susp", "Shad", "Loudest vice", "Worst frustration"));
+        }
+
+        // Economy view: people (millions), births and deaths per 1000 a year, land pressure, hunger, months of food stored, share of
+        // workers farming, materials shortage, luxuries per head, comfort, productivity, wealth per head.
+        static void PrintEconomyRows(Simulation simulation, int year)
+        {
+            foreach (var nation in simulation.World.Nations)
+            {
+                var e = nation.Economy;
+                double people = nation.Society.Population;
+                double labor = e.Workers(Statecraft.Sim.Economy.Resource.Food) + e.Workers(Statecraft.Sim.Economy.Resource.Materials) +
+                    e.Workers(Statecraft.Sim.Economy.Resource.Luxuries);
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture,
+                    "{0,5} {1,-12} {2,8:0.000} {3,6:0.0} {4,6:0.0} {5,6:0.00} {6,6:0.00} {7,6:0.0} {8,6:0.00} {9,6:0.00} {10,6:0.000} {11,6:+0.00;-0.00;0.00} {12,6:0.00} {13,8:0.0}",
+                    year, nation.NameKey + (nation.PlayerControlled ? "" : (nation.Index == simulation.World.PlayerHomeIndex ? "!" : "")),
+                    people / 1e6, 1000 * e.BirthsPerYear / people, 1000 * e.DeathsPerYear / people, e.LandPressure, e.Hunger, e.StoreMonths,
+                    labor > 0 ? e.Workers(Statecraft.Sim.Economy.Resource.Food) / labor : 0, e.MaterialsShortage, e.LuxuriesPerHead,
+                    e.Comfort, e.Productivity, e.Wealth / people));
+            }
+        }
+
+        static void PrintRows(Simulation simulation, bool economy)
+        {
+            if (economy)
+            {
+                PrintEconomyRows(simulation, simulation.Date.Tick == 0 ? 0 : (int)((simulation.Date.Tick - 1) / SimDate.MonthsPerYear) + 1);
+                return;
+            }
             // Rows show the state after the last simulated month.
             int year = simulation.Date.Tick == 0 ? 0 : (int)((simulation.Date.Tick - 1) / SimDate.MonthsPerYear) + 1;
             foreach (var nation in simulation.World.Nations)
@@ -124,6 +159,10 @@ namespace Statecraft.SimRunner
                 case "shadow": quantity = Quantity.ShadowSuspicion; return true;
                 case "unrest": quantity = Quantity.Unrest; cohort = (int)Cohort.Youth; return true;
                 case "contentment": quantity = Quantity.Contentment; cohort = (int)Cohort.Adult; return true;
+                case "births": quantity = Quantity.Births; return true;
+                case "deaths": quantity = Quantity.Deaths; cohort = (int)Cohort.Elder; return true;
+                case "productivity": quantity = Quantity.Productivity; return true;
+                case "wealth": quantity = Quantity.Wealth; return true;
                 default: quantity = Quantity.Mood; return false;
             }
         }

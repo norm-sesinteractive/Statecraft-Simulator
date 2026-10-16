@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Statecraft.Sim.Economy;
 using Statecraft.Sim.Politics;
 using Statecraft.Sim.Society;
 
@@ -24,9 +25,9 @@ namespace Statecraft.Sim.Diagnostics
         public static string NameOf(Quantity target, int index)
         {
             if (index < 0) return target.ToString();
-            return target == Quantity.Alignment
-                ? target + "." + (GovernmentType)index
-                : target + "." + (Vice)index;
+            if (target == Quantity.Alignment) return target + "." + (GovernmentType)index;
+            if (target == Quantity.Yield) return target + "." + (Resource)index;
+            return target + "." + (Vice)index;
         }
 
         /// <summary>

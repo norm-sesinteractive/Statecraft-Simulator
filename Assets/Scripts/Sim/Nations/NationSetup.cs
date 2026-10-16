@@ -34,5 +34,15 @@ namespace Statecraft.Sim.Nations
         public double YouthShare = 0.30;
         public double AdultShare = 0.55;
         public double ElderShare = 0.15;
+
+        /// <summary>People alive at game start, split by the cohort shares above.</summary>
+        public double Population = 1000000;
+
+        /// <summary>Area of each terrain in <see cref="Economy.Terrain"/> order (abstract units until the map exists).</summary>
+        public double[] LandAreas = DefaultLand();
+
+        /// <summary>A balanced homeland: mostly plains, some forest and hills, a river valley, a coast, a few mountains.</summary>
+        public static double[] DefaultLand() => new double[] { 35, 20, 15, 10, 0, 10, 10, 0 };
+        //                                                      Plain For Hill Mtn Des Coast River Tundra
     }
 }

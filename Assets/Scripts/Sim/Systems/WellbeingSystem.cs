@@ -156,7 +156,8 @@ namespace Statecraft.Sim.Systems
             }
             double meanSatisfied = satisfiedSum / ViceVector.Count;
 
-            // Contentment: satisfaction lifts it; frustration (softened by Sloth's acceptance), fear and crime weigh on it.
+            // Contentment: satisfaction lifts it; frustration (softened by Sloth's acceptance), fear, crime, hunger and
+            // a shortage of materials weigh on it.
             double contentment =
                 ledger.Add(n, Quantity.Contentment, -1, c, LedgerNames.Base, tuning.ContentmentBase) +
                 ledger.Add(n, Quantity.Contentment, -1, c, LedgerNames.Satisfaction, tuning.SatisfactionGain * meanSatisfied);
@@ -172,6 +173,12 @@ namespace Statecraft.Sim.Systems
             contentment += ledger.Add(n, Quantity.Contentment, -1, c, LedgerNames.Fear,
                 -tuning.FearSuffering * traits.FearSufferingScale * society.fear);
             contentment += ledger.Add(n, Quantity.Contentment, -1, c, LedgerNames.Crime, -tuning.CrimeSuffering * society.crime);
+            var economy = nation.Economy;
+            if (economy.hunger > 0)
+                contentment += ledger.Add(n, Quantity.Contentment, -1, c, LedgerNames.Hunger, -tuning.HungerSuffering * economy.hunger);
+            if (economy.materialsShortage > 0)
+                contentment += ledger.Add(n, Quantity.Contentment, -1, c, LedgerNames.MaterialsShortage,
+                    -tuning.MaterialsHardship * economy.materialsShortage);
             cohort.contentmentTarget = SimMath.Clamp(contentment, -1, 1);
 
             // Unrest: suffering, amplified by Pride and Envy, plus Wrath frustration and suspicion of the rulers;

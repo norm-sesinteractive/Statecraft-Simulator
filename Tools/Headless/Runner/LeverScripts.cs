@@ -122,6 +122,32 @@ namespace Statecraft.SimRunner
                 sim.Enqueue(new SetMediaMix(home, Airtime(Vice.Wrath)));
                 sim.Enqueue(new SetCurriculum(home, Focus(CurriculumFocus.Arts)));
             }),
+            new Script("baby-boom", "From year 2 media leans Lust and schools lean Medicine: more children, longer lives, until the land fills.", (sim, year, home) =>
+            {
+                if (year != 2) return;
+                sim.Enqueue(new SetMediaMix(home, new[] { 1.0, 1, 1, 3, 1, 1, 1, 1 }));
+                sim.Enqueue(new SetCurriculum(home, new[] { 1.0, 1, 3, 1, 1, 1, 1 }));
+            }),
+            new Script("farmers", "From year 2 schools lean Agriculture (3:1): more food from the same land, more hands for comforts.", (sim, year, home) =>
+            {
+                if (year == 2) sim.Enqueue(new SetCurriculum(home, new[] { 3.0, 1, 1, 1, 1, 1, 1 }));
+            }),
+            new Script("merchants", "From year 2 media leans Greed and schools lean Commerce and Arts: luxuries and wealth.", (sim, year, home) =>
+            {
+                if (year != 2) return;
+                sim.Enqueue(new SetMediaMix(home, new[] { 1.0, 1, 3, 1, 1, 1, 1, 1 }));
+                sim.Enqueue(new SetCurriculum(home, new[] { 1.0, 1, 1, 1, 1, 3, 2 }));
+            }),
+            new Script("famine", "From year 2 all-out Gluttony, Lust and Sloth on the air and Arts-only schools: the road to starvation.", (sim, year, home) =>
+            {
+                if (year != 2) return;
+                var media = new double[MediaMix.CategoryCount];
+                media[(int)Vice.Gluttony] = 2;
+                media[(int)Vice.Lust] = 2;
+                media[(int)Vice.Sloth] = 1;
+                sim.Enqueue(new SetMediaMix(home, media));
+                sim.Enqueue(new SetCurriculum(home, Focus(CurriculumFocus.Arts)));
+            }),
         };
 
         static GovernmentType BestAlternative(GovernmentState government)

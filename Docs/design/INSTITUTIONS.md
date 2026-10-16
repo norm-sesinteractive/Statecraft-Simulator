@@ -37,7 +37,9 @@ potentially others."
 - [PLANNED] Civic ideology: which form of government the young come to favor (feeds Politics).
 - [PLANNED] Schooling between nations: shared schooling lets trade carry vices and goodwill (D-0027); Commerce sets a
   floor under that (D-0028); Infrastructure makes revenue and military activity efficient (D-0029). See WORLD_STAGE.md.
-- [PLANNED] Sector growth: trained farmers grow food, trained engineers build (M2 economy).
+- Sector skill (economy v1, D-0036, proposed): adult schooling raises output. Agriculture raises food, Infrastructure
+  materials, Arts luxuries, Science all three a little; Commerce makes more wealth of the surplus; Medicine lowers
+  deaths. Military waits for war. Equations: [../simulation/MODEL.md](../simulation/MODEL.md), "Economy".
 - [OPEN] Q-016: should schools also shape values (dispositions), not only outlets?
 
 ## Law and order (built, model v0)

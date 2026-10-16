@@ -129,8 +129,13 @@ namespace Statecraft.Sim.Tests
         public void SlothSoftensSufferingIntoAcceptance()
         {
             var frustrated = new ViceVector(0.8, 0.2, 0.8, 0.35, 0.35, 0.8, 0.35);
-            // No revolts: they would reset unrest at random and blur the comparison this test makes.
-            Action<SimTuning> noRevolts = t => t.Politics.RevoltThreshold = 2;
+            // No revolts: they would reset unrest at random and blur the comparison this test makes. No idleness either:
+            // Sloth's lost labor (D-0036) is a separate effect, pinned in EconomyTests.
+            Action<SimTuning> noRevolts = t =>
+            {
+                t.Politics.RevoltThreshold = 2;
+                t.Economy.SlothIdleness = 0;
+            };
             var restless = TestWorlds.Single(s => s.Disposition = frustrated, noRevolts);
             var accepting = TestWorlds.Single(s => { var d = frustrated; d.Sloth = 0.9; s.Disposition = d; }, noRevolts);
             restless.Advance(TestWorlds.Years(2));

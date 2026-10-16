@@ -11,6 +11,7 @@ namespace Statecraft.Sim.Society
     public sealed class CohortState
     {
         internal double share;
+        internal double population;
         internal ViceVector disposition;
         internal ViceVector channeling;
         internal readonly double[] schooling = new double[Curriculum.FocusCount];
@@ -21,17 +22,21 @@ namespace Statecraft.Sim.Society
         internal double unrest;
         internal double unrestTarget;
 
-        internal CohortState(Cohort cohort, double share, ViceVector disposition)
+        internal CohortState(Cohort cohort, double share, double population, ViceVector disposition)
         {
             Cohort = cohort;
             this.share = share;
+            this.population = population;
             this.disposition = disposition;
         }
 
         public Cohort Cohort { get; }
 
-        /// <summary>Fraction of the population in this cohort (fixed in the current model).</summary>
+        /// <summary>Fraction of the nation's people in this cohort; follows births, aging and deaths (D-0036).</summary>
         public double Share => share;
+
+        /// <summary>People in this cohort.</summary>
+        public double Population => population;
 
         /// <summary>How strongly this cohort carries each vice, 0 to 1 (deep culture, slow to change).</summary>
         public ViceVector Disposition => disposition;

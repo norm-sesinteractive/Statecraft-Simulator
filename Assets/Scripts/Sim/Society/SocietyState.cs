@@ -19,6 +19,7 @@ namespace Statecraft.Sim.Society
         internal ViceVector frustration;
         internal ViceVector tradition;
 
+        internal double population;
         internal double contentment;
         internal double contentmentTarget;
         internal double crime;
@@ -38,18 +39,25 @@ namespace Statecraft.Sim.Society
             double total = setup.YouthShare + setup.AdultShare + setup.ElderShare;
             if (!(total > 0)) throw new ArgumentException("Cohort shares must sum to a positive number.", nameof(setup));
 
+            if (!(setup.Population > 0)) throw new ArgumentException("Population must be positive.", nameof(setup));
+
             ViceVector start = setup.Disposition.Clamp01();
+            double people = setup.Population;
             cohorts = new[]
             {
-                new CohortState(Cohort.Youth, setup.YouthShare / total, start),
-                new CohortState(Cohort.Adult, setup.AdultShare / total, start),
-                new CohortState(Cohort.Elder, setup.ElderShare / total, start),
+                new CohortState(Cohort.Youth, setup.YouthShare / total, people * setup.YouthShare / total, start),
+                new CohortState(Cohort.Adult, setup.AdultShare / total, people * setup.AdultShare / total, start),
+                new CohortState(Cohort.Elder, setup.ElderShare / total, people * setup.ElderShare / total, start),
             };
+            population = people;
             disposition = start;
             tradition = start;
         }
 
         public CohortState GetCohort(Cohort cohort) => cohorts[(int)cohort];
+
+        /// <summary>People alive in all generations.</summary>
+        public double Population => population;
 
         /// <summary>Short-lived stirring of each vice by media and events, about -1 to 1. Fades within months.</summary>
         public ViceVector Mood => mood;

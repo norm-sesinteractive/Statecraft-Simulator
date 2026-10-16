@@ -47,5 +47,14 @@ namespace Statecraft.Sim.Core
 
         /// <summary>A revolt toppled the hidden hand itself in this nation (D-0019). Detail: the Cohort.</summary>
         HiddenHandOverthrown,
+
+        /// <summary>Hunger crossed the famine line (D-0036). Value: hunger.</summary>
+        FamineBegan,
+
+        /// <summary>A famine ended. Value: its toll, as a share of the people alive when it began.</summary>
+        FamineEnded,
+
+        /// <summary>A famine killed so many that the nation is lost (D-0019). Value: the toll.</summary>
+        NationStarved,
     }
 }

@@ -7,7 +7,7 @@ using Statecraft.Sim.Tuning;
 
 namespace Statecraft.Sim.Tests
 {
-    /// <summary>Builders for small test worlds. Mood noise is off unless a test turns it on, so results are exact.</summary>
+    /// <summary>Builders for small test worlds. Mood and harvest noise are off unless a test turns them on, so results are exact.</summary>
     internal static class TestWorlds
     {
         public static Simulation Single(Action<NationSetup> configure = null, Action<SimTuning> tune = null, ulong seed = 7)
@@ -17,11 +17,12 @@ namespace Statecraft.Sim.Tests
             return new Simulation(new[] { setup }, QuietTuning(tune), seed);
         }
 
-        /// <summary>Default tuning with mood noise off, optionally adjusted.</summary>
+        /// <summary>Default tuning with mood and harvest noise off, optionally adjusted.</summary>
         public static SimTuning QuietTuning(Action<SimTuning> tune = null)
         {
             var tuning = SimTuning.CreateDefault();
             tuning.Media.MoodNoise = 0;
+            tuning.Economy.HarvestNoise = 0;
             tune?.Invoke(tuning);
             return tuning;
         }

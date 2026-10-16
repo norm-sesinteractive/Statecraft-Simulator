@@ -12,8 +12,10 @@ namespace Statecraft.Sim.Scenarios
     public static class ScenarioLibrary
     {
         /// <summary>
-        /// The player's home nation at human-nature defaults, plus two contrasting rivals: a proud,
-        /// wrathful warrior culture under harsh courts, and a comfortable, indulgent one under lenient courts.
+        /// The player's home nation at human-nature defaults on balanced land, plus two contrasting rivals: a proud,
+        /// wrathful warrior culture under harsh courts in hills, mountains and tundra (rich in materials, short of
+        /// food), and a comfortable, indulgent one under lenient courts in river valleys and on the coast (rich in
+        /// food and luxuries, short of materials).
         /// </summary>
         public static IReadOnlyList<NationSetup> ThreeNations() => new[]
         {
@@ -28,6 +30,9 @@ namespace Statecraft.Sim.Scenarios
                 CurriculumWeights = new[] { 0.2, 0.5, 0.0, 0.2, 0.1, 0.0, 0.0 },
                 LawSeverity = 0.8,
                 Government = GovernmentType.MilitaryJunta,
+                Population = 800000,
+                //                   Plain For Hill Mtn Des Coast River Tundra
+                LandAreas = new double[] { 20, 15, 25, 20, 0, 0, 5, 15 },
             },
             new NationSetup
             {
@@ -37,6 +42,8 @@ namespace Statecraft.Sim.Scenarios
                 CurriculumWeights = new[] { 0.4, 0.0, 0.3, 0.0, 0.0, 0.0, 0.3 },
                 LawSeverity = 0.2,
                 Government = GovernmentType.Monarchy,
+                Population = 1200000,
+                LandAreas = new double[] { 25, 15, 10, 0, 5, 20, 25, 0 },
             },
         };
 

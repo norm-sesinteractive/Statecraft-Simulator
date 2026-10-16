@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using Statecraft.Sim.Core;
 using Statecraft.Sim.Diagnostics;
+using Statecraft.Sim.Economy;
 using Statecraft.Sim.Institutions;
 using Statecraft.Sim.Politics;
 using Statecraft.Sim.Scenarios;
@@ -71,6 +72,9 @@ namespace Statecraft.SimRunner
 
                 var matrices = new List<(FieldInfo Field, ViceVector[] Rows)>();
                 var traitTables = new List<(FieldInfo Field, GovernmentTraits[] Types)>();
+                var terrainTables = new List<(FieldInfo Field, double[][] Rows)>();
+                // Three-entry arrays are per cohort, except in the economy, where they are per resource.
+                bool perResource = sectionType == typeof(EconomyTuning);
                 foreach (var field in PublicFields(sectionType))
                 {
                     object value = field.GetValue(sectionValue);
@@ -80,6 +84,11 @@ namespace Statecraft.SimRunner
                         doc.AppendLine($"| {field.Name} | table below | {meaning} |");
                         matrices.Add((field, rows));
                     }
+                    else if (value is double[][] terrainRows)
+                    {
+                        doc.AppendLine($"| {field.Name} | table below | {meaning} |");
+                        terrainTables.Add((field, terrainRows));
+                    }
                     else if (value is GovernmentTraits[] types)
                     {
                         doc.AppendLine($"| {field.Name} | table below | {meaning} |");
@@ -87,7 +96,7 @@ namespace Statecraft.SimRunner
                     }
                     else
                     {
-                        doc.AppendLine($"| {field.Name} | {Cell(Format(value))} | {meaning} |");
+                        doc.AppendLine($"| {field.Name} | {Cell(Format(value, perResource))} | {meaning} |");
                     }
                 }
 
@@ -107,6 +116,25 @@ namespace Statecraft.SimRunner
                         string label = rows.Length == Curriculum.FocusCount ? ((CurriculumFocus)r).ToString() : r.ToString(CultureInfo.InvariantCulture);
                         doc.Append("| ").Append(label).Append(" |");
                         for (int v = 0; v < ViceVector.Count; v++) doc.Append(' ').Append(Number(rows[r][v])).Append(" |");
+                        doc.AppendLine();
+                    }
+                }
+
+                foreach (var (field, rows) in terrainTables)
+                {
+                    doc.AppendLine();
+                    doc.AppendLine($"**{field.Name}** (one row per Terrain, one column per Resource)");
+                    doc.AppendLine();
+                    doc.Append("| Terrain |");
+                    for (int r = 0; r < EconomyState.ResourceCount; r++) doc.Append(' ').Append((Resource)r).Append(" |");
+                    doc.AppendLine();
+                    doc.Append("|---|");
+                    for (int r = 0; r < EconomyState.ResourceCount; r++) doc.Append("---|");
+                    doc.AppendLine();
+                    for (int t = 0; t < rows.Length; t++)
+                    {
+                        doc.Append("| ").Append((Terrain)t).Append(" |");
+                        for (int r = 0; r < rows[t].Length; r++) doc.Append(' ').Append(Number(rows[t][r])).Append(" |");
                         doc.AppendLine();
                     }
                 }
@@ -161,7 +189,7 @@ namespace Statecraft.SimRunner
         static IEnumerable<FieldInfo> PublicFields(Type type) =>
             type.GetFields(BindingFlags.Public | BindingFlags.Instance).OrderBy(f => f.MetadataToken);
 
-        static string Format(object value)
+        static string Format(object value, bool perResource = false)
         {
             switch (value)
             {
@@ -172,7 +200,8 @@ namespace Statecraft.SimRunner
                     for (int i = 0; i < ViceVector.Count; i++) parts[i] = $"{(Vice)i} {Number(v[i])}";
                     return string.Join(", ", parts);
                 case double[] values:
-                    var labels = values.Length == 3 ? new[] { "Youth", "Adult", "Elder" } : null;
+                    var labels = values.Length != 3 ? null
+                        : perResource ? new[] { "Food", "Materials", "Luxuries" } : new[] { "Youth", "Adult", "Elder" };
                     var items = new string[values.Length];
                     for (int i = 0; i < values.Length; i++)
                         items[i] = labels != null ? $"{labels[i]} {Number(values[i])}" : Number(values[i]);

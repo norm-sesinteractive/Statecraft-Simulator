@@ -49,6 +49,20 @@ Coefficients for aging: how culture and training pass from youth to adults to el
 | AdultYears | 42 | Years a person spends in the Adult cohort before becoming an Elder. |
 | HumanNature | Wrath 0.35, Sloth 0.35, Greed 0.35, Lust 0.35, Pride 0.35, Envy 0.35, Gluttony 0.35 | The disposition every culture drifts back toward without pressure ("human nature"), 0 to 1 per vice. |
 | NatureTauMonths | 600 | Time constant in months of the drift back toward human nature. Long: cultures are sticky. |
+| BirthsPerAdult | 0.033 | Births per adult per year, before modifiers. |
+| Mortality | Youth 0.005, Adult 0.0065, Elder 0.0873 | Deaths per person per year in each cohort (Youth, Adult, Elder), before modifiers. |
+| LustBirths | 1 | Births multiplier per unit of adult expressed Lust above human nature. |
+| PrideBirths | 0.5 | Births lost per unit of adult expressed Pride above human nature (individualism). |
+| HungerBirths | 2 | Births lost per unit of hunger. |
+| CrowdingStart | 0.7 | Land pressure (food need over what the land could yield) above which families have fewer children. |
+| CrowdingBirths | 1.5 | Births lost per unit of land pressure above CrowdingStart: as the land fills up, people marry later and have fewer children, so a nation usually slows before it starves. |
+| OpenLandBelow | 0.5 | Land pressure below which families have more children (open land to settle). |
+| OpenLandBirths | 1.5 | Births gained per unit of land pressure below OpenLandBelow: a dwindling people with room to grow recovers, so populations find a level instead of shrinking forever. |
+| MedicineLife | 1 | Deaths prevented per unit of adult Medicine schooling above an even curriculum. |
+| MinMortalityScale | 0.4 | Lowest death-rate multiplier medicine can reach. |
+| ElderNeglect | 0.5 | Extra elder deaths per unit of the nation's expressed Pride above human nature: a society that does not take care of its elders (Norm's example). |
+| NeglectWrath | 1 | How much expressed Wrath above human nature worsens elder neglect (x per unit). |
+| FamineMortality | Youth 0.12, Adult 0.06, Elder 0.15 | Extra deaths per month at total hunger, per cohort (Youth, Adult, Elder); scales with hunger squared, so a thin harvest kills few and a real famine many. |
 
 ## Outlets (`OutletTuning`)
 
@@ -58,6 +72,7 @@ Coefficients for how much of each vice a society can channel productively.
 |---|---|---|
 | BaseOutlet | Wrath 0.25, Sloth 0.25, Greed 0.25, Lust 0.25, Pride 0.25, Envy 0.25, Gluttony 0.25 | Outlet capacity every society has before any training (family life, ordinary work, feasts), per vice. |
 | ChannelGain | 0.8 | Outlet capacity added per unit of the adult cohort's trained channels. |
+| LuxuryVenue | Wrath 0, Sloth 0, Greed 0.15, Lust 0.15, Pride 0, Envy 0, Gluttony 0.2 | Outlet per vice gained (or lost) per unit of comfort above (or below) expectation: luxuries are a venue for Greed, Lust and Gluttony (D-0036). Comfort counts from -1 to +1. |
 
 ## Wellbeing (`WellbeingTuning`)
 
@@ -74,6 +89,8 @@ Coefficients for contentment, fear, crime, unrest, aggression and their alarm th
 | CrimeSuffering | 0.4 | Suffering per unit of crime. |
 | ContentmentTauMonths | 6 | Time constant in months for contentment to follow its target. |
 | CrimeBase | 0.12 | Crime present in any society regardless of frustration. |
+| HungerSuffering | 2 | Suffering per unit of hunger (the share of food need that goes uneaten). |
+| MaterialsHardship | 0.3 | Suffering per unit of materials shortage (the share of materials need unmet). |
 | CrimeFromFrustration | Wrath 0.35, Sloth 0.05, Greed 0.35, Lust 0.1, Pride 0.1, Envy 0.3, Gluttony 0.1 | Crime per unit of frustration, per vice. |
 | Deterrence | 0.12 | Crime prevented per unit of court severity (deterrence). |
 | ContentmentCrimeRelief | 0.15 | Crime prevented per unit of positive contentment. Larger than CrimeBase on purpose, so a sufficiently content people can reach zero crime ("so happy that crime no longer takes place"). |
@@ -161,6 +178,7 @@ Coefficients for government types, alignment, two-tier suspicion, revolutions, v
 | ElderRestorationBonus | 0.1 | Alignment bonus that elder revolts give the previous type, Monarchy and Theocracy (restoration). |
 | ViolenceContentmentShock | 0.2 | Contentment lost by every generation per unit of violence. |
 | ViolenceCrimeShock | 0.1 | Crime added per unit of violence. |
+| ViolenceMortality | 0.01 | Share of every generation killed per unit of violence (D-0036: revolutions cost lives). |
 | RevoltUnrestRelief | 0.7 | Share of the revolting generation's unrest released by a successful revolt. |
 | CrushedContentmentShock | 0.1 | Contentment lost by a generation whose revolt is crushed. |
 | CrushedSuspicion | 0.05 | Government suspicion added when a revolt is crushed. |
@@ -198,3 +216,52 @@ Coefficients for government types, alignment, two-tier suspicion, revolutions, v
 | RevoltChanceScale | Multiplier on how often revolts break out (coups under a junta). |
 | AggressionBonus | Aggression added by this type. |
 | CanVote | Whether the people can vote to change the government type. |
+
+## Economy (`EconomyTuning`)
+
+Coefficients for land, work and goods (D-0036): what each terrain yields, how labor turns land into output, what people need, how stores, wealth and living standards move, and when hunger becomes famine. Amounts are in units of one person's monthly food need.
+
+| Parameter | Value | Meaning |
+|---|---|---|
+| TerrainYields | table below | Output each area of a terrain can reach with unlimited labor, per month: [terrain][resource] in Terrain and Resource order (Food, Materials, Luxuries). Land is the ceiling; labor approaches it with diminishing returns. |
+| WorkerOutput | Food 6, Materials 2, Luxuries 1 | Output per effective worker per month on uncrowded land, per resource (Food, Materials, Luxuries). |
+| LuxuryLaborShare | 0.05 | Share of labor that always makes luxuries, whatever the needs: the court, the rich and the festivals take theirs first, even in hard years. |
+| ElderLabor | 0.3 | Workers per elder: elders still work, at this fraction of an adult. |
+| FoodNeed | 1 | Food each person needs per month at human-nature Gluttony (1 by definition of the unit). |
+| GluttonyAppetite | 0.6 | Extra food needed per person per unit of expressed Gluttony above human nature. |
+| MaterialsNeed | 0.1 | Materials each person needs per month (shelter, tools, fuel). |
+| PlanningMargin | 0.05 | Workers aim this fraction above a need, so ordinary bad luck does not bite at once. |
+| StoreMonths | 6 | Food stores hold at most this many months of need; surplus beyond it is sold. |
+| StoreRefillMonths | 24 | Months over which farmers aim to refill empty stores. |
+| HarvestNoise | 0.08 | Spread of the yearly harvest (standard deviation of its multiplier), drawn each January. |
+| HarvestFloor | 0.5 | Lowest harvest multiplier a year can bring. |
+| HarvestCeiling | 1.5 | Highest harvest multiplier a year can bring. |
+| AgricultureSkill | 1 | Output multiplier per unit of adult Agriculture schooling above an even curriculum (Food). |
+| InfrastructureSkill | 0.8 | Output multiplier per unit of adult Infrastructure schooling above an even curriculum (Materials). |
+| ArtsSkill | 1 | Output multiplier per unit of adult Arts schooling above an even curriculum (Luxuries). |
+| ScienceSkill | 0.3 | Output multiplier for every resource per unit of adult Science schooling above an even curriculum. |
+| GreedDrive | 0.5 | Materials and luxuries multiplier per unit of expressed Greed above human nature (working for gain). |
+| SlothIdleness | 0.6 | Labor lost per unit of expressed Sloth above human nature ("achieves less"). |
+| UnrestIdleness | 0.3 | Labor lost per unit of unrest (strikes, riots, disorder). |
+| HungerWeakness | 0.5 | Labor lost per unit of hunger (weak, hungry workers). |
+| MinProductivity | 0.2 | Lowest labor productivity, whatever the drags. |
+| Prices | Food 1, Materials 2, Luxuries 6 | Wealth per unit sold or kept beyond need, per resource (Food, Materials, Luxuries). |
+| CommerceSkill | 1.5 | Wealth multiplier per unit of adult Commerce schooling above an even curriculum. |
+| WealthTauMonths | 120 | Time constant in months of wealth wearing away (upkeep, spending): wealth settles near income x tau. |
+| ExpectationTauMonths | 120 | Time constant in months of the people's expected luxuries per head following what they have. Comfort is luxuries against that expectation: people get used to their standard of living. |
+| FamineHunger | 0.15 | Hunger at or above which a famine begins. |
+| FamineEnds | 0.05 | Hunger at or below which a famine is over. |
+| StarvationCollapse | 0.25 | A nation starves (is lost, D-0019) when one famine has killed this fraction of the people alive when it began. |
+
+**TerrainYields** (one row per Terrain, one column per Resource)
+
+| Terrain | Food | Materials | Luxuries |
+|---|---|---|---|
+| Plains | 30000 | 1000 | 500 |
+| Forest | 4000 | 6000 | 1000 |
+| Hills | 8000 | 6000 | 1000 |
+| Mountains | 1000 | 8000 | 2000 |
+| Desert | 500 | 1000 | 3000 |
+| Coast | 15000 | 1000 | 4000 |
+| RiverValley | 45000 | 1000 | 2000 |
+| Tundra | 2000 | 3000 | 1000 |

@@ -1,3 +1,4 @@
+using Statecraft.Sim.Economy;
 using Statecraft.Sim.Institutions;
 using Statecraft.Sim.Society;
 
@@ -38,6 +39,18 @@ namespace Statecraft.Sim.Diagnostics
         public const string SatisfiedGluttony = "Satisfaction.Gluttony";
         public const string Decay = "Decay";
 
+        // Economy (D-0036). "Hunger", "Comfort" and the like are economy readings, not ledger quantities.
+        public const string Hunger = "Hunger";
+        public const string MaterialsShortage = "Materials shortage";
+        public const string Comfort = "Comfort";
+        public const string Unrest = "Unrest";
+        public const string ElderNeglect = "Elder neglect";
+        public const string Famine = "Famine";
+        public const string Crowding = "Crowding";
+        public const string OpenLand = "Open land";
+        public const string Upkeep = "Upkeep";
+        public static readonly string[] Surplus = PerResource("Surplus");
+
         public static readonly string[] Media = PerVice("Media");
         public static readonly string[] Channels = PerVice("Channels");
         public static readonly string[] Disposition = PerVice("Disposition");
@@ -51,6 +64,13 @@ namespace Statecraft.Sim.Diagnostics
         {
             var names = new string[ViceVector.Count];
             for (int i = 0; i < names.Length; i++) names[i] = prefix + "." + (Vice)i;
+            return names;
+        }
+
+        static string[] PerResource(string prefix)
+        {
+            var names = new string[EconomyState.ResourceCount];
+            for (int i = 0; i < names.Length; i++) names[i] = prefix + "." + (Resource)i;
             return names;
         }
 

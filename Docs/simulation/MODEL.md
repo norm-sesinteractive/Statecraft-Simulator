@@ -7,11 +7,12 @@ Live coefficient values: [../generated/PARAMETERS.md](../generated/PARAMETERS.md
 illustrations, never live values). What feeds what, observed from a run:
 [../generated/SOCIETY_GRAPH.md](../generated/SOCIETY_GRAPH.md). Player-facing meaning: [../design/VICES.md](../design/VICES.md).
 
-**Status: model v1 (2026-10-14).** Model v0 (media, education, generations, outlets, wellbeing) plus
-per-generation contentment and unrest (D-0032) and politics (D-0019 to D-0024): government types, alignment,
-two-tier suspicion, fomented revolutions, votes, generational revolts and the hidden hand's overthrow. Nations do
-not interact yet. Tests in `Assets/Tests/Sim/RiverBehaviorTests.cs` and `PoliticsTests.cs` pin the intended
-behaviors; if a change breaks one, the design changed and this doc must say so.
+**Status: model v1 (2026-10-14) plus economy v1 (2026-10-15).** Model v0 (media, education, generations, outlets,
+wellbeing) plus per-generation contentment and unrest (D-0032) and politics (D-0019 to D-0024): government types,
+alignment, two-tier suspicion, fomented revolutions, votes, generational revolts and the hidden hand's overthrow.
+Economy v1 (D-0036, proposed): land, labor, food, goods, wealth, population numbers and starvation. Nations do not
+interact yet. Tests in `Assets/Tests/Sim/RiverBehaviorTests.cs`, `PoliticsTests.cs` and `EconomyTests.cs` pin the
+intended behaviors; if a change breaks one, the design changed and this doc must say so.
 
 ## Conventions
 
@@ -43,20 +44,29 @@ behaviors; if a change breaks one, the design changed and this doc must say so.
 | Alignment with each type | `GovernmentState.Alignment` | derived each tick |
 | Government suspicion; shadow suspicion | `GovernmentState` | stock following a target; slow accumulator |
 | Lever shock, recent changes, cooldown, pending change | `GovernmentState` | decaying memories and timers |
+| People per cohort; cohort shares | `CohortState.Population`, `Share` | stocks; shares derived (D-0036) |
+| Area per terrain | `EconomyState.Area` | fixed (the map will supply it) |
+| Potential, workers, output, need per resource | `EconomyState` | derived each tick |
+| Food stores, hunger, land pressure, materials shortage | `EconomyState` | stores a stock; the rest derived |
+| Luxury expectation; comfort | `EconomyState` | slow stock; derived |
+| Wealth | `EconomyState.Wealth` | stock: income in, upkeep out |
+| Famine, famine toll, starved | `EconomyState` | event state |
 
 ## Tick pipeline (`Simulation.Step`; the order is part of the model)
 
 1. Apply queued commands (lever changes).
 2. **Media** (`MediaSystem`): mood moves toward its target; each cohort's disposition is cultivated.
 3. **Education** (`EducationSystem`): youth channeling moves toward the curriculum target.
-4. **Generations** (`GenerationSystem`): births, graduation and retirement move disposition and channeling
-   between cohorts; every culture drifts toward human nature; national disposition is recomputed.
-5. **Outlets** (`OutletSystem`): outlet per vice from a base plus adult channeling.
-6. **Wellbeing** (`WellbeingSystem`): national expressed vice, frustration, fear, crime and aggression; then each
+4. **Economy** (`EconomySystem`): the year's harvest (each January), needs, productivity, labor allocation, output,
+   eating and stores, comfort and wealth.
+5. **Generations** (`GenerationSystem`): births and deaths per cohort; graduation and retirement move people,
+   disposition and channeling between cohorts; every culture drifts toward human nature; famine bookkeeping.
+6. **Outlets** (`OutletSystem`): outlet per vice from a base, adult channeling, the government and comfort.
+7. **Wellbeing** (`WellbeingSystem`): national expressed vice, frustration, fear, crime and aggression; then each
    generation's expressed vice, frustration, contentment and unrest; national averages; alarms.
-7. **Politics** (`PoliticsSystem`): alignment, government suspicion, shadow drift and alarms; then at most one of:
+8. **Politics** (`PoliticsSystem`): alignment, government suspicion, shadow drift and alarms; then at most one of:
    resolve a pending revolution or vote, the people call a vote, a generation revolts.
-8. Advance the date.
+9. Advance the date.
 
 ## Equations (model v0)
 
@@ -70,17 +80,17 @@ behaviors; if a change breaks one, the design changed and this doc must say so.
 - Curriculum target: `T_v = sum over focuses f of share_f * FocusChanneling[f][v]`, clamped to 0..1.
 - Youth channeling follows `T` with tau `SchoolTauMonths`.
 
-### Generations (cohort shares are fixed in v0)
-- Monthly birth fraction `b = 1 / (12 * YouthYears)`; retirement fraction `r = 1 / (12 * AdultYears)`.
-- Youth disposition moves toward adult disposition by `b` (newborns inherit their parents' culture). Youth
-  channeling decays by `b` (newborns are untrained).
-- Adults move toward youth by `b * youthShare / adultShare` (the graduates); elders move toward adults by
-  `r * adultShare / elderShare`.
+### Generations (people counted since economy v1, D-0036)
+- Each month `youth / (12 * YouthYears)` graduate and `adults / (12 * AdultYears)` retire; births and deaths below.
+- Culture moves with the people, as a fraction of the receiving cohort: youth disposition moves toward adult
+  disposition by `births / youth` (newborns inherit their parents' culture) and youth channeling decays by the same
+  fraction (newborns are untrained); adults move toward youth by `graduates / adults`; elders toward adults by
+  `retirees / elders`. Shares are recomputed from the counts.
 - Every cohort's disposition drifts toward `HumanNature` with tau `NatureTauMonths`.
 - With the defaults the adult cohort replaces itself over roughly 33 years: the generational lag of schooling.
 
 ### Outlets
-- `outlet_v = clamp01(BaseOutlet_v + ChannelGain * adultChanneling_v)`.
+- `outlet_v = clamp01(BaseOutlet_v + ChannelGain * adultChanneling_v + OutletBonus_v(type) + LuxuryVenue_v * comfort)`.
 - [PLANNED] Venues: an army at war, open markets, an arts scene, abundance. Outlets will need both trained
   people and somewhere for the drive to go.
 
@@ -89,7 +99,7 @@ behaviors; if a change breaks one, the design changed and this doc must say so.
   `min(e_v, outlet_v)`.
 - Fear: `FearPerSeverity * severity`.
 - Contentment target, clamped to -1..1:
-  `ContentmentBase + SatisfactionGain * mean(satisfied) - FrustrationGain * sum(f) * (1 - SlothAcceptance * e_Sloth) - FearSuffering * fear - CrimeSuffering * crime`
+  `ContentmentBase + SatisfactionGain * mean(satisfied) - FrustrationGain * sum(f) * (1 - SlothAcceptance * e_Sloth) - FearSuffering * fear - CrimeSuffering * crime - HungerSuffering * hunger - MaterialsHardship * shortage`
   (frustration is summed over vices, not averaged: D-0034)
 - Crime target, clamped to 0..1:
   `CrimeBase + sum_v CrimeFromFrustration_v * f_v - Deterrence * severity - ContentmentCrimeRelief * max(0, contentment)`
@@ -139,6 +149,41 @@ behaviors; if a change breaks one, the design changed and this doc must say so.
 - **Overthrow of the hidden hand:** a successful revolt while shadow suspicion is at least `ShadowBreakingPoint`
   also topples the hand; the nation leaves the player's control; if it is the home nation, the game is over.
 
+### Economy (economy v1, D-0036)
+All amounts are in units of one person's monthly food need. `even = 1/7`; "nature" is `HumanNature`; schooling is the
+adult cohort's; expressed vices are last month's.
+- **Needs:** food `people * (FoodNeed + GluttonyAppetite * (e_Gluttony - nature))`; materials `people * MaterialsNeed`.
+- **Productivity**, floored at `MinProductivity`: `1 - SlothIdleness * (e_Sloth - nature) - UnrestIdleness * unrest -
+  HungerWeakness * hunger`. Labor = (adults + `ElderLabor` * elders) * productivity.
+- **Yield multiplier** per resource: `1 + skill * (schooling - even) + ScienceSkill * (Science - even)`, the skill being
+  Agriculture (food), Infrastructure (materials) or Arts (luxuries); materials and luxuries add
+  `GreedDrive * (e_Greed - nature)`.
+- **Land:** `land_r = sum over terrains of area_t * TerrainYields[t][r]`; potential `P_r = land_r * yield_r`.
+  Output from labor `L`: `P_r * (1 - exp(-L * WorkerOutput_r / land_r))`; food is then multiplied by the harvest.
+- **Allocation:** `LuxuryLaborShare` of labor is reserved for luxuries. Food labor aims at
+  `(need * (1 + PlanningMargin) + refill) / harvest`, refill being the stores' gap over `StoreRefillMonths`; materials
+  labor aims at `need * (1 + PlanningMargin)`; the rest makes luxuries. A target past the potential takes all labor left.
+- **Harvest:** each January `1 + HarvestNoise * N(0, 1)`, clamped to `HarvestFloor..HarvestCeiling`.
+- **Eating:** people eat up to need from output plus stores; stores keep up to `StoreMonths` of need and the excess is
+  sold. Hunger = uneaten share of need. Land pressure = food need / food potential.
+- **Comfort** = `clamp(luxuriesPerHead / expectation - 1, -1, 1)`; expectation follows luxuries per head with tau
+  `ExpectationTauMonths`. Materials shortage = unmet share of materials need.
+- **Wealth:** income `= sum_r Prices_r * surplus_r` (food sold, materials beyond need, all luxuries), plus
+  `CommerceSkill * (Commerce - even)` times that; minus upkeep `wealth * alpha(WealthTauMonths)`.
+
+### Births and deaths (economy v1, D-0036)
+- Births per adult per year: `BirthsPerAdult * (1 + LustBirths * (e_Lust - nature) - PrideBirths * (e_Pride - nature)
+  - CrowdingBirths * max(0, min(1, pressure) - CrowdingStart) + OpenLandBirths * max(0, OpenLandBelow - pressure)
+  - HungerBirths * hunger)`, floored at 0 (adult expressed vices).
+- Deaths per person per year in cohort c: `Mortality_c * (1 + max(MinMortalityScale - 1, -MedicineLife * (Medicine -
+  even)))`; elders add `Mortality_elder * ElderNeglect * max(0, e_Pride - nature) * (1 + NeglectWrath * max(0,
+  e_Wrath - nature))`; everyone adds `12 * FamineMortality_c * hunger^2`.
+- `BirthsPerAdult` and `Mortality` are the steady state of a 30/55/15 population with the cohort lengths above.
+- **Famine:** begins when hunger reaches `FamineHunger`, ends at `FamineEnds`, and counts its famine deaths. When they
+  reach `StarvationCollapse` of the people alive at its start, the nation **starves**: it leaves the player's control,
+  and if it is the home nation the game is over (`Simulation.Defeat` is Starvation).
+- Violence (revolutions, revolts) kills `ViolenceMortality * violence` of every generation.
+
 ## Game start
 
 `Simulation.Settle` starts each nation at equilibrium for its starting levers (steady-state channeling, mood at
@@ -168,6 +213,17 @@ its target, stocks at their targets), so a new game opens without a transient (p
 | ElderRevoltsRestoreWhatYouthRevoltsOverthrew | D-0032 generational consequences |
 | ARevoltPastTheBreakingPointTopplesTheHiddenHand, BelowTheBreakingPointTheGovernmentTakesTheFall | D-0019, D-0021 |
 | EachGenerationHasItsOwnContentment | D-0032 |
+| AnUntouchedNationNeitherGrowsNorShrinks | the base demography is a steady state |
+| ALustfulPeopleHasMoreChildren, MedicineSchoolingLengthensLives | Norm: Lust and births; Medicine and deaths |
+| FarmersFeedMoreFromTheSameLandAndFreeHandsForComforts | Agriculture raises the land's ceiling |
+| GluttonyRaisesWhatThePeopleEat, ASlothfulPeopleAchievesLess | Norm: Gluttony consumes; Sloth achieves less |
+| AProudAndWrathfulPeopleNeglectsItsElders | Norm's example of Pride with Wrath |
+| AFillingLandSlowsItsBirthsBeforeItStarves | land shapes growth |
+| SpareHandsWorkMoreFieldsInAPoorYear, StoresCarryANationThroughBadHarvestsForAWhile | stores and labor buffer harvests |
+| HungerBreedsSufferingAndUnrest | hungry people revolt |
+| ALandThatCannotFeedItsPeopleStarves, AHungryYearIsNotAStarvedNation | starvation is a defeat (D-0019); a bad year is not |
+| ComfortRisesWithLuxuriesThenFadesAsPeopleGetUsedToThem | comfort is relative to expectation |
+| CommerceMakesANationRicher, RevolutionsCostLives, BirthTermsSumToTheBirthRate | Commerce; violence; the ledger |
 
 ## Observations from the runner (2026-10-14, default tuning)
 
@@ -200,12 +256,24 @@ deltas against untouched): Wrath tilt in a year contentment -0.04, crime +0.03, 
 -0.21, +0.14, +0.24; courts 0 versus 1: contentment 0.18 apart, crime 0.08. Extreme play topples the hand in years 11
 to 14 (pass 1 pace kept); slow-burn sours contentment from +0.18 to +0.06 over 80 years without revolts.
 
+## Observations from the runner (economy v1, 2026-10-15, default tuning, seed 1)
+
+- Baseline over 300 years, no alarms: [NATION_1] holds at 0.99 million (land pressure 0.53); [NATION_2] (proud,
+  wrathful, hills and mountains) shrinks from 0.80 to about 0.48 million and levels off on open land; [NATION_3]
+  (lustful, Medicine schools, river valleys) grows from 1.2 to about 2.05 million and levels off crowded (pressure
+  0.83), short of materials and poor in luxuries.
+- baby-boom (Lust media, Medicine schools): +26% people in 60 years. merchants (Greed, Commerce, Arts): wealth per
+  head 91 to 120 in 60 years. Balance pass 1 pace kept: extremist overthrow year 13, whiplash 12, propaganda 16.
+- famine (Gluttony, Lust and Sloth airtime, Arts schools): productivity falls to 0.67 and 95% of workers farm; the hand
+  falls to suspicion in year 33; famines follow from year 51 without starving the nation. Levers alone rarely starve a
+  nation (D-0036, "Open").
+
 ## Known simplifications (v1)
 
 - After the hand falls, the nation's levers stay where the player left them (no one resets them until puppet
   governments exist), so an abandoned extreme keeps that nation in turmoil.
 
-- Fixed cohort shares: no population numbers, births or deaths yet (revolutions "cost lives" only as contentment).
-- Outlets have no venues; nations do not interact; no puppet decision-making beyond votes and revolts.
+- Wealth accumulates but buys nothing until trade and war; Military schooling has no economic use yet.
+- Outlets have one venue (comfort); others (an army at war, open markets) come later; nations do not interact; no puppet decision-making beyond votes and revolts.
 - Rival hidden hands are not modeled, so only the player's hand can be overthrown.
 - Mood noise is independent month to month (no news stories yet).

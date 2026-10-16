@@ -4,6 +4,25 @@
 > `python Tools/docs/doctool.py rotate-worklog`. Format: [DOCS_GUIDE.md](DOCS_GUIDE.md), "Worklog entry".
 > Narrative only: decisions go to `decisions/`, open work to STATUS.md and ROADMAP.md.
 
+## 2026-10-15: session 4, economy v1
+
+- Norm: the game ends when the player's hand falls; another nation's hand falling is pegged (Q-026); balance is hard
+  to judge without conquest and clearer relations. Norm's answers: full M2 economy first, whole-nation conquest,
+  puppets decide trade and war, no rival hands yet (D-0035, accepted).
+- Built economy v1 (D-0036, proposed): `Statecraft.Sim.Economy` (Terrain, Resource, EconomyState), EconomySystem,
+  population numbers in GenerationSystem (births, deaths, land pressure, famine), hunger and materials hardship in
+  contentment, comfort as a luxury venue for outlets, violence that kills, `Simulation.Defeat` (overthrow or
+  starvation). Scenario nations got distinct lands and populations.
+- Tuning found with the runner: labor-bound farming starved luxuries (raised food per worker, reserved 5% of labor
+  for luxuries); a fixed growth gap sent [NATION_3] into Malthusian famine and revolts and [NATION_2] into endless
+  decline (added crowding and open-land terms to births); farmers now plan against the year's harvest.
+- 17 economy tests (83 total, all pass). One older test now switches off Sloth idleness, which is a separate effect.
+- Runner: `--economy` view, `--why births|deaths|productivity|wealth`, scripts baby-boom, farmers, merchants, famine;
+  PARAMETERS.md now labels per-resource arrays and prints the terrain yield table. Dev HUD: economy section,
+  generation shares, a game-over line naming the defeat.
+- Placeholders added for Norm: none (dev HUD text only).
+- Pick up at: STATUS.md, "Next up" (Norm's look at economy v1 first).
+
 ## 2026-10-15: session 3, balance passes 1 and 2
 
 - Norm: the Politics tab works, but suspicion is "nearly impossible to overload". Measured first: new runner option

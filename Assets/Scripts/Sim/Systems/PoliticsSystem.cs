@@ -350,8 +350,13 @@ namespace Statecraft.Sim.Systems
         {
             var tuning = context.Tuning.Politics;
             var society = nation.Society;
+            double survivors = 1 - SimMath.Clamp01(tuning.ViolenceMortality * violence);
             for (int c = 0; c < society.cohorts.Length; c++)
+            {
                 society.cohorts[c].contentment = SimMath.Clamp(society.cohorts[c].contentment - tuning.ViolenceContentmentShock * violence, -1, 1);
+                society.cohorts[c].population *= survivors;
+            }
+            GenerationSystem.Recount(society);
             society.crime = SimMath.Clamp01(society.crime + tuning.ViolenceCrimeShock * violence);
         }
 

@@ -36,6 +36,7 @@ namespace Statecraft.Sim.Core
             {
                 new MediaSystem(),
                 new EducationSystem(),
+                new EconomySystem(),
                 new GenerationSystem(),
                 new OutletSystem(),
                 new WellbeingSystem(),
@@ -64,13 +65,20 @@ namespace Statecraft.Sim.Core
         /// <summary>Commands waiting for the next tick.</summary>
         public int PendingCommandCount => pending.Count;
 
-        /// <summary>True once the hidden hand has been overthrown in its home nation (D-0019, D-0023).</summary>
-        public bool IsGameOver
+        /// <summary>True once the home nation is lost (D-0019, D-0023); the game ends there.</summary>
+        public bool IsGameOver => Defeat != Defeat.None;
+
+        /// <summary>How the home nation was lost, or None.</summary>
+        public Defeat Defeat
         {
             get
             {
                 int home = World.PlayerHomeIndex;
-                return home >= 0 && World.Nations[home].Government.HiddenHandOverthrown;
+                if (home < 0) return Defeat.None;
+                var nation = World.Nations[home];
+                if (nation.Government.HiddenHandOverthrown) return Defeat.HiddenHandOverthrown;
+                if (nation.Economy.Starved) return Defeat.Starvation;
+                return Defeat.None;
             }
         }
 
@@ -116,14 +124,18 @@ namespace Statecraft.Sim.Core
         void Settle()
         {
             double alpha = SimMath.AlphaFromTau(Tuning.Education.SchoolTauMonths);
-            double birth = 1.0 / (Tuning.Generations.YouthYears * SimDate.MonthsPerYear);
-            // Steady state of "school pulls youth toward the target, newborns dilute it" (see EducationSystem, GenerationSystem).
-            double trainedFraction = alpha / (1.0 - (1.0 - alpha) * (1.0 - birth));
 
             var nations = World.Nations;
             for (int n = 0; n < nations.Count; n++)
             {
                 var society = nations[n].Society;
+                // Newborns as a share of the youth each month, at the base birth rate (see GenerationSystem).
+                double youthPeople = society.cohorts[(int)Cohort.Youth].population;
+                double birth = youthPeople > 0
+                    ? SimMath.Clamp01(society.cohorts[(int)Cohort.Adult].population * Tuning.Generations.BirthsPerAdult / SimDate.MonthsPerYear / youthPeople)
+                    : 0;
+                // Steady state of "school pulls youth toward the target, newborns dilute it" (see EducationSystem, GenerationSystem).
+                double trainedFraction = alpha / (1.0 - (1.0 - alpha) * (1.0 - birth));
                 ViceVector trained = EducationSystem.CurriculumTarget(nations[n].Institutions.Curriculum, Tuning.Education) * trainedFraction;
                 society.cohorts[(int)Cohort.Youth].channeling = trained * (1.0 - birth);
                 society.cohorts[(int)Cohort.Adult].channeling = trained;
@@ -141,6 +153,7 @@ namespace Statecraft.Sim.Core
             {
                 for (int n = 0; n < nations.Count; n++)
                 {
+                    EconomySystem.Evaluate(context, nations[n], settle: true);
                     WellbeingSystem.Evaluate(context, nations[n], settle: true);
                     PoliticsSystem.Evaluate(context, nations[n], settle: true);
                 }

@@ -37,7 +37,17 @@
 | Expressed vice | Disposition plus mood: what acts on the nation now | `SocietyState.Expressed` |
 | Outlet | Capacity to channel a vice productively | `SocietyState.Outlets` |
 | Channeling | Trained habits and skills that create outlets, taught by schools | `CohortState.Channeling` |
-| Venue | A real place for a drive to go: an army, markets, an arts scene | [PLANNED] |
+| Venue | A real place for a drive to go: an army, markets, an arts scene; comfort is the first | `OutletTuning.LuxuryVenue` |
+| Terrain | A kind of land a nation holds an area of; sets what the land yields | `Terrain`, `EconomyState.Area` |
+| Resource | Food, materials or luxuries | `Resource` |
+| Potential | The most the land could yield of a resource with unlimited labor, after skill | `EconomyState.Potential` |
+| Land pressure | Food need over the land's food potential; slows births above 0.7, speeds them below 0.5 | `EconomyState.LandPressure` |
+| Hunger | Share of food need that goes uneaten | `EconomyState.Hunger` |
+| Famine | Hunger at 0.15 or more; ends at 0.05 | `EconomyState.Famine` |
+| Starvation | A famine killing a quarter of the people: the nation is lost (D-0019) | `EconomyState.Starved`, `Defeat.Starvation` |
+| Comfort | Luxuries per head against what the people expect, -1 to +1 | `EconomyState.Comfort` |
+| Wealth | Accumulated riches from production beyond need | `EconomyState.Wealth` |
+| Productivity | Labor multiplier: Sloth, unrest and hunger drag it | `EconomyState.Productivity` |
 | Satisfaction | Expressed vice that fits its outlet | computed in `WellbeingSystem` |
 | Frustration | Expressed vice beyond its outlet | `SocietyState.Frustration` |
 | Contentment, suffering | One axis: -1 suffering to +1 content | `SocietyState.Contentment` |
